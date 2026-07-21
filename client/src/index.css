@@ -1,2 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "cosmo";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f6f8fa;
+  --color-base-300: #e7edf3;
+
+  --color-primary: #0b8f4d;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #f5c400;
+  --color-secondary-content: #1f2937;
+
+  --color-accent: #e53935;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #24303f;
+  --color-neutral-content: #ffffff;
+
+  --color-info: #3b82f6;
+  --color-info-content: #ffffff;
+
+  --color-success: #22c55e;
+  --color-success-content: #ffffff;
+
+  --color-warning: #f59e0b;
+  --color-warning-content: #ffffff;
+
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.75rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+.heading-font {
+  font-family: "Poppins", sans-serif;
+}
+
+.body-font {
+  font-family: "Inter", sans-serif;
+}
