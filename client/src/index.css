@@ -58,3 +58,56 @@
 .body-font {
   font-family: "Inter", sans-serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+.cosmo-gradient {
+  background:
+    radial-gradient(circle at 15% 20%,
+      rgba(39, 140, 69, 0.16),
+      transparent 35%),
+    radial-gradient(circle at 85% 25%,
+      rgba(244, 197, 24, 0.15),
+      transparent 35%),
+    radial-gradient(circle at 75% 85%,
+      rgba(229, 43, 50, 0.1),
+      transparent 30%);
+}
+
+.cosmo-card-shadow {
+  box-shadow:
+    0 20px 50px rgba(31, 41, 35, 0.08),
+    0 8px 20px rgba(39, 140, 69, 0.08);
+}
+
+.cosmo-button-shadow {
+  box-shadow:
+    0 12px 24px rgba(39, 140, 69, 0.24),
+    0 4px 10px rgba(31, 41, 35, 0.12);
+}
+
+.cosmo-glass {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
