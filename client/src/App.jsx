@@ -49,79 +49,81 @@ function App() {
             Hover Me
           </button>
         </div>
-        <div className="my-5 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          <Card className="border-l-[6px] border-l-primary">
-            <p className="text-sm text-gray-500">20 July 2026</p>
+        <ScrollReveal direction="left" delay={0.8}>
+          <div className="my-5 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <Card className="border-l-[6px] border-l-primary">
+              <p className="text-sm text-gray-500">20 July 2026</p>
 
-            <h3 className="font-heading mt-3 text-xl font-semibold">
-              Admission Open 2027
-            </h3>
+              <h3 className="font-heading mt-3 text-xl font-semibold">
+                Admission Open 2027
+              </h3>
 
-            <Button variant="outline" size="sm" className="mt-4 p-0">
-              Read More →
-            </Button>
-          </Card>
-          <Card className="border-l-[6px] border-l-primary">
-            <p className="text-sm text-gray-500">20 July 2026</p>
+              <Button variant="outline" size="sm" className="mt-4 p-0">
+                Read More →
+              </Button>
+            </Card>
+            <Card className="border-l-[6px] border-l-primary">
+              <p className="text-sm text-gray-500">20 July 2026</p>
 
-            <h3 className="font-heading mt-3 text-xl font-semibold">
-              Admission Open 2027
-            </h3>
+              <h3 className="font-heading mt-3 text-xl font-semibold">
+                Admission Open 2027
+              </h3>
 
-            <Button variant="outline" size="sm" className="mt-4 p-0">
-              Read More →
-            </Button>
-          </Card>
-          <Card className="border-l-[6px] border-l-primary">
-            <p className="text-sm text-gray-500">20 July 2026</p>
+              <Button variant="outline" size="sm" className="mt-4 p-0">
+                Read More →
+              </Button>
+            </Card>
+            <Card className="border-l-[6px] border-l-primary">
+              <p className="text-sm text-gray-500">20 July 2026</p>
 
-            <h3 className="font-heading mt-3 text-xl font-semibold">
-              Admission Open 2027
-            </h3>
+              <h3 className="font-heading mt-3 text-xl font-semibold">
+                Admission Open 2027
+              </h3>
 
-            <Button variant="outline" size="sm" className="mt-4 p-0">
-              Read More →
-            </Button>
-          </Card>
-          <Card className="border-l-[6px] border-l-primary">
-            <p className="text-sm text-gray-500">20 July 2026</p>
+              <Button variant="outline" size="sm" className="mt-4 p-0">
+                Read More →
+              </Button>
+            </Card>
+            <Card className="border-l-[6px] border-l-primary">
+              <p className="text-sm text-gray-500">20 July 2026</p>
 
-            <h3 className="font-heading mt-3 text-xl font-semibold">
-              Admission Open 2027
-            </h3>
+              <h3 className="font-heading mt-3 text-xl font-semibold">
+                Admission Open 2027
+              </h3>
 
-            <Button variant="outline" size="sm" className="mt-4 p-0">
-              Read More →
-            </Button>
-          </Card>
+              <Button variant="outline" size="sm" className="mt-4 p-0">
+                Read More →
+              </Button>
+            </Card>
 
-          <Card>
-            <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
+            <Card>
+              <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
 
-            <p className="font-body mt-3">
-              Modern computer facilities for students.
-            </p>
-          </Card>
-          <Card>
-            <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
+              <p className="font-body mt-3">
+                Modern computer facilities for students.
+              </p>
+            </Card>
+            <Card>
+              <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
 
-            <p className="font-body mt-3">
-              Modern computer facilities for students.
-            </p>
-          </Card>
-          <Card>
-            <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
-            <p className="font-body mt-3">
-              Modern computer facilities for students.
-            </p>
-          </Card>
-          <Card>
-            <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
-            <p className="font-body mt-3">
-              Modern computer facilities for students.
-            </p>
-          </Card>
-        </div>
+              <p className="font-body mt-3">
+                Modern computer facilities for students.
+              </p>
+            </Card>
+            <Card>
+              <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
+              <p className="font-body mt-3">
+                Modern computer facilities for students.
+              </p>
+            </Card>
+            <Card>
+              <h3 className="font-heading text-2xl font-bold">Computer Lab</h3>
+              <p className="font-body mt-3">
+                Modern computer facilities for students.
+              </p>
+            </Card>
+          </div>
+        </ScrollReveal>
       </Container>
     </div>
   );
