@@ -20,6 +20,16 @@ const navLinks = [
   {
     name: "Academics",
     path: "/academics",
+    children: [
+      {
+        name: "Curriculum",
+        path: "/academics/curriculum",
+      },
+      {
+        name: "Achievement",
+        path: "/academics/achievement",
+      },
+    ],
   },
   {
     name: "Teachers",
@@ -42,6 +52,7 @@ const navLinks = [
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
 
   const location = useLocation();
 
@@ -65,6 +76,7 @@ const Navbar = () => {
   // Close mobile menu after route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setOpenMobileSubmenu(null);
   }, [location.pathname]);
 
   // Prevent body scrolling while mobile menu is open
@@ -75,6 +87,17 @@ const Navbar = () => {
       document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
+
+  const isParentActive = (link) => {
+    if (link.path === "/") {
+      return location.pathname === "/";
+    }
+
+    return (
+      location.pathname === link.path ||
+      location.pathname.startsWith(`${link.path}/`)
+    );
+  };
 
   return (
     <>
@@ -100,7 +123,7 @@ const Navbar = () => {
 
         <nav
           className={`
-            mx-auto flex max-w-7xl items-center justify-between
+            mx-auto flex items-center justify-between
             px-4 transition-all duration-500
             sm:px-6 lg:px-8
             ${isScrolled ? "h-16" : "h-20 lg:h-24"}
@@ -115,26 +138,26 @@ const Navbar = () => {
           >
             <div
               className={`
-                relative overflow-hidden rounded-2xl
+                relative overflow-hidden 
                 border border-white/10
-                bg-neutral shadow-[0_10px_25px_rgba(31,37,43,0.18)]
                 transition-all duration-500
                 group-hover:-translate-y-0.5
-                group-hover:shadow-[0_15px_35px_rgba(39,140,69,0.22)]
+                
                 ${isScrolled ? "px-3 py-2" : "px-4 py-2.5"}
               `}
             >
+              {/* bg-neutral shadow-[0_10px_25px_rgba(31,37,43,0.18)]  group-hover:shadow-[0_15px_35px_rgba(39,140,69,0.22)]  rounded-2xl*/}
+
               {/* Logo shine animation */}
               <span
                 aria-hidden="true"
                 className="
                   absolute inset-y-0 -left-16 w-12
-                  -skew-x-12 bg-white/20 blur-sm
+                  -skew-x-12 bg-green-600/40 blur-sm
                   transition-all duration-700
                   group-hover:left-[115%]
                 "
               />
-
               <img
                 src="/logo.png"
                 alt="Cosmo School"
@@ -148,72 +171,267 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop navigation */}
+          {/* Desktop navigation */}
           <div className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                end={link.path === "/"}
-                className={({ isActive }) => `
-                  group relative flex min-h-11 items-center
-                  overflow-hidden rounded-xl px-3.5
-                  text-sm font-bold tracking-[0.01em]
+            {navLinks.map((link) => {
+              const hasChildren = link.children?.length > 0;
+              const parentActive = isParentActive(link);
+
+              // Normal navigation item
+              if (!hasChildren) {
+                return (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    end={link.path === "/"}
+                    className={({ isActive }) => `
+            group relative flex min-h-11 items-center
+            overflow-hidden rounded-xl px-3.5
+            text-sm font-bold tracking-[0.01em]
+            transition-all duration-300
+            xl:px-4
+            ${
+              isActive
+                ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                : "text-neutral/75 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+            }
+          `}
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {/* Hover background */}
+                        <span
+                          aria-hidden="true"
+                          className="
+                  absolute inset-0 origin-bottom scale-y-0
+                  bg-gradient-to-t from-primary/10 to-transparent
+                  transition-transform duration-300
+                  group-hover:scale-y-100
+                "
+                        />
+
+                        <span className="relative z-10">{link.name}</span>
+
+                        {/* Active underline */}
+                        <span
+                          aria-hidden="true"
+                          className={`
+                  absolute inset-x-3 bottom-1 h-0.5
+                  origin-left rounded-full
+                  bg-gradient-to-r
+                  from-primary via-secondary to-accent
                   transition-all duration-300
-                  xl:px-4
                   ${
                     isActive
-                      ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-                      : "text-neutral/75 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                      ? "scale-x-100 opacity-100"
+                      : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
                   }
                 `}
-              >
-                {({ isActive }) => (
-                  <>
+                        />
+
+                        {isActive && (
+                          <span
+                            aria-hidden="true"
+                            className="
+                    absolute right-2 top-2
+                    size-1.5 rounded-full bg-primary
+                    shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
+                  "
+                          />
+                        )}
+                      </>
+                    )}
+                  </NavLink>
+                );
+              }
+
+              // Navigation item with dropdown
+              return (
+                <div key={link.path} className="group/dropdown relative">
+                  {/* Parent link */}
+                  <NavLink
+                    to={link.path}
+                    className={`
+            group relative flex min-h-11 items-center
+            gap-1.5 overflow-hidden rounded-xl px-3.5
+            text-sm font-bold tracking-[0.01em]
+            transition-all duration-300
+            xl:px-4
+            ${
+              parentActive
+                ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                : "text-neutral/75 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+            }
+          `}
+                  >
                     {/* Hover background */}
                     <span
                       aria-hidden="true"
                       className="
-                        absolute inset-0 origin-bottom scale-y-0
-                        bg-gradient-to-t from-primary/10 to-transparent
-                        transition-transform duration-300
-                        group-hover:scale-y-100
-                      "
+              absolute inset-0 origin-bottom scale-y-0
+              bg-gradient-to-t from-primary/10 to-transparent
+              transition-transform duration-300
+              group-hover:scale-y-100
+            "
                     />
 
                     <span className="relative z-10">{link.name}</span>
 
-                    {/* Animated active underline */}
+                    <ChevronDown
+                      className="
+              relative z-10 size-4
+              transition-transform duration-300
+              group-hover/dropdown:rotate-180
+            "
+                    />
+
+                    {/* Active underline */}
                     <span
                       aria-hidden="true"
                       className={`
-                        absolute inset-x-3 bottom-1 h-0.5
-                        origin-left rounded-full
-                        bg-gradient-to-r
-                        from-primary via-secondary to-accent
-                        transition-all duration-300
-                        ${
-                          isActive
-                            ? "scale-x-100 opacity-100"
-                            : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
-                        }
-                      `}
+              absolute inset-x-3 bottom-1 h-0.5
+              origin-left rounded-full
+              bg-gradient-to-r
+              from-primary via-secondary to-accent
+              transition-all duration-300
+              ${
+                parentActive
+                  ? "scale-x-100 opacity-100"
+                  : "scale-x-0 opacity-0 group-hover/dropdown:scale-x-100 group-hover/dropdown:opacity-70"
+              }
+            `}
                     />
 
-                    {/* Active dot */}
-                    {isActive && (
+                    {parentActive && (
                       <span
                         aria-hidden="true"
                         className="
-                          absolute right-2 top-2
-                          size-1.5 rounded-full bg-primary
-                          shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
-                        "
+                absolute right-2 top-2
+                size-1.5 rounded-full bg-primary
+                shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
+              "
                       />
                     )}
-                  </>
-                )}
-              </NavLink>
-            ))}
+                  </NavLink>
+
+                  {/* Invisible hover bridge */}
+                  <div className="absolute left-0 top-full h-3 w-full" />
+
+                  {/* Dropdown */}
+                  <div
+                    className="
+            invisible absolute left-1/2 top-[calc(100%+10px)]
+            z-50 w-64 -translate-x-1/2
+            translate-y-3 scale-95 opacity-0
+            transition-all duration-300
+            group-hover/dropdown:visible
+            group-hover/dropdown:translate-y-0
+            group-hover/dropdown:scale-100
+            group-hover/dropdown:opacity-100
+          "
+                  >
+                    {/* Dropdown arrow */}
+                    <span
+                      className="
+              absolute -top-2 left-1/2 size-4
+              -translate-x-1/2 rotate-45
+              border-l border-t border-primary/15
+              bg-white
+            "
+                    />
+
+                    <div
+                      className="
+              relative overflow-hidden rounded-2xl
+              border border-primary/15 bg-white/95
+              p-2 shadow-[0_20px_50px_rgba(31,41,35,0.18)]
+              backdrop-blur-xl
+            "
+                    >
+                      {/* Top gradient */}
+                      <div
+                        className="
+                absolute inset-x-0 top-0 h-1
+                bg-gradient-to-r
+                from-primary via-secondary to-accent
+              "
+                      />
+
+                      <div className="space-y-1 pt-1">
+                        {link.children.map((child, childIndex) => (
+                          <NavLink
+                            key={child.path}
+                            to={child.path}
+                            className={({ isActive }) => `
+                    group/child relative flex min-h-12
+                    items-center justify-between
+                    overflow-hidden rounded-xl px-4
+                    text-sm font-bold
+                    transition-all duration-300
+                    ${
+                      isActive
+                        ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                        : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
+                    }
+                  `}
+                          >
+                            {({ isActive }) => (
+                              <>
+                                <span className="relative z-10 flex items-center gap-3">
+                                  <span
+                                    className={`
+                            grid size-7 place-items-center
+                            rounded-lg text-[11px] font-black
+                            transition-all duration-300
+                            ${
+                              isActive
+                                ? "bg-white/15 text-white"
+                                : "bg-primary/10 text-primary group-hover/child:bg-primary group-hover/child:text-white"
+                            }
+                          `}
+                                  >
+                                    {String(childIndex + 1).padStart(2, "0")}
+                                  </span>
+
+                                  {child.name}
+                                </span>
+
+                                <ArrowUpRight
+                                  className={`
+                          size-4 transition-transform duration-300
+                          group-hover/child:translate-x-0.5
+                          group-hover/child:-translate-y-0.5
+                          ${isActive ? "text-secondary" : "text-primary/55"}
+                        `}
+                                />
+
+                                {isActive && (
+                                  <span
+                                    className="
+                            absolute bottom-0 left-0 top-0
+                            w-1 bg-secondary
+                          "
+                                  />
+                                )}
+                              </>
+                            )}
+                          </NavLink>
+                        ))}
+                      </div>
+
+                      {/* Decorative background */}
+                      <div
+                        className="
+                pointer-events-none absolute
+                -bottom-12 -right-12 size-28
+                rounded-full bg-primary/10 blur-2xl
+              "
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Desktop actions */}
@@ -347,75 +565,254 @@ const Navbar = () => {
               "
             >
               <div className="space-y-1">
-                {navLinks.map((link, index) => (
-                  <NavLink
-                    key={link.path}
-                    to={link.path}
-                    end={link.path === "/"}
-                    style={{
-                      transitionDelay: isMobileMenuOpen
-                        ? `${index * 35}ms`
-                        : "0ms",
-                    }}
-                    className={({ isActive }) => `
-                      group relative flex min-h-13
-                      items-center justify-between
-                      overflow-hidden rounded-xl px-4
-                      font-bold transition-all duration-300
-                      ${
-                        isMobileMenuOpen
-                          ? "translate-x-0 opacity-100"
-                          : "-translate-x-5 opacity-0"
-                      }
-                      ${
-                        isActive
-                          ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                          : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
-                      }
-                    `}
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <span className="relative z-10 flex items-center gap-3">
+                {navLinks.map((link, index) => {
+                  const hasChildren = link.children?.length > 0;
+                  const parentActive = isParentActive(link);
+                  const isSubmenuOpen = openMobileSubmenu === link.name;
+
+                  // Normal mobile link
+                  if (!hasChildren) {
+                    return (
+                      <NavLink
+                        key={link.path}
+                        to={link.path}
+                        end={link.path === "/"}
+                        style={{
+                          transitionDelay: isMobileMenuOpen
+                            ? `${index * 35}ms`
+                            : "0ms",
+                        }}
+                        className={({ isActive }) => `
+            group relative flex min-h-13
+            items-center justify-between
+            overflow-hidden rounded-xl px-4
+            font-bold transition-all duration-300
+            ${
+              isMobileMenuOpen
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-5 opacity-0"
+            }
+            ${
+              isActive
+                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
+            }
+          `}
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <span className="relative z-10 flex items-center gap-3">
+                              <span
+                                className={`
+                    grid size-7 place-items-center
+                    rounded-lg text-xs font-black
+                    transition-colors duration-300
+                    ${
+                      isActive
+                        ? "bg-white/15 text-white"
+                        : "bg-primary/10 text-primary"
+                    }
+                  `}
+                              >
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+
+                              {link.name}
+                            </span>
+
+                            <ChevronDown
+                              className={`
+                  size-4 -rotate-90
+                  transition-transform duration-300
+                  group-hover:translate-x-1
+                  ${isActive ? "text-secondary" : "text-primary/60"}
+                `}
+                            />
+
+                            {isActive && (
+                              <span
+                                className="
+                    absolute bottom-0 left-0 top-0
+                    w-1 bg-secondary
+                  "
+                              />
+                            )}
+                          </>
+                        )}
+                      </NavLink>
+                    );
+                  }
+
+                  // Mobile link with submenu
+                  return (
+                    <div
+                      key={link.path}
+                      style={{
+                        transitionDelay: isMobileMenuOpen
+                          ? `${index * 35}ms`
+                          : "0ms",
+                      }}
+                      className={`
+          overflow-hidden rounded-xl
+          transition-all duration-300
+          ${
+            isMobileMenuOpen
+              ? "translate-x-0 opacity-100"
+              : "-translate-x-5 opacity-0"
+          }
+        `}
+                    >
+                      {/* Parent mobile button */}
+                      <div
+                        className={`
+            relative flex min-h-13 items-center
+            overflow-hidden rounded-xl
+            transition-all duration-300
+            ${
+              parentActive
+                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                : "text-neutral/75 hover:bg-primary/10 hover:text-primary"
+            }
+          `}
+                      >
+                        {/* Parent navigation area */}
+                        <NavLink
+                          to={link.path}
+                          className="
+              relative z-10 flex min-h-13
+              flex-1 items-center gap-3 px-4
+              font-bold
+            "
+                        >
                           <span
                             className={`
-                              grid size-7 place-items-center
-                              rounded-lg text-xs font-black
-                              transition-colors duration-300
-                              ${
-                                isActive
-                                  ? "bg-white/15 text-white"
-                                  : "bg-primary/10 text-primary"
-                              }
-                            `}
+                grid size-7 place-items-center
+                rounded-lg text-xs font-black
+                transition-colors duration-300
+                ${
+                  parentActive
+                    ? "bg-white/15 text-white"
+                    : "bg-primary/10 text-primary"
+                }
+              `}
                           >
                             {String(index + 1).padStart(2, "0")}
                           </span>
 
                           {link.name}
-                        </span>
+                        </NavLink>
 
-                        <ChevronDown
+                        {/* Submenu toggle button */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setOpenMobileSubmenu((current) =>
+                              current === link.name ? null : link.name,
+                            )
+                          }
+                          aria-label={`${link.name} submenu`}
+                          aria-expanded={isSubmenuOpen}
                           className={`
-                            size-4 -rotate-90
-                            transition-transform duration-300
-                            group-hover:translate-x-1
-                            ${isActive ? "text-secondary" : "text-primary/60"}
-                          `}
-                        />
+              relative z-10 mr-2 grid size-10
+              place-items-center rounded-lg
+              transition-all duration-300
+              ${
+                parentActive
+                  ? "bg-white/10 text-secondary hover:bg-white/20"
+                  : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+              }
+            `}
+                        >
+                          <ChevronDown
+                            className={`
+                size-5 transition-transform duration-300
+                ${isSubmenuOpen ? "rotate-180" : "rotate-0"}
+              `}
+                          />
+                        </button>
 
-                        {isActive && (
+                        {parentActive && (
                           <span
                             className="
-                              absolute bottom-0 left-0 top-0
-                              w-1 bg-secondary
-                            "
+                absolute bottom-0 left-0 top-0
+                w-1 bg-secondary
+              "
                           />
                         )}
-                      </>
-                    )}
-                  </NavLink>
-                ))}
+                      </div>
+
+                      {/* Mobile submenu */}
+                      <div
+                        className={`
+            grid transition-all duration-500
+            ${
+              isSubmenuOpen
+                ? "grid-rows-[1fr] opacity-100"
+                : "grid-rows-[0fr] opacity-0"
+            }
+          `}
+                      >
+                        <div className="overflow-hidden">
+                          <div
+                            className="
+                ml-5 mt-2 space-y-1
+                border-l-2 border-primary/15
+                pb-2 pl-3
+              "
+                          >
+                            {link.children.map((child) => (
+                              <NavLink
+                                key={child.path}
+                                to={child.path}
+                                className={({ isActive }) => `
+                    group/child relative flex min-h-11
+                    items-center justify-between
+                    overflow-hidden rounded-xl px-3
+                    text-sm font-bold
+                    transition-all duration-300
+                    ${
+                      isActive
+                        ? "bg-secondary/25 text-neutral shadow-sm"
+                        : "text-neutral/65 hover:bg-primary/10 hover:pl-4 hover:text-primary"
+                    }
+                  `}
+                              >
+                                {({ isActive }) => (
+                                  <>
+                                    <span className="flex items-center gap-3">
+                                      <span
+                                        className={`
+                            size-2 rounded-full
+                            transition-all duration-300
+                            ${
+                              isActive
+                                ? "scale-125 bg-accent shadow-[0_0_0_4px_rgba(229,43,50,0.12)]"
+                                : "bg-primary/40 group-hover/child:bg-primary"
+                            }
+                          `}
+                                      />
+
+                                      {child.name}
+                                    </span>
+
+                                    <ArrowUpRight
+                                      className={`
+                          size-4 transition-transform duration-300
+                          group-hover/child:translate-x-0.5
+                          group-hover/child:-translate-y-0.5
+                          ${isActive ? "text-accent" : "text-primary/50"}
+                        `}
+                                    />
+                                  </>
+                                )}
+                              </NavLink>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Mobile buttons */}
