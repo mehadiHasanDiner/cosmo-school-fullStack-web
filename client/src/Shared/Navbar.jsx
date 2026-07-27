@@ -56,6 +56,11 @@ const Navbar = () => {
 
   const location = useLocation();
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setOpenMobileSubmenu(null);
+  };
+
   // Navbar shrink on scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -72,12 +77,6 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  // Close mobile menu after route change
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setOpenMobileSubmenu(null);
-  }, [location.pathname]);
 
   // Prevent body scrolling while mobile menu is open
   useEffect(() => {
@@ -115,7 +114,7 @@ const Navbar = () => {
         {/* Colourful top brand line */}
         <div
           className={`
-            bg-gradient-to-r from-primary via-secondary to-accent
+            bg-linear-to-r from-primary via-secondary to-accent
             transition-all duration-500
             ${isScrolled ? "h-0.5" : "h-1"}
           `}
@@ -138,7 +137,7 @@ const Navbar = () => {
           >
             <div
               className={`
-                relative overflow-hidden 
+                relative overflow-hidden          
                 border border-white/10
                 transition-all duration-500
                 group-hover:-translate-y-0.5
@@ -184,6 +183,7 @@ const Navbar = () => {
                     key={link.path}
                     to={link.path}
                     end={link.path === "/"}
+                    onClick={closeMobileMenu}
                     className={({ isActive }) => `
             group relative flex min-h-11 items-center
             overflow-hidden rounded-xl px-3.5
@@ -204,7 +204,7 @@ const Navbar = () => {
                           aria-hidden="true"
                           className="
                   absolute inset-0 origin-bottom scale-y-0
-                  bg-gradient-to-t from-primary/10 to-transparent
+                  bg-linear-to-t from-primary/10 to-transparent
                   transition-transform duration-300
                   group-hover:scale-y-100
                 "
@@ -218,7 +218,7 @@ const Navbar = () => {
                           className={`
                   absolute inset-x-3 bottom-1 h-0.5
                   origin-left rounded-full
-                  bg-gradient-to-r
+                  bg-linear-to-r
                   from-primary via-secondary to-accent
                   transition-all duration-300
                   ${
@@ -269,7 +269,7 @@ const Navbar = () => {
                       aria-hidden="true"
                       className="
               absolute inset-0 origin-bottom scale-y-0
-              bg-gradient-to-t from-primary/10 to-transparent
+              bg-linear-to-t from-primary/10 to-transparent
               transition-transform duration-300
               group-hover:scale-y-100
             "
@@ -291,7 +291,7 @@ const Navbar = () => {
                       className={`
               absolute inset-x-3 bottom-1 h-0.5
               origin-left rounded-full
-              bg-gradient-to-r
+              bg-linear-to-r
               from-primary via-secondary to-accent
               transition-all duration-300
               ${
@@ -352,7 +352,7 @@ const Navbar = () => {
                       <div
                         className="
                 absolute inset-x-0 top-0 h-1
-                bg-gradient-to-r
+                bg-linear-to-r
                 from-primary via-secondary to-accent
               "
                       />
@@ -362,6 +362,7 @@ const Navbar = () => {
                           <NavLink
                             key={child.path}
                             to={child.path}
+                            onClick={closeMobileMenu}
                             className={({ isActive }) => `
                     group/child relative flex min-h-12
                     items-center justify-between
@@ -577,6 +578,7 @@ const Navbar = () => {
                         key={link.path}
                         to={link.path}
                         end={link.path === "/"}
+                        onClick={closeMobileMenu}
                         style={{
                           transitionDelay: isMobileMenuOpen
                             ? `${index * 35}ms`
@@ -678,6 +680,7 @@ const Navbar = () => {
                         {/* Parent navigation area */}
                         <NavLink
                           to={link.path}
+                          onClick={closeMobileMenu}
                           className="
               relative z-10 flex min-h-13
               flex-1 items-center gap-3 px-4
@@ -764,6 +767,7 @@ const Navbar = () => {
                               <NavLink
                                 key={child.path}
                                 to={child.path}
+                                onClick={closeMobileMenu}
                                 className={({ isActive }) => `
                     group/child relative flex min-h-11
                     items-center justify-between
@@ -819,6 +823,7 @@ const Navbar = () => {
               <div className="mt-4 grid grid-cols-2 gap-3 border-t border-base-300 pt-4">
                 <Link
                   to="/login"
+                  onClick={closeMobileMenu}
                   className="
                     flex min-h-12 items-center justify-center
                     gap-2 rounded-xl border border-primary/20
@@ -833,6 +838,7 @@ const Navbar = () => {
 
                 <Link
                   to="/admission"
+                  onClick={closeMobileMenu}
                   className="
                     flex min-h-12 items-center justify-center
                     gap-2 rounded-xl border border-accent
@@ -857,7 +863,7 @@ const Navbar = () => {
       <button
         type="button"
         aria-label="Close mobile navigation"
-        onClick={() => setIsMobileMenuOpen(false)}
+        onClick={closeMobileMenu}
         className={`
           fixed inset-0 z-40 bg-neutral/40
           backdrop-blur-sm transition-all duration-500

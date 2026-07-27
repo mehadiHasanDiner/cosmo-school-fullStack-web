@@ -1,7 +1,9 @@
+import Hero from "../Hero";
+
 const Home = () => {
   return (
     <div>
-      <h2 className="text-4xl">Home</h2>
+      <Hero />
     </div>
   );
 };
