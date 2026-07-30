@@ -5,7 +5,7 @@ import { useState } from "react";
 const Hero = () => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <section className="relative h-screen w-full overflow-hidden body-font">
+    <section className="relative h-screen w-full overflow-hidden body-font -mt-25">
       {/* loading state */}
       {!loaded && (
         <div className="absolute inset-0">

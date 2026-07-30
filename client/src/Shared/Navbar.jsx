@@ -102,19 +102,25 @@ const Navbar = () => {
     <>
       <header
         className={`
+          ${isMobileMenuOpen ? "bg-white" : ""}
           sticky top-0 z-50 w-full body-font
           border-b transition-all duration-500
           ${
             isScrolled
               ? "border-primary/15 bg-white/90 shadow-[0_12px_40px_rgba(24,101,52,0.12)] backdrop-blur-xl"
-              : "border-transparent bg-white/95"
+              : "border-transparent bg-transparent"
           }
+
         `}
       >
         {/* Colourful top brand line */}
         <div
           className={`
-            bg-linear-to-r from-primary via-secondary to-accent
+            ${
+              isScrolled
+                ? "bg-linear-to-r from-primary via-secondary to-accent"
+                : "bg-green-500"
+            }
             transition-all duration-500
             ${isScrolled ? "h-0.5" : "h-1"}
           `}
@@ -138,7 +144,7 @@ const Navbar = () => {
             <div
               className={`
                 relative overflow-hidden          
-                border border-white/10
+                
                 transition-all duration-500
                 group-hover:-translate-y-0.5
                 
@@ -185,17 +191,22 @@ const Navbar = () => {
                     end={link.path === "/"}
                     onClick={closeMobileMenu}
                     className={({ isActive }) => `
-            group relative flex min-h-11 items-center
-            overflow-hidden rounded-xl px-3.5
-            text-sm font-bold tracking-[0.01em]
-            transition-all duration-300
-            xl:px-4
-            ${
-              isActive
-                ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-                : "text-neutral/75 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
-            }
-          `}
+  group relative flex min-h-11 items-center
+  overflow-hidden rounded-xl px-3.5
+  text-sm font-bold tracking-[0.01em]
+  transition-all duration-300
+  xl:px-4
+
+  ${
+    isActive
+      ? isScrolled
+        ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+        : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+      : isScrolled
+        ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+        : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
+  }
+`}
                   >
                     {({ isActive }) => (
                       <>
@@ -216,27 +227,34 @@ const Navbar = () => {
                         <span
                           aria-hidden="true"
                           className={`
-                  absolute inset-x-3 bottom-1 h-0.5
-                  origin-left rounded-full
-                  bg-linear-to-r
-                  from-primary via-secondary to-accent
-                  transition-all duration-300
-                  ${
-                    isActive
-                      ? "scale-x-100 opacity-100"
-                      : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
-                  }
-                `}
+    absolute inset-x-3 bottom-1 h-0.5
+    origin-left rounded-full
+    transition-all duration-300
+    ${
+      isScrolled
+        ? "bg-linear-to-r from-primary via-secondary to-accent"
+        : "bg-white"
+    }
+    ${
+      isActive
+        ? "scale-x-100 opacity-100"
+        : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
+    }
+  `}
                         />
 
                         {isActive && (
                           <span
                             aria-hidden="true"
-                            className="
-                    absolute right-2 top-2
-                    size-1.5 rounded-full bg-primary
-                    shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
-                  "
+                            className={`
+  absolute right-2 top-2
+  size-1.5 rounded-full
+  ${
+    isScrolled
+      ? "bg-primary shadow-[0_0_0_4px_rgba(39,140,69,0.12)]"
+      : "bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.18)]"
+  }
+`}
                           />
                         )}
                       </>
@@ -259,8 +277,12 @@ const Navbar = () => {
             xl:px-4
             ${
               parentActive
-                ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-                : "text-neutral/75 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                ? isScrolled
+                  ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                  : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+                : isScrolled
+                  ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                  : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
             }
           `}
                   >
@@ -439,16 +461,19 @@ const Navbar = () => {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               to="/login"
-              className="
-                group relative flex min-h-11 items-center
-                gap-2 rounded-xl border border-primary/20
-                bg-white px-4 text-sm font-bold text-primary
-                shadow-sm transition-all duration-300
-                hover:-translate-y-0.5 hover:border-primary/40
-                hover:bg-primary/5
-                hover:shadow-[0_10px_25px_rgba(39,140,69,0.12)]
-                active:translate-y-0 active:scale-[0.98]
-              "
+              className={`
+  group relative flex min-h-11 items-center
+  gap-2 rounded-xl border px-4
+  text-sm font-bold shadow-sm
+  transition-all duration-300
+  hover:-translate-y-0.5
+  active:translate-y-0 active:scale-[0.98]
+  ${
+    isScrolled
+      ? "border-primary/20 bg-white text-primary hover:bg-primary/5"
+      : "border-white/35 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-primary"
+  }
+`}
             >
               <GraduationCap
                 className="
@@ -504,14 +529,17 @@ const Navbar = () => {
                 ? "Close navigation menu"
                 : "Open navigation menu"
             }
-            className="
-              group relative grid size-11 place-items-center
-              overflow-hidden rounded-xl border border-primary/15
-              bg-primary/10 text-primary
-              shadow-sm transition-all duration-300
-              hover:bg-primary hover:text-white
-              active:scale-95 lg:hidden
-            "
+            className={`
+  group relative grid size-11 place-items-center
+  overflow-hidden rounded-xl border
+  shadow-sm transition-all duration-300
+  active:scale-95 lg:hidden
+  ${
+    isScrolled
+      ? "border-primary/15 bg-primary/10 text-primary hover:bg-primary hover:text-white"
+      : "border-white/30 bg-white/10 text-black backdrop-blur-md hover:bg-white hover:text-primary"
+  }
+`}
           >
             <span
               className={`
@@ -523,7 +551,7 @@ const Navbar = () => {
                 }
               `}
             >
-              <Menu className="size-6" />
+              <Menu className="size-7" />
             </span>
 
             <span
