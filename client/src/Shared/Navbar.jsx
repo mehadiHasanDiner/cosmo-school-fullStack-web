@@ -102,7 +102,7 @@ const Navbar = () => {
     <>
       <header
         className={`
-          sticky top-0 z-50 w-full
+          sticky top-0 z-50 w-full body-font
           border-b transition-all duration-500
           ${
             isScrolled
