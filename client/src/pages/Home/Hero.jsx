@@ -36,7 +36,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 flex h-full items-center">
         <div className="container mx-auto px-6">
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight heading-font">
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight heading-font">
             Welcome To <br />
             Cosmo School
           </h1>

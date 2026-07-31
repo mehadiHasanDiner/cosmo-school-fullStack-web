@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -16,7 +16,8 @@
     "motion": "^12.42.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router": "^7.18.1",
+    "react-icons": "^5.7.0",
+    "react-router": "^8.3.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

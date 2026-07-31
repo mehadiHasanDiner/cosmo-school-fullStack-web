@@ -32,10 +32,6 @@ const navLinks = [
     ],
   },
   {
-    name: "Teachers",
-    path: "/teachers",
-  },
-  {
     name: "Notice",
     path: "/notices",
   },
@@ -53,6 +49,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
+  const showDarkNavbar = isScrolled || isMobileMenuOpen;
 
   const location = useLocation();
 
@@ -102,16 +99,14 @@ const Navbar = () => {
     <>
       <header
         className={`
-          ${isMobileMenuOpen ? "bg-white" : ""}
-          sticky top-0 z-50 w-full body-font
-          border-b transition-all duration-500
-          ${
-            isScrolled
-              ? "border-primary/15 bg-white/90 shadow-[0_12px_40px_rgba(24,101,52,0.12)] backdrop-blur-xl"
-              : "border-transparent bg-transparent"
-          }
-
-        `}
+    sticky top-0 z-50 w-full body-font
+    border-b transition-all duration-500
+    ${
+      showDarkNavbar
+        ? "border-primary/15 bg-white/95 shadow-[0_12px_40px_rgba(24,101,52,0.12)] backdrop-blur-xl"
+        : "border-transparent bg-transparent"
+    }
+  `}
       >
         {/* Colourful top brand line */}
         <div
@@ -164,15 +159,46 @@ const Navbar = () => {
                 "
               />
               <img
-                src="/logo.png"
+                src={showDarkNavbar ? "/logo.png" : "/logo-white.png"}
                 alt="Cosmo School"
                 className={`
-                  relative z-10 w-auto object-contain
-                  transition-all duration-500
-                  ${isScrolled ? "h-8" : "h-9 lg:h-10"}
-                `}
+                relative z-10 w-auto object-contain
+                transition-all duration-500
+                ${isScrolled ? "h-10" : "h-12 lg:h-14"}
+              `}
               />
             </div>
+
+            {/* <div
+                className={`
+                relative w-[300px]
+                transition-all duration-500
+                ${isScrolled ? "h-10" : "h-12 lg:h-14"}
+              `}
+              > */}
+            {/* White text logo */}
+            {/* <img
+                  src="/logo-white.png"
+                  alt="Cosmo School"
+                  className={`
+                  absolute inset-0 h-full w-auto object-contain
+                  transition-all duration-500
+                  ${showDarkNavbar ? "scale-95 opacity-0" : "scale-100 opacity-100"}
+                `}
+                /> */}
+
+            {/* Black text logo */}
+            {/* <img
+                  src="/logo.png"
+                  alt=""
+                  aria-hidden="true"
+                  className={`
+                  absolute inset-0 h-full w-auto object-contain
+                  transition-all duration-500
+                  ${showDarkNavbar ? "scale-100 opacity-100" : "scale-95 opacity-0"}
+                `}
+              /> */}
+            {/* </div> */}
           </Link>
 
           {/* Desktop navigation */}
@@ -537,7 +563,7 @@ const Navbar = () => {
   ${
     isScrolled
       ? "border-primary/15 bg-primary/10 text-primary hover:bg-primary hover:text-white"
-      : "border-white/30 bg-white/10 text-black backdrop-blur-md hover:bg-white hover:text-primary"
+      : "border-green-400 border bg-white/10 text-green-600 backdrop-blur-md hover:bg-white shadow-2xl shadow-gray-400 hover:text-primary"
   }
 `}
           >
@@ -551,7 +577,7 @@ const Navbar = () => {
                 }
               `}
             >
-              <Menu className="size-7" />
+              <Menu className="size-7 " />
             </span>
 
             <span
@@ -564,7 +590,7 @@ const Navbar = () => {
                 }
               `}
             >
-              <X className="size-6" />
+              <X className="size-7 " />
             </span>
           </button>
         </nav>
