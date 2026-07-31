@@ -1,5 +1,6 @@
 import ScrollReveal from "../../components/common/ScrollReveal";
 import Container from "../../components/layout/Container";
+import { useForm } from "react-hook-form";
 import {
   FiUser,
   FiMail,
@@ -9,8 +10,14 @@ import {
   FiAward,
   FiArrowRight,
 } from "react-icons/fi";
+import FormField from "../../components/ui/FormField";
 
 const AdmissionOffer = () => {
+  const { handleSubmit } = useForm();
+
+  const handleAdmissionInquiry = (data) => {
+    console.log(data);
+  };
   const benefits = [
     {
       title: "Quality Education",
@@ -27,6 +34,21 @@ const AdmissionOffer = () => {
       description: "Focus on moral, academic & extracurricular growth",
       icon: FiAward,
     },
+  ];
+
+  const classOptions = [
+    "Play Group",
+    "Nursery",
+    "KG",
+    "Class One",
+    "Class Two",
+    "Class Three",
+    "Class Four",
+    "Class Five",
+    "Class Six",
+    "Class Seven",
+    "Class Eight",
+    "Class Nine",
   ];
 
   return (
@@ -106,6 +128,7 @@ const AdmissionOffer = () => {
             </div>
           </div>
 
+          {/* Form card */}
           <div
             className="rounded-[28px] border border-white/30
             bg-white p-6
@@ -119,6 +142,30 @@ const AdmissionOffer = () => {
               <p className="mt-2 text-base text-neutral/70">
                 Fill in your details to get discount information
               </p>
+
+              <form
+                onSubmit={handleSubmit(handleAdmissionInquiry)}
+                className="mt-8 space-y-5"
+                noValidate={true}
+              >
+                <fieldset className="fieldset">
+                  <label className="label">Email</label>
+                  <input
+                    type="email"
+                    className="input validator"
+                    placeholder="Email"
+                    required
+                  />
+                  <p className="validator-hint hidden">Required</p>
+                </fieldset>
+
+                {/* Guardian name */}
+                <FormField label="Guardian's Name"></FormField>
+
+                <button className="btn btn-neutral mt-4" type="submit">
+                  Login
+                </button>
+              </form>
             </div>
           </div>
         </Container>

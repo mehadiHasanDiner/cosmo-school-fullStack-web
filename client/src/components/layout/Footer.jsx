@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { MapPin, Mail, Globe2, ExternalLink } from "lucide-react";
 import { FaFacebook, FaLinkedin, FaYoutube } from "react-icons/fa";
-import schoolBuilding from "../assets/school-building.webp";
+import schoolBuilding from "../../assets/school-building.webp";
 
 const Footer = () => {
   const quickLinks = [
