@@ -1,3 +1,4 @@
+import AdmissionOffer from "../AdmissionOffer";
 import Hero from "../Hero";
 import WhyChoose from "../WhyChoose";
 
@@ -6,6 +7,7 @@ const Home = () => {
     <div>
       <Hero />
       <WhyChoose />
+      <AdmissionOffer />
     </div>
   );
 };

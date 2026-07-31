@@ -99,14 +99,14 @@ const Navbar = () => {
     <>
       <header
         className={`
-    sticky top-0 z-50 w-full body-font
-    border-b transition-all duration-500
-    ${
-      showDarkNavbar
-        ? "border-primary/15 bg-white/95 shadow-[0_12px_40px_rgba(24,101,52,0.12)] backdrop-blur-xl"
-        : "border-transparent bg-transparent"
-    }
-  `}
+          sticky top-0 z-50 w-full body-font
+          border-b transition-all duration-500
+          ${
+            showDarkNavbar
+              ? "border-primary/15 bg-white/95 shadow-[0_12px_40px_rgba(24,101,52,0.12)] backdrop-blur-xl"
+              : "border-transparent bg-transparent"
+          }
+        `}
       >
         {/* Colourful top brand line */}
         <div
