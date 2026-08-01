@@ -2,7 +2,6 @@ import ScrollReveal from "../../components/common/ScrollReveal";
 import Container from "../../components/layout/Container";
 import { useForm } from "react-hook-form";
 import {
-  FiUser,
   FiMail,
   FiPhone,
   FiUsers,
@@ -10,10 +9,20 @@ import {
   FiAward,
   FiArrowRight,
 } from "react-icons/fi";
+import { FaRegUser } from "react-icons/fa";
+
 import FormField from "../../components/ui/FormField";
 
 const AdmissionOffer = () => {
-  const { handleSubmit } = useForm();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      guardianName: "",
+    },
+  });
 
   const handleAdmissionInquiry = (data) => {
     console.log(data);
@@ -148,19 +157,52 @@ const AdmissionOffer = () => {
                 className="mt-8 space-y-5"
                 noValidate={true}
               >
-                <fieldset className="fieldset">
-                  <label className="label">Email</label>
-                  <input
-                    type="email"
-                    className="input validator"
-                    placeholder="Email"
-                    required
-                  />
-                  <p className="validator-hint hidden">Required</p>
-                </fieldset>
-
                 {/* Guardian name */}
-                <FormField label="Guardian's Name"></FormField>
+                <FormField
+                  label="Guardian's Name"
+                  // error={errors.guardianName?.message}
+                  className="input"
+                >
+                  {/* <div className="relative">
+                    <FaRegUser className=" absolute left-4 top-0 -translate-y-1/2 text-xl text-neutral/40" />
+
+                    <input
+                      type="text"
+                      placeholder="Enter your name"
+                      className={`
+                    input input-bordered h-14 w-full
+                    rounded-xl bg-white pl-12
+                    text-neutral outline-none
+                    transition-all duration-300
+                    placeholder:text-neutral/40
+                    focus:border-primary
+                    focus:outline-none
+                    focus:ring-4 focus:ring-primary/10
+                    ${
+                      errors.guardianName
+                        ? "border-error focus:border-error focus:ring-error/10"
+                        : "border-base-300"
+                    }
+                  `}
+                      {...register("guardianName", {
+                        required: "Guardian's name is required",
+                        minLength: {
+                          value: 3,
+                          message: "Name must be at least 3 characters",
+                        },
+                      })}
+                    />
+                  </div> */}
+
+                  <label className="input">
+                    <FaRegUser className="h-[1em] opacity-50"></FaRegUser>
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="index.php"
+                    />
+                  </label>
+                </FormField>
 
                 <button className="btn btn-neutral mt-4" type="submit">
                   Login
