@@ -9,17 +9,19 @@ const Button = ({
 }) => {
   const variants = {
     primary:
-      "bg-primary text-white hover:bg-[#08703C] shadow shadow-emerald-700",
+      "bg-primary text-white hover:bg-[#08703C] shadow shadow-emerald-700 transition-all duration-300 hover:-translate-y-1 ",
 
     secondary:
-      "bg-secondary text-gray-900 hover:bg-yellow-500 shadow shadow-yellow-600",
+      "bg-secondary text-gray-900 hover:bg-yellow-500 shadow shadow-yellow-600 transition-all duration-300 hover:-translate-y-1 ",
 
     outline:
-      "border border-green-700 text-green-800 hover:bg-green-700 hover:text-white",
+      "border border-green-700 text-green-800 hover:bg-green-700 hover:text-white transition-all duration-300 hover:-translate-y-1 ",
 
-    danger: "bg-error text-white hover:bg-red-700 shadow shadow-red-900",
+    danger:
+      "bg-error text-white hover:bg-red-700 shadow shadow-red-900 transition-all duration-300 hover:-translate-y-1 ",
 
-    ghost: "bg-transparent hover:bg-base-200 text-neutral",
+    ghost:
+      "bg-transparent hover:bg-base-200 text-neutral transition-all duration-300 hover:-translate-y-1 ",
   };
 
   const sizes = {

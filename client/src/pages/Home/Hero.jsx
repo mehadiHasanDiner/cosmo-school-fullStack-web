@@ -89,7 +89,7 @@ const Hero = () => {
                   "_blank",
                 )
               }
-              className="btn btn-primary mt-8 rounded-full px-8 body-font transition-all duration-300 hover:-translate-y-1 bg-transparent text-white text-sm"
+              className="btn btn-primary mt-8 rounded-full px-8 body-font bg-transparent text-white text-sm"
             >
               Watch Full Video
             </Button>
