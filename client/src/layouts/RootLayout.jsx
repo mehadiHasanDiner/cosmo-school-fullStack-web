@@ -6,7 +6,7 @@ const RootLayout = () => {
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
       <Navbar />
-      <main>
+      <main className="-mt-26">
         <Outlet />
       </main>
       <Footer />

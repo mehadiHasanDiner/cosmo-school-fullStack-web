@@ -33,7 +33,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "font-heading rounded-lg font-semibold transition-all duration-300 active:scale-95",
+        "font-heading rounded-full font-semibold transition-all duration-300 active:scale-95",
         variants[variant],
         sizes[size],
         className,

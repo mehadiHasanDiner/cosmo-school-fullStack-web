@@ -14,7 +14,7 @@ import {
 import FormField from "../../components/ui/FormField";
 import { useState } from "react";
 
-const AdmissionOffer = () => {
+const Admission = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const {
@@ -72,16 +72,16 @@ const AdmissionOffer = () => {
   ];
 
   return (
-    <section className="my-8 bg-linear-to-br from-[#005f50] via-[#00785c] to-[#04926c]">
+    <section className="py-8 bg-linear-to-br from-[#005f50] via-[#00785c] to-[#04926c]">
       <ScrollReveal direction="zoom" delay="0.5" duration="1">
-        <Container className="grid min-h-screen items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:px-8 lg:py-24 body-font">
+        <Container className="grid min-h-screen items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:px-8 lg:py-24 body-font ">
           {/* Left side content */}
           <div className="text-white">
             <h1
               className=" inline-flex items-center rounded-full
               bg-secondary px-5 py-2 
               text-xs font-black uppercase tracking-wide
-              text-neutral shadow-lg "
+              text-neutral shadow-lg mt-10 "
             >
               Limited Time Offer
             </h1>
@@ -433,4 +433,4 @@ const AdmissionOffer = () => {
   );
 };
 
-export default AdmissionOffer;
+export default Admission;
