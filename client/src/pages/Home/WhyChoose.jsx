@@ -3,10 +3,11 @@ import Container from "../../components/layout/Container";
 
 const WhyChoose = () => {
   return (
-    <Container className="mt-20">
-      <ScrollReveal>
+    <Container className="my-8">
+      <ScrollReveal className="space-y-3">
         <h2 className="text-3xl heading-font ">Education for Enlightenment</h2>
-        <p className="border w-1/2 mt-1 mb-5 border-red-500"></p>
+        <p className="border-3 w-1/12 text-red-600"></p>
+
         <div className="grid grid-cols-1 md:grid-cols-2">
           <ol className="body-font list-decimal list-inside space-y-2">
             <li>
