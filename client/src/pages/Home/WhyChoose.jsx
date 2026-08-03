@@ -1,17 +1,37 @@
 import ScrollReveal from "../../components/common/ScrollReveal";
 import Container from "../../components/layout/Container";
 import studentsImg from "../../assets/students.jpg";
+import { motion } from "motion/react";
 
 const WhyChoose = () => {
   return (
-    <section className="torn-both bg-[linear-gradient(110deg,#469bea_0%,#29b7d4_50%,#08cda8_100%)] py-32 my-4 ">
+    <section className="torn-both bg-[linear-gradient(110deg,#469bea_0%,#29b7d4_50%,#08cda8_100%)] py-16 my-4">
       <Container className="">
-        <ScrollReveal className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-3xl heading-font">
-              Education for Enlightenment
-            </h2>
-            <p className="border-3 w-1/12 text-red-600 my-4"></p>
+        <ScrollReveal className=" grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="">
+            <div className="flex mb-5">
+              {" "}
+              <h2 className="text-4xl heading-font font-bold me-2">
+                Education for
+              </h2>
+              <span className="relative inline-block text-primary">
+                <h2 className="text-4xl heading-font font-bold text-green-200 mb-1">
+                  Enlightenment
+                </h2>
+
+                <motion.span
+                  className="absolute -bottom-2 left-0 h-1 w-full rounded-full bg-linear-to-r from-primary via-secondary to-accent"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.75,
+                    delay: 0.25,
+                  }}
+                  style={{ transformOrigin: "left" }}
+                />
+              </span>
+            </div>
             <ol className="body-font list-decimal list-inside space-y-3">
               <li>
                 To provide all required facilities for students (curricular and
@@ -38,17 +58,9 @@ const WhyChoose = () => {
               <li>To help the children grow as enlightened human beings.</li>
             </ol>
           </div>
-          <div
-            className="group relative h-full
-                overflow-hidden rounded-2xl
-                border border-white/15
-                bg-white/10
-                shadow-[0_20px_50px_rgba(0,0,0,0.20)]"
-          >
+          <div className="group relative h-full min-h-112 overflow-hidden rounded-2xl border border-[#009bba] bg-white/10 ">
             <img
-              className="absolute inset-0 h-full w-full object-cover
-                                transition-transform duration-700
-                                group-hover:scale-110"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               src={studentsImg}
               alt=""
             />

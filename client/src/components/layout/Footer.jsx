@@ -38,7 +38,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-[#00594f] text-white body-font">
+    <footer className="torn-top relative overflow-hidden bg-[linear-gradient(120deg,#075f54,#078f68,#2dbb87)] text-white body-font">
       {/* Decorative background */}
       <div className="pointer-events-none absolute -left-20 top-10 size-64 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 right-10 size-80 rounded-full bg-secondary/10 blur-3xl" />

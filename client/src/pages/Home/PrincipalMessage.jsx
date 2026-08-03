@@ -2,6 +2,7 @@ import { useRef } from "react";
 import principalImg from "../../assets/principal.webp";
 import Button from "../../components/common/Button";
 import Container from "../../components/layout/Container";
+import SectionTitle from "../../components/common/SectionTitle";
 const PrincipalMessage = () => {
   const modalRef = useRef(null);
 
@@ -30,13 +31,14 @@ const PrincipalMessage = () => {
         />
       </div>
       <div className="space-y-6 body-font">
-        <h2 className="heading-font text-4xl font-bold mb-2 mt-4">
-          Principal's Message
-        </h2>
-        <p className="border-3 w-1/6 text-red-600"></p>
-        <p className="text-green-700 italic font-semibold">
-          "First in Class, First in Life"
-        </p>
+        <SectionTitle
+          eyebrow="Why Choose Us"
+          title="Principal's"
+          highlightedText="Message"
+          description="First in Class, First in Life"
+        />
+
+        <p className="text-green-700 italic font-semibold"></p>
         <p className="mt-5">
           Welcome to Cosmo School. Since we opened our doors in January 2013,
           our focus has remained clear: helping students excel academically
@@ -52,7 +54,7 @@ const PrincipalMessage = () => {
         <Button
           onClick={openModal}
           variant="primary"
-          className="cursor-pointer mb-6"
+          className="cursor-pointer mb-6 inline-block text-end"
         >
           View Full Message
         </Button>
