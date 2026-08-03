@@ -8,7 +8,7 @@ import Button from "../../components/common/Button";
 const Hero = () => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <section className="relative h-screen w-full overflow-hidden body-font">
+    <section className="relative h-[calc(100vh+10px)] w-full overflow-hidden body-font torn-bottom">
       {/* loading state */}
       {!loaded && (
         <div className="absolute inset-0">
