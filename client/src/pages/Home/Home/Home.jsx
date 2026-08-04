@@ -1,7 +1,9 @@
-import FeatureClass from "../FeatureClass";
+import WhySpecial from "../WhySpecial";
 import Hero from "../Hero";
 import PrincipalMessage from "../PrincipalMessage";
-import WhyChoose from "../WhyChoose";
+import EduEnlightenment from "../EduEnlightenment";
+import AllSections from "../AllSections";
+import AboutUs from "../AboutUs";
 
 const Home = () => {
   return (
@@ -9,9 +11,11 @@ const Home = () => {
       <Hero />
 
       <PrincipalMessage />
-      <WhyChoose />
+      <EduEnlightenment />
       {/* <AdmissionOffer /> */}
-      <FeatureClass />
+      <WhySpecial />
+      <AllSections />
+      <AboutUs />
     </div>
   );
 };

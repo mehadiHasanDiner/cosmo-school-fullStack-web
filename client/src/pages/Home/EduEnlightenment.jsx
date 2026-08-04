@@ -3,11 +3,17 @@ import Container from "../../components/layout/Container";
 import studentsImg from "../../assets/students.jpg";
 import { motion } from "motion/react";
 
-const WhyChoose = () => {
+const EduEnlightenment = () => {
   return (
     <section className="torn-both bg-[linear-gradient(110deg,#469bea_0%,#29b7d4_50%,#08cda8_100%)] py-16 my-4">
       <Container className="">
-        <ScrollReveal className=" grid grid-cols-1 md:grid-cols-2 gap-8">
+        <ScrollReveal
+          direction="zoom"
+          delay={0.2}
+          duration={2}
+          once={false}
+          className=" grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
           <div className="">
             <div className="flex mb-5">
               {" "}
@@ -71,4 +77,4 @@ const WhyChoose = () => {
   );
 };
 
-export default WhyChoose;
+export default EduEnlightenment;

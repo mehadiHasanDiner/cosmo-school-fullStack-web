@@ -3,7 +3,7 @@ import FeatureCard from "../../components/cards/FeatureCard";
 import Container from "../../components/layout/Container";
 import SectionTitle from "../../components/common/SectionTitle";
 
-const FeatureClass = () => {
+const WhySpecial = () => {
   return (
     <Container className="my-12">
       <SectionTitle
@@ -46,4 +46,4 @@ const FeatureClass = () => {
   );
 };
 
-export default FeatureClass;
+export default WhySpecial;
