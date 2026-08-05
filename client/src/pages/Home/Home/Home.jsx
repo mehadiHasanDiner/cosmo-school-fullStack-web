@@ -4,6 +4,7 @@ import PrincipalMessage from "../PrincipalMessage";
 import EduEnlightenment from "../EduEnlightenment";
 import AllSections from "../AllSections";
 import AboutUs from "../AboutUs";
+import SpecialEvents from "../SpecialEvents";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       <WhySpecial />
       <AllSections />
       <AboutUs />
+      <SpecialEvents />
     </div>
   );
 };

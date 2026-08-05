@@ -39,8 +39,8 @@ const AllSections = () => {
     <section className="torn-both bg-[linear-gradient(120deg,#6bad77,#b1ffbc,#ffea95)] py-16 my-4 body-font">
       <SectionTitle
         eyebrow="Our Sections"
-        title="Sections &   "
-        highlightedText="Classes"
+        title="Classes & "
+        highlightedText="Sections"
         description="All sections according to the classes"
         className="mb-6"
       />
