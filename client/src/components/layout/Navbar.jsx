@@ -14,10 +14,6 @@ const navLinks = [
     path: "/",
   },
   {
-    name: "About",
-    path: "/about",
-  },
-  {
     name: "Academics",
     path: "/academics",
     children: [
@@ -32,16 +28,16 @@ const navLinks = [
     ],
   },
   {
-    name: "Notice",
-    path: "/notices",
+    name: "Club",
+    path: "/club",
   },
   {
     name: "Gallery",
     path: "/gallery",
   },
   {
-    name: "Contact",
-    path: "/contact",
+    name: "Career ",
+    path: "/career",
   },
 ];
 

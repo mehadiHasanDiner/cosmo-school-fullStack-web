@@ -1,9 +1,11 @@
-import img1 from "./../../assets/image1.webp";
-import img2 from "./../../assets/image2.webp";
-import img3 from "./../../assets/image3.webp";
-import img4 from "./../../assets/image4.webp";
-
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import img1 from "./../../assets/1military-museum-tour.webp";
+import img2 from "./../../assets/2pitha-utshob.webp";
+import img3 from "./../../assets/3winter-interschool-game.webp";
+import img4 from "./../../assets/4annual-cultural.webp";
+import img5 from "./../../assets/5junior-indoor-sport.webp";
+import img6 from "./../../assets/6lokoshilpo.webp";
+import img7 from "./../../assets/7study-tour.webp";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -24,7 +26,17 @@ import ScrollReveal from "../../components/common/ScrollReveal";
 const specialEvents = [
   {
     id: 1,
-    image: "/events/pitha-utshob.jpg",
+    image: img1,
+    title: "Military Museum (Study Tour)",
+    description:
+      "Students present creative scientific projects, experiments and innovative ideas.",
+    date: "10 December 2026",
+    location: "Main Campus",
+    category: "Study Tour",
+  },
+  {
+    id: 2,
+    image: img2,
     title: "Pitha Utshob 2026",
     description:
       "A delightful celebration of Bangladeshi culture, traditional food and community spirit.",
@@ -33,8 +45,8 @@ const specialEvents = [
     category: "Cultural",
   },
   {
-    id: 2,
-    image: "/events/award-programme.jpg",
+    id: 3,
+    image: img3,
     title: "Student Award Ceremony",
     description:
       "Recognising the academic success, talent and dedication of our students.",
@@ -43,8 +55,9 @@ const specialEvents = [
     category: "Achievement",
   },
   {
-    id: 3,
-    image: "/events/pohela-boishakh.jpg",
+    id: 4,
+    image: img4,
+
     title: "Pohela Boishakh Celebration",
     description:
       "Students welcome the Bengali New Year through dance, music and traditional performances.",
@@ -53,8 +66,8 @@ const specialEvents = [
     category: "Festival",
   },
   {
-    id: 4,
-    image: "/events/sports-day.jpg",
+    id: 5,
+    image: img5,
     title: "Annual Sports Day",
     description:
       "A joyful day of sports, teamwork and healthy competition for our young learners.",
@@ -63,14 +76,24 @@ const specialEvents = [
     category: "Sports",
   },
   {
-    id: 5,
-    image: "/events/science-fair.jpg",
-    title: "Science and Innovation Fair",
+    id: 6,
+    image: img6,
+    title: "Lokoshilpo & Cultural Heritage Program",
     description:
       "Students present creative scientific projects, experiments and innovative ideas.",
     date: "10 December 2026",
     location: "Main Campus",
-    category: "Academic",
+    category: "Cultural",
+  },
+  {
+    id: 7,
+    image: img7,
+    title: "Science and Innovation Tour",
+    description:
+      "Students present creative scientific projects, experiments and innovative ideas.",
+    date: "10 December 2026",
+    location: "Main Campus",
+    category: "Study Tour",
   },
 ];
 
