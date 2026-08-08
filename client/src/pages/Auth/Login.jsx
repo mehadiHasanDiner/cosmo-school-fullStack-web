@@ -1,8 +1,12 @@
 import { Link } from "react-router";
 import Button from "../../components/common/Button";
 import SocialLogin from "./SocialLogin";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { user } = useAuth();
+  console.log(user);
+
   return (
     <div className="flex justify-center items-center min-h-screen flex-col  body-font mt-5">
       <div className="bg-base-200 px-8 py-5 rounded-2xl shadow-2xl">
