@@ -2,8 +2,10 @@ import { Link } from "react-router";
 import Button from "../../components/common/Button";
 import SocialLogin from "./SocialLogin";
 import { useForm, useWatch } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+  const { registerUser } = useAuth();
   const {
     handleSubmit,
     register,
@@ -16,13 +18,19 @@ const Register = () => {
     name: "password",
   });
 
-  const handleFormSubmit = (data) => {
-    console.log(data);
+  const handleSignUp = (data) => {
+    registerUser(data.email, data.password)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
   return (
     <div className="flex justify-center items-center min-h-screen flex-col  body-font mt-20">
       <div className="bg-green-200 px-8 py-5 rounded-2xl shadow-2xl">
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+        <form onSubmit={handleSubmit(handleSignUp)}>
           <fieldset className="fieldset">
             <h2 className="text-4xl font-bold heading-font mb-2 text-center">
               {" "}
@@ -89,7 +97,7 @@ const Register = () => {
             <div className="text-center">
               <a className="link link-hover">Forgot password?</a>
             </div>
-            <Button variant="primary" className=" mt-2">
+            <Button variant="primary" className=" mt-2 cursor-pointer">
               Register
             </Button>
             <p className="my-2 text-center">
