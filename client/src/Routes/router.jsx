@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home/Home";
-import Admission from "../pages/Admission/Admission";
 import ErrorPage from "../pages/ErrorPage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import Admission from "../pages/Admission/Admission";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "admission",
-        Component: Admission,
+        element: (
+          <PrivateRoute>
+            <Admission />
+          </PrivateRoute>
+        ),
       },
     ],
   },

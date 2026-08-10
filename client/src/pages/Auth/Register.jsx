@@ -1,11 +1,16 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Button from "../../components/common/Button";
 import SocialLogin from "./SocialLogin";
 import { useForm, useWatch } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
 
 const Register = () => {
+  const [error, setError] = useState("");
   const { registerUser } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     handleSubmit,
     register,
@@ -19,12 +24,14 @@ const Register = () => {
   });
 
   const handleSignUp = (data) => {
+    setError("");
     registerUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
+        navigate(location.state || "/");
       })
       .catch((error) => {
-        console.log(error.message);
+        setError(error);
       });
   };
   return (
@@ -100,9 +107,12 @@ const Register = () => {
             <Button variant="primary" className=" mt-2 cursor-pointer">
               Register
             </Button>
+            <p className="text-red-600 text-center">{error?.message}</p>
+
             <p className="my-2 text-center">
               Already have an account?{" "}
               <Link
+                state={location?.state}
                 to="/login"
                 className="text-blue-600 cursor-pointer hover:font-bold"
               >
@@ -110,8 +120,8 @@ const Register = () => {
               </Link>
             </p>
           </fieldset>
-          <SocialLogin></SocialLogin>
         </form>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Button from "../../components/common/Button";
 import SocialLogin from "./SocialLogin";
 import useAuth from "../../hooks/useAuth";
@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     handleSubmit,
     register,
@@ -69,6 +70,7 @@ const Login = () => {
             <p className="my-2 text-center">
               Don't have an account?{" "}
               <Link
+                state={location?.state}
                 to="/register"
                 className="text-blue-600 cursor-pointer hover:font-bold"
               >
@@ -76,8 +78,8 @@ const Login = () => {
               </Link>
             </p>
           </fieldset>
-          <SocialLogin></SocialLogin>
         </form>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );
