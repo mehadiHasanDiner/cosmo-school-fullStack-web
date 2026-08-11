@@ -247,11 +247,11 @@ const Navbar = () => {
                         <span
                           aria-hidden="true"
                           className="
-                  absolute inset-0 origin-bottom scale-y-0
-                  bg-linear-to-t from-primary/10 to-transparent
-                  transition-transform duration-300
-                  group-hover:scale-y-100
-                "
+                            absolute inset-0 origin-bottom scale-y-0
+                            bg-linear-to-t from-primary/10 to-transparent
+                            transition-transform duration-300
+                            group-hover:scale-y-100
+                          "
                         />
 
                         <span className="relative z-10">{link.name}</span>
@@ -303,68 +303,68 @@ const Navbar = () => {
                   <NavLink
                     to={link.path}
                     className={`
-            group relative flex min-h-11 items-center
-            gap-1.5 overflow-hidden rounded-xl px-3.5
-            text-sm font-bold tracking-[0.01em]
-            transition-all duration-300
-            xl:px-4
-            ${
-              parentActive
-                ? isScrolled
-                  ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-                  : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
-                : isScrolled
-                  ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
-                  : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
-            }
-          `}
+                    group relative flex min-h-11 items-center
+                    gap-1.5 overflow-hidden rounded-xl px-3.5
+                    text-sm font-bold tracking-[0.01em]
+                    transition-all duration-300
+                    xl:px-4
+                    ${
+                      parentActive
+                        ? isScrolled
+                          ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                          : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+                        : isScrolled
+                          ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                          : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
+                    }
+                  `}
                   >
                     {/* Hover background */}
                     <span
                       aria-hidden="true"
                       className="
-              absolute inset-0 origin-bottom scale-y-0
-              bg-linear-to-t from-primary/10 to-transparent
-              transition-transform duration-300
-              group-hover:scale-y-100
-            "
+                        absolute inset-0 origin-bottom scale-y-0
+                        bg-linear-to-t from-primary/10 to-transparent
+                        transition-transform duration-300
+                        group-hover:scale-y-100
+                      "
                     />
 
                     <span className="relative z-10">{link.name}</span>
 
                     <ChevronDown
                       className="
-              relative z-10 size-4
-              transition-transform duration-300
-              group-hover/dropdown:rotate-180
-            "
+                        relative z-10 size-4
+                        transition-transform duration-300
+                        group-hover/dropdown:rotate-180
+                      "
                     />
 
                     {/* Active underline */}
                     <span
                       aria-hidden="true"
                       className={`
-              absolute inset-x-3 bottom-1 h-0.5
-              origin-left rounded-full
-              bg-linear-to-r
-              from-primary via-secondary to-accent
-              transition-all duration-300
-              ${
-                parentActive
-                  ? "scale-x-100 opacity-100"
-                  : "scale-x-0 opacity-0 group-hover/dropdown:scale-x-100 group-hover/dropdown:opacity-70"
-              }
-            `}
+                        absolute inset-x-3 bottom-1 h-0.5
+                        origin-left rounded-full
+                        bg-linear-to-r
+                        from-primary via-secondary to-accent
+                        transition-all duration-300
+                        ${
+                          parentActive
+                            ? "scale-x-100 opacity-100"
+                            : "scale-x-0 opacity-0 group-hover/dropdown:scale-x-100 group-hover/dropdown:opacity-70"
+                        }
+                      `}
                     />
 
                     {parentActive && (
                       <span
                         aria-hidden="true"
                         className="
-                absolute right-2 top-2
-                size-1.5 rounded-full bg-primary
-                shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
-              "
+                        absolute right-2 top-2
+                        size-1.5 rounded-full bg-primary
+                        shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
+                      "
                       />
                     )}
                   </NavLink>
@@ -375,43 +375,42 @@ const Navbar = () => {
                   {/* Dropdown */}
                   <div
                     className="
-            invisible absolute left-1/2 top-[calc(100%+10px)]
-            z-50 w-64 -translate-x-1/2
-            translate-y-3 scale-95 opacity-0
-            transition-all duration-300
-            group-hover/dropdown:visible
-            group-hover/dropdown:translate-y-0
-            group-hover/dropdown:scale-100
-            group-hover/dropdown:opacity-100
-          "
+                      invisible absolute left-1/2 top-[calc(100%+10px)]
+                      z-50 w-64 -translate-x-1/2
+                      translate-y-3 scale-95 opacity-0
+                      transition-all duration-300
+                      group-hover/dropdown:visible
+                      group-hover/dropdown:translate-y-0
+                      group-hover/dropdown:scale-100
+                      group-hover/dropdown:opacity-100
+                    "
                   >
                     {/* Dropdown arrow */}
                     <span
                       className="
-              absolute -top-2 left-1/2 size-4
-              -translate-x-1/2 rotate-45
-              border-l border-t border-primary/15
-              bg-white
-            "
+                      absolute -top-2 left-1/2 size-4
+                      -translate-x-1/2 rotate-45
+                      border-l border-t border-primary/15
+                      bg-white
+                    "
                     />
 
                     <div
                       className="
-              relative overflow-hidden rounded-2xl
-              border border-primary/15 bg-white/95
-              p-2 shadow-[0_20px_50px_rgba(31,41,35,0.18)]
-              backdrop-blur-xl
-            "
+                      relative overflow-hidden rounded-2xl
+                      border border-primary/15 bg-white/95
+                      p-2 shadow-[0_20px_50px_rgba(31,41,35,0.18)]
+                      backdrop-blur-xl
+                    "
                     >
                       {/* Top gradient */}
                       <div
                         className="
-                absolute inset-x-0 top-0 h-1
-                bg-linear-to-r
-                from-primary via-secondary to-accent
-              "
+                        absolute inset-x-0 top-0 h-1
+                        bg-linear-to-r
+                        from-primary via-secondary to-accent
+                      "
                       />
-
                       <div className="space-y-1 pt-1">
                         {link.children.map((child, childIndex) => (
                           <NavLink
@@ -419,17 +418,17 @@ const Navbar = () => {
                             to={child.path}
                             onClick={closeMobileMenu}
                             className={({ isActive }) => `
-                    group/child relative flex min-h-12
-                    items-center justify-between
-                    overflow-hidden rounded-xl px-4
-                    text-sm font-bold
-                    transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                        : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
-                    }
-                  `}
+                            group/child relative flex min-h-12
+                            items-center justify-between
+                            overflow-hidden rounded-xl px-4
+                            text-sm font-bold
+                            transition-all duration-300
+                            ${
+                              isActive
+                                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                                : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
+                            }
+                          `}
                           >
                             {({ isActive }) => (
                               <>
@@ -474,14 +473,13 @@ const Navbar = () => {
                           </NavLink>
                         ))}
                       </div>
-
                       {/* Decorative background */}
                       <div
                         className="
-                pointer-events-none absolute
-                -bottom-12 -right-12 size-28
-                rounded-full bg-primary/10 blur-2xl
-              "
+                        pointer-events-none absolute
+                        -bottom-12 -right-12 size-28
+                        rounded-full bg-primary/10 blur-2xl
+                      "
                       />
                     </div>
                   </div>
@@ -513,19 +511,19 @@ const Navbar = () => {
                   </button>
                   <ul
                     tabIndex="-1"
-                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                    className="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                   >
                     <li>
-                      <a className="justify-between">
-                        Profile
-                        <span className="badge">New</span>
-                      </a>
+                      <Link to="/dashboard" className="justify-between">
+                        Dashboard
+                        <span className="badge badge-error">New</span>
+                      </Link>
                     </li>
                     <li>
-                      <a>Settings</a>
+                      <Link to="/dashboard/profile">Profile</Link>
                     </li>
                     <li>
-                      <a onClick={handleLogout}>Logout</a>
+                      <button onClick={handleLogout}>Logout</button>
                     </li>
                   </ul>
                 </div>
@@ -623,16 +621,16 @@ const Navbar = () => {
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                 >
                   <li>
-                    <a className="justify-between">
-                      Profile
-                      <span className="badge">New</span>
-                    </a>
+                    <Link to="/dashboard" className="justify-between">
+                      Dashboard
+                      <span className="badge badge-error">New</span>
+                    </Link>
                   </li>
                   <li>
-                    <a>Settings</a>
+                    <Link to="/dashboard/profile">Profile</Link>
                   </li>
                   <li>
-                    <a onClick={handleLogout}>Logout</a>
+                    <button onClick={handleLogout}>Logout</button>
                   </li>
                 </ul>
               </div>
