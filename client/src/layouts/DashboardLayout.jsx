@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import { FaRegCreditCard } from "react-icons/fa";
 import { CiDeliveryTruck } from "react-icons/ci";
 import useAuth from "../hooks/useAuth";
-import logoImg from "./../../public/logo.png";
+import logoImg from "./../assets/logo.png";
 
 const DashboardLayout = () => {
   const { user } = useAuth();

@@ -8,6 +8,8 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
+import logoImg from "./../../assets/logo.png";
+import logoWhiteImg from "./../../assets/logo-white.png";
 
 const navLinks = [
   {
@@ -166,7 +168,7 @@ const Navbar = () => {
                 "
               />
               <img
-                src={showDarkNavbar ? "/logo.png" : "/logo-white.png"}
+                src={showDarkNavbar ? logoImg : logoWhiteImg}
                 alt="Cosmo School"
                 className={`
                 relative z-10 w-auto object-contain
@@ -801,49 +803,49 @@ const Navbar = () => {
                           : "0ms",
                       }}
                       className={`
-          overflow-hidden rounded-xl
-          transition-all duration-300
-          ${
-            isMobileMenuOpen
-              ? "translate-x-0 opacity-100"
-              : "-translate-x-5 opacity-0"
-          }
-        `}
+                      overflow-hidden rounded-xl
+                      transition-all duration-300
+                      ${
+                        isMobileMenuOpen
+                          ? "translate-x-0 opacity-100"
+                          : "-translate-x-5 opacity-0"
+                      }
+                    `}
                     >
                       {/* Parent mobile button */}
                       <div
                         className={`
-            relative flex min-h-13 items-center
-            overflow-hidden rounded-xl
-            transition-all duration-300
-            ${
-              parentActive
-                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                : "text-neutral/75 hover:bg-primary/10 hover:text-primary"
-            }
-          `}
+                        relative flex min-h-13 items-center
+                        overflow-hidden rounded-xl
+                        transition-all duration-300
+                        ${
+                          parentActive
+                            ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                            : "text-neutral/75 hover:bg-primary/10 hover:text-primary"
+                        }
+                      `}
                       >
                         {/* Parent navigation area */}
                         <NavLink
                           to={link.path}
                           onClick={closeMobileMenu}
                           className="
-              relative z-10 flex min-h-13
-              flex-1 items-center gap-3 px-4
-              font-bold
-            "
+                          relative z-10 flex min-h-13
+                          flex-1 items-center gap-3 px-4
+                          font-bold
+                        "
                         >
                           <span
                             className={`
-                grid size-7 place-items-center
-                rounded-lg text-xs font-black
-                transition-colors duration-300
-                ${
-                  parentActive
-                    ? "bg-white/15 text-white"
-                    : "bg-primary/10 text-primary"
-                }
-              `}
+                              grid size-7 place-items-center
+                              rounded-lg text-xs font-black
+                              transition-colors duration-300
+                              ${
+                                parentActive
+                                  ? "bg-white/15 text-white"
+                                  : "bg-primary/10 text-primary"
+                              }
+                            `}
                           >
                             {String(index + 1).padStart(2, "0")}
                           </span>
@@ -862,30 +864,30 @@ const Navbar = () => {
                           aria-label={`${link.name} submenu`}
                           aria-expanded={isSubmenuOpen}
                           className={`
-              relative z-10 mr-2 grid size-10
-              place-items-center rounded-lg
-              transition-all duration-300
-              ${
-                parentActive
-                  ? "bg-white/10 text-secondary hover:bg-white/20"
-                  : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
-              }
-            `}
+                          relative z-10 mr-2 grid size-10
+                          place-items-center rounded-lg
+                          transition-all duration-300
+                          ${
+                            parentActive
+                              ? "bg-white/10 text-secondary hover:bg-white/20"
+                              : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                          }
+                        `}
                         >
                           <ChevronDown
                             className={`
-                size-5 transition-transform duration-300
-                ${isSubmenuOpen ? "rotate-180" : "rotate-0"}
-              `}
+                            size-5 transition-transform duration-300
+                            ${isSubmenuOpen ? "rotate-180" : "rotate-0"}
+                          `}
                           />
                         </button>
 
                         {parentActive && (
                           <span
                             className="
-                absolute bottom-0 left-0 top-0
-                w-1 bg-secondary
-              "
+                              absolute bottom-0 left-0 top-0
+                              w-1 bg-secondary
+                            "
                           />
                         )}
                       </div>
@@ -893,21 +895,21 @@ const Navbar = () => {
                       {/* Mobile submenu */}
                       <div
                         className={`
-            grid transition-all duration-500
-            ${
-              isSubmenuOpen
-                ? "grid-rows-[1fr] opacity-100"
-                : "grid-rows-[0fr] opacity-0"
-            }
-          `}
+                          grid transition-all duration-500
+                          ${
+                            isSubmenuOpen
+                              ? "grid-rows-[1fr] opacity-100"
+                              : "grid-rows-[0fr] opacity-0"
+                          }
+                        `}
                       >
                         <div className="overflow-hidden">
                           <div
                             className="
-                ml-5 mt-2 space-y-1
-                border-l-2 border-primary/15
-                pb-2 pl-3
-              "
+                              ml-5 mt-2 space-y-1
+                              border-l-2 border-primary/15
+                              pb-2 pl-3
+                            "
                           >
                             {link.children.map((child) => (
                               <NavLink
@@ -915,17 +917,17 @@ const Navbar = () => {
                                 to={child.path}
                                 onClick={closeMobileMenu}
                                 className={({ isActive }) => `
-                    group/child relative flex min-h-11
-                    items-center justify-between
-                    overflow-hidden rounded-xl px-3
-                    text-sm font-bold
-                    transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-secondary/25 text-neutral shadow-sm"
-                        : "text-neutral/65 hover:bg-primary/10 hover:pl-4 hover:text-primary"
-                    }
-                  `}
+                                group/child relative flex min-h-11
+                                items-center justify-between
+                                overflow-hidden rounded-xl px-3
+                                text-sm font-bold
+                                transition-all duration-300
+                                ${
+                                  isActive
+                                    ? "bg-secondary/25 text-neutral shadow-sm"
+                                    : "text-neutral/65 hover:bg-primary/10 hover:pl-4 hover:text-primary"
+                                }
+                              `}
                               >
                                 {({ isActive }) => (
                                   <>
@@ -947,11 +949,11 @@ const Navbar = () => {
 
                                     <ArrowUpRight
                                       className={`
-                          size-4 transition-transform duration-300
-                          group-hover/child:translate-x-0.5
-                          group-hover/child:-translate-y-0.5
-                          ${isActive ? "text-accent" : "text-primary/50"}
-                        `}
+                                      size-4 transition-transform duration-300
+                                      group-hover/child:translate-x-0.5
+                                      group-hover/child:-translate-y-0.5
+                                      ${isActive ? "text-accent" : "text-primary/50"}
+                                    `}
                                     />
                                   </>
                                 )}
