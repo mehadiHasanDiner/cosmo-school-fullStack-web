@@ -30,6 +30,28 @@ async function run() {
     const cosmoDB = client.db("cosmoSchoolDB");
     const userCollection = cosmoDB.collection("users");
 
+    app.post("/users", async (req, res) => {
+      try {
+        const user = req.body;
+        const userInfo = {
+          ...user,
+          role: "user",
+          profileCompleted: false,
+          createdAt: new Date(),
+        };
+        const email = userInfo.email;
+        const existingUser = await userCollection.findOne({ email });
+        if (existingUser) {
+          return res.status(400).json({ error: "User already exists" });
+        }
+        const result = await userCollection.insertOne(userInfo);
+        res.send(result);
+      } catch (error) {
+        console.error("Error creating user:", error);
+        res.status(500).json({ error: "Failed to create user" });
+      }
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB! Cosmo School Database is running...!!",
