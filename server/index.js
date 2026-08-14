@@ -52,6 +52,21 @@ async function run() {
       }
     });
 
+    app.get("/users/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+        console.log(email);
+        const user = await userCollection.findOne({ email });
+        if (!user) {
+          return res.status(404).json({ error: "User not found" });
+        }
+        res.send(user);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ error: "Failed to fetch users" });
+      }
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB! Cosmo School Database is running...!!",
