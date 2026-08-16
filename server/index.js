@@ -2,7 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const port = process.env.PORT || 3000;
 
@@ -55,7 +55,6 @@ async function run() {
     app.get("/users/:email", async (req, res) => {
       try {
         const email = req.params.email;
-        console.log(email);
         const user = await userCollection.findOne({ email });
         if (!user) {
           return res.status(404).json({ error: "User not found" });
@@ -64,6 +63,81 @@ async function run() {
       } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ error: "Failed to fetch users" });
+      }
+    });
+
+    app.patch("/users/:id/account-type", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        // MongoDB user ID ভুল হলে এখানেই request বন্ধ।
+        if (!ObjectId.isValid(id)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user ID",
+          });
+        }
+
+        const query = { _id: new ObjectId(id) };
+        const { accountType } = req.body;
+
+        const allowedAccountTypes = ["guardian", "teacher", "guardian_teacher"];
+
+        // Guardian/Teacher/Both ছাড়া অন্য কিছু এলে request বন্ধ।
+        if (!allowedAccountTypes.includes(accountType)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid account type",
+          });
+        }
+
+        let roles = [];
+        let onboardingStep = ""; // onboarding মানে নতুন user-কে ধাপে ধাপে account setup complete করানো। এখন তার পরবর্তী কাজ কী ?
+
+        if (accountType === "guardian") {
+          roles = ["guardian"];
+          onboardingStep = "guardian-profile";
+        }
+        if (accountType === "teacher") {
+          roles = ["teacher"];
+          onboardingStep = "teacher-profile";
+        }
+        if (accountType === "guardian_teacher") {
+          roles = ["guardian", "teacher"];
+          onboardingStep = "guardian-profile";
+        }
+
+        const updateDoc = {
+          $set: {
+            accountType,
+            roles,
+            onboardingStep,
+            profileCompleted: false,
+            updatedAt: new Date(),
+          },
+        };
+
+        const result = await userCollection.updateOne(query, updateDoc);
+
+        if (result.modifiedCount === 0) {
+          return res.status(404).send({
+            success: false,
+            message: "User not found or account type not updated",
+          });
+        }
+
+        const updatedUser = await userCollection.findOne(query);
+        res.send({
+          success: true,
+          message: "Account type updated successfully",
+          user: updatedUser,
+        });
+      } catch (error) {
+        console.error("Error updating account type:", error);
+        res.status(500).send({
+          success: false,
+          message: "Internal server error while updating account type",
+        });
       }
     });
 

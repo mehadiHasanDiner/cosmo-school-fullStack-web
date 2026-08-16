@@ -4,7 +4,7 @@ import { MdFamilyRestroom } from "react-icons/md";
 import { FiArrowRight } from "react-icons/fi";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import useAxios from "../../hooks/useAxios";
 
 const accountTypes = [
   {
@@ -30,6 +30,7 @@ const accountTypes = [
 ];
 
 const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
+  const axiosInstance = useAxios();
   const [selectedType, setSelectedType] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -46,8 +47,8 @@ const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
       setIsSubmitting(true);
       setError("");
 
-      const response = await axios.patch(
-        `http://localhost:5000/users/${dbUser._id}/account-type`,
+      const response = await axiosInstance.patch(
+        `/users/${dbUser._id}/account-type`,
         {
           accountType: selectedType,
         },
