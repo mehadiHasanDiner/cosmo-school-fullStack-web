@@ -28,7 +28,10 @@ async function run() {
 
     // all api routes goes from here
     const cosmoDB = client.db("cosmoSchoolDB");
-    const userCollection = cosmoDB.collection("users");
+    const usersCollection = cosmoDB.collection("users");
+    const guardiansCollection = cosmoDB.collection("guardians");
+    const studentsCollection = cosmoDB.collection("students");
+    const guardianStudentsCollection = cosmoDB.collection("guardianStudents");
 
     app.post("/users", async (req, res) => {
       try {
@@ -40,11 +43,11 @@ async function run() {
           createdAt: new Date(),
         };
         const email = userInfo.email;
-        const existingUser = await userCollection.findOne({ email });
+        const existingUser = await usersCollection.findOne({ email });
         if (existingUser) {
           return res.status(400).json({ error: "User already exists" });
         }
-        const result = await userCollection.insertOne(userInfo);
+        const result = await usersCollection.insertOne(userInfo);
         res.send(result);
       } catch (error) {
         console.error("Error creating user:", error);
@@ -55,7 +58,7 @@ async function run() {
     app.get("/users/:email", async (req, res) => {
       try {
         const email = req.params.email;
-        const user = await userCollection.findOne({ email });
+        const user = await usersCollection.findOne({ email });
         if (!user) {
           return res.status(404).json({ error: "User not found" });
         }
@@ -117,7 +120,7 @@ async function run() {
           },
         };
 
-        const result = await userCollection.updateOne(query, updateDoc);
+        const result = await usersCollection.updateOne(query, updateDoc);
 
         if (result.modifiedCount === 0) {
           return res.status(404).send({
@@ -126,7 +129,7 @@ async function run() {
           });
         }
 
-        const updatedUser = await userCollection.findOne(query);
+        const updatedUser = await usersCollection.findOne(query);
         res.send({
           success: true,
           message: "Account type updated successfully",

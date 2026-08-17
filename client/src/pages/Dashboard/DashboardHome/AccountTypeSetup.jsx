@@ -4,7 +4,7 @@ import { MdFamilyRestroom } from "react-icons/md";
 import { FiArrowRight } from "react-icons/fi";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../../hooks/useAxios";
 
 const accountTypes = [
   {

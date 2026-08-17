@@ -9,6 +9,7 @@ import Admission from "../pages/Admission/Admission";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
+import GuardianProfileSetup from "../pages/Dashboard/DashboardHome/GuardianProfileSetup";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: DashboardHome,
+      },
+      {
+        path: "complete-guardian-profile",
+        Component: GuardianProfileSetup,
       },
     ],
   },
