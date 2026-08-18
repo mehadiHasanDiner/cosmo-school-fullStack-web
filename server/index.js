@@ -1,3 +1,6 @@
+const dns = require("node:dns/promises");
+dns.setServers(["1.1.1.1", "8.8.8.8"]); // এই লাইনটি সবার উপরে বসাবেন
+
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
