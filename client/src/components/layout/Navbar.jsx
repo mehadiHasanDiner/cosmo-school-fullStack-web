@@ -7,6 +7,9 @@ import {
   GraduationCap,
   ArrowUpRight,
 } from "lucide-react";
+import useAuth from "../../hooks/useAuth";
+import logoImg from "./../../assets/logo.png";
+import logoWhiteImg from "./../../assets/logo-white.png";
 
 const navLinks = [
   {
@@ -42,16 +45,26 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
   const showDarkNavbar = isScrolled || isMobileMenuOpen;
+
+  const [imgError, setImgError] = useState(false);
+  const emailSlice = user?.email?.slice(0, 2).toUpperCase() || "";
 
   const location = useLocation();
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setOpenMobileSubmenu(null);
+  };
+
+  const handleLogout = () => {
+    logOut()
+      .then()
+      .catch((err) => console.log(err.message));
   };
 
   // Navbar shrink on scroll
@@ -155,7 +168,7 @@ const Navbar = () => {
                 "
               />
               <img
-                src={showDarkNavbar ? "/logo.png" : "/logo-white.png"}
+                src={showDarkNavbar ? logoImg : logoWhiteImg}
                 alt="Cosmo School"
                 className={`
                 relative z-10 w-auto object-contain
@@ -213,22 +226,22 @@ const Navbar = () => {
                     end={link.path === "/"}
                     onClick={closeMobileMenu}
                     className={({ isActive }) => `
-  group relative flex min-h-11 items-center
-  overflow-hidden rounded-xl px-3.5
-  text-sm font-bold tracking-[0.01em]
-  transition-all duration-300
-  xl:px-4
+                      group relative flex min-h-11 items-center
+                      overflow-hidden rounded-xl px-3.5
+                      text-sm font-bold tracking-[0.01em]
+                      transition-all duration-300
+                      xl:px-4
 
-  ${
-    isActive
-      ? isScrolled
-        ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-        : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
-      : isScrolled
-        ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
-        : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
-  }
-`}
+                      ${
+                        isActive
+                          ? isScrolled
+                            ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                            : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+                          : isScrolled
+                            ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                            : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
+                      }
+                    `}
                   >
                     {({ isActive }) => (
                       <>
@@ -236,11 +249,11 @@ const Navbar = () => {
                         <span
                           aria-hidden="true"
                           className="
-                  absolute inset-0 origin-bottom scale-y-0
-                  bg-linear-to-t from-primary/10 to-transparent
-                  transition-transform duration-300
-                  group-hover:scale-y-100
-                "
+                            absolute inset-0 origin-bottom scale-y-0
+                            bg-linear-to-t from-primary/10 to-transparent
+                            transition-transform duration-300
+                            group-hover:scale-y-100
+                          "
                         />
 
                         <span className="relative z-10">{link.name}</span>
@@ -249,34 +262,34 @@ const Navbar = () => {
                         <span
                           aria-hidden="true"
                           className={`
-    absolute inset-x-3 bottom-1 h-0.5
-    origin-left rounded-full
-    transition-all duration-300
-    ${
-      isScrolled
-        ? "bg-linear-to-r from-primary via-secondary to-accent"
-        : "bg-white"
-    }
-    ${
-      isActive
-        ? "scale-x-100 opacity-100"
-        : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
-    }
-  `}
+                            absolute inset-x-3 bottom-1 h-0.5
+                            origin-left rounded-full
+                            transition-all duration-300
+                            ${
+                              isScrolled
+                                ? "bg-linear-to-r from-primary via-secondary to-accent"
+                                : "bg-white"
+                            }
+                            ${
+                              isActive
+                                ? "scale-x-100 opacity-100"
+                                : "scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-70"
+                            }
+                          `}
                         />
 
                         {isActive && (
                           <span
                             aria-hidden="true"
                             className={`
-  absolute right-2 top-2
-  size-1.5 rounded-full
-  ${
-    isScrolled
-      ? "bg-primary shadow-[0_0_0_4px_rgba(39,140,69,0.12)]"
-      : "bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.18)]"
-  }
-`}
+                            absolute right-2 top-2
+                            size-1.5 rounded-full
+                            ${
+                              isScrolled
+                                ? "bg-primary shadow-[0_0_0_4px_rgba(39,140,69,0.12)]"
+                                : "bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.18)]"
+                            }
+                          `}
                           />
                         )}
                       </>
@@ -292,68 +305,68 @@ const Navbar = () => {
                   <NavLink
                     to={link.path}
                     className={`
-            group relative flex min-h-11 items-center
-            gap-1.5 overflow-hidden rounded-xl px-3.5
-            text-sm font-bold tracking-[0.01em]
-            transition-all duration-300
-            xl:px-4
-            ${
-              parentActive
-                ? isScrolled
-                  ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
-                  : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
-                : isScrolled
-                  ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
-                  : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
-            }
-          `}
+                    group relative flex min-h-11 items-center
+                    gap-1.5 overflow-hidden rounded-xl px-3.5
+                    text-sm font-bold tracking-[0.01em]
+                    transition-all duration-300
+                    xl:px-4
+                    ${
+                      parentActive
+                        ? isScrolled
+                          ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(39,140,69,0.15)]"
+                          : "bg-white/15 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.25)]"
+                        : isScrolled
+                          ? "text-neutral/80 hover:-translate-y-0.5 hover:bg-base-200 hover:text-primary"
+                          : "text-white/90 hover:-translate-y-0.5 hover:bg-white/15 hover:text-white"
+                    }
+                  `}
                   >
                     {/* Hover background */}
                     <span
                       aria-hidden="true"
                       className="
-              absolute inset-0 origin-bottom scale-y-0
-              bg-linear-to-t from-primary/10 to-transparent
-              transition-transform duration-300
-              group-hover:scale-y-100
-            "
+                        absolute inset-0 origin-bottom scale-y-0
+                        bg-linear-to-t from-primary/10 to-transparent
+                        transition-transform duration-300
+                        group-hover:scale-y-100
+                      "
                     />
 
                     <span className="relative z-10">{link.name}</span>
 
                     <ChevronDown
                       className="
-              relative z-10 size-4
-              transition-transform duration-300
-              group-hover/dropdown:rotate-180
-            "
+                        relative z-10 size-4
+                        transition-transform duration-300
+                        group-hover/dropdown:rotate-180
+                      "
                     />
 
                     {/* Active underline */}
                     <span
                       aria-hidden="true"
                       className={`
-              absolute inset-x-3 bottom-1 h-0.5
-              origin-left rounded-full
-              bg-linear-to-r
-              from-primary via-secondary to-accent
-              transition-all duration-300
-              ${
-                parentActive
-                  ? "scale-x-100 opacity-100"
-                  : "scale-x-0 opacity-0 group-hover/dropdown:scale-x-100 group-hover/dropdown:opacity-70"
-              }
-            `}
+                        absolute inset-x-3 bottom-1 h-0.5
+                        origin-left rounded-full
+                        bg-linear-to-r
+                        from-primary via-secondary to-accent
+                        transition-all duration-300
+                        ${
+                          parentActive
+                            ? "scale-x-100 opacity-100"
+                            : "scale-x-0 opacity-0 group-hover/dropdown:scale-x-100 group-hover/dropdown:opacity-70"
+                        }
+                      `}
                     />
 
                     {parentActive && (
                       <span
                         aria-hidden="true"
                         className="
-                absolute right-2 top-2
-                size-1.5 rounded-full bg-primary
-                shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
-              "
+                        absolute right-2 top-2
+                        size-1.5 rounded-full bg-primary
+                        shadow-[0_0_0_4px_rgba(39,140,69,0.12)]
+                      "
                       />
                     )}
                   </NavLink>
@@ -364,43 +377,42 @@ const Navbar = () => {
                   {/* Dropdown */}
                   <div
                     className="
-            invisible absolute left-1/2 top-[calc(100%+10px)]
-            z-50 w-64 -translate-x-1/2
-            translate-y-3 scale-95 opacity-0
-            transition-all duration-300
-            group-hover/dropdown:visible
-            group-hover/dropdown:translate-y-0
-            group-hover/dropdown:scale-100
-            group-hover/dropdown:opacity-100
-          "
+                      invisible absolute left-1/2 top-[calc(100%+10px)]
+                      z-50 w-64 -translate-x-1/2
+                      translate-y-3 scale-95 opacity-0
+                      transition-all duration-300
+                      group-hover/dropdown:visible
+                      group-hover/dropdown:translate-y-0
+                      group-hover/dropdown:scale-100
+                      group-hover/dropdown:opacity-100
+                    "
                   >
                     {/* Dropdown arrow */}
                     <span
                       className="
-              absolute -top-2 left-1/2 size-4
-              -translate-x-1/2 rotate-45
-              border-l border-t border-primary/15
-              bg-white
-            "
+                      absolute -top-2 left-1/2 size-4
+                      -translate-x-1/2 rotate-45
+                      border-l border-t border-primary/15
+                      bg-white
+                    "
                     />
 
                     <div
                       className="
-              relative overflow-hidden rounded-2xl
-              border border-primary/15 bg-white/95
-              p-2 shadow-[0_20px_50px_rgba(31,41,35,0.18)]
-              backdrop-blur-xl
-            "
+                      relative overflow-hidden rounded-2xl
+                      border border-primary/15 bg-white/95
+                      p-2 shadow-[0_20px_50px_rgba(31,41,35,0.18)]
+                      backdrop-blur-xl
+                    "
                     >
                       {/* Top gradient */}
                       <div
                         className="
-                absolute inset-x-0 top-0 h-1
-                bg-linear-to-r
-                from-primary via-secondary to-accent
-              "
+                        absolute inset-x-0 top-0 h-1
+                        bg-linear-to-r
+                        from-primary via-secondary to-accent
+                      "
                       />
-
                       <div className="space-y-1 pt-1">
                         {link.children.map((child, childIndex) => (
                           <NavLink
@@ -408,17 +420,17 @@ const Navbar = () => {
                             to={child.path}
                             onClick={closeMobileMenu}
                             className={({ isActive }) => `
-                    group/child relative flex min-h-12
-                    items-center justify-between
-                    overflow-hidden rounded-xl px-4
-                    text-sm font-bold
-                    transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                        : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
-                    }
-                  `}
+                            group/child relative flex min-h-12
+                            items-center justify-between
+                            overflow-hidden rounded-xl px-4
+                            text-sm font-bold
+                            transition-all duration-300
+                            ${
+                              isActive
+                                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                                : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
+                            }
+                          `}
                           >
                             {({ isActive }) => (
                               <>
@@ -463,14 +475,13 @@ const Navbar = () => {
                           </NavLink>
                         ))}
                       </div>
-
                       {/* Decorative background */}
                       <div
                         className="
-                pointer-events-none absolute
-                -bottom-12 -right-12 size-28
-                rounded-full bg-primary/10 blur-2xl
-              "
+                        pointer-events-none absolute
+                        -bottom-12 -right-12 size-28
+                        rounded-full bg-primary/10 blur-2xl
+                      "
                       />
                     </div>
                   </div>
@@ -481,30 +492,70 @@ const Navbar = () => {
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 lg:flex">
-            <Link
-              to="/login"
-              className={`
-  group relative flex min-h-11 items-center
-  gap-2 rounded-xl border px-4
-  text-sm font-bold shadow-sm
-  transition-all duration-300
-  hover:-translate-y-0.5
-  active:translate-y-0 active:scale-[0.98]
-  ${
-    isScrolled
-      ? "border-primary/20 bg-white text-primary hover:bg-primary/5"
-      : "border-white/35 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-primary"
-  }
-`}
-            >
-              <GraduationCap
-                className="
+            {user ? (
+              <div className="flex gap-2">
+                <div className="dropdown dropdown-end">
+                  <button
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-circle text-lg bg-linear-to-r from-purple-600 to-pink-500 border border-black text-white w-11 h-11 p-0 overflow-hidden"
+                  >
+                    {user?.photoURL && !imgError ? (
+                      <img
+                        src={user?.photoURL}
+                        alt="User Profile"
+                        className="w-full h-full object-cover rounded-full"
+                        onError={() => setImgError(true)}
+                      />
+                    ) : (
+                      emailSlice
+                    )}
+                  </button>
+                  <ul
+                    tabIndex="-1"
+                    className="menu dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                  >
+                    <li>
+                      <Link to="/dashboard" className="justify-between">
+                        Dashboard
+                        <span className="badge badge-error">New</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/dashboard/profile">Profile</Link>
+                    </li>
+                    <li>
+                      <button onClick={handleLogout}>Logout</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className={`
+                  group relative flex min-h-11 items-center
+                  gap-2 rounded-xl border px-4
+                  text-sm font-bold shadow-sm
+                  transition-all duration-300
+                  hover:-translate-y-0.5
+                  active:translate-y-0 active:scale-[0.98]
+                  ${
+                    isScrolled
+                      ? "border-primary/20 bg-white text-primary hover:bg-primary/5"
+                      : "border-white/35 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-primary"
+                  }
+                `}
+              >
+                <GraduationCap
+                  className="
                   size-5 transition-transform duration-300
                   group-hover:-rotate-6 group-hover:scale-110
                 "
-              />
-              Login
-            </Link>
+                />
+                Login
+              </Link>
+            )}
 
             <Link
               to="/admission"
@@ -541,30 +592,76 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <button
-            type="button"
-            onClick={() => setIsMobileMenuOpen((previous) => !previous)}
-            aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-navigation"
-            aria-label={
-              isMobileMenuOpen
-                ? "Close navigation menu"
-                : "Open navigation menu"
-            }
-            className={`
-  group relative grid size-11 place-items-center
-  overflow-hidden rounded-xl border
-  shadow-sm transition-all duration-300
-  active:scale-95 lg:hidden
-  ${
-    isScrolled
-      ? "border-primary/15 bg-primary/10 text-primary hover:bg-primary hover:text-white"
-      : "border-green-400 border bg-white/10 text-green-600 backdrop-blur-md hover:bg-white shadow-2xl shadow-gray-400 hover:text-primary"
-  }
-`}
-          >
-            <span
+
+          <div className="flex gap-3 items-center lg:hidden">
+            {user && (
+              <div className="dropdown dropdown-end lg:hidden">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar"
+                >
+                  <button
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-circle text-lg bg-linear-to-r from-purple-600 to-pink-500 border border-black text-white w-11 h-11 p-0 overflow-hidden"
+                  >
+                    {user?.photoURL && !imgError ? (
+                      <img
+                        src={user?.photoURL}
+                        alt="User Profile"
+                        className="w-full h-full object-cover rounded-full"
+                        onError={() => setImgError(true)}
+                      />
+                    ) : (
+                      emailSlice
+                    )}
+                  </button>
+                </div>
+                <ul
+                  tabIndex="-1"
+                  className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                >
+                  <li>
+                    <Link to="/dashboard" className="justify-between">
+                      Dashboard
+                      <span className="badge badge-error">New</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout}>Logout</button>
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((previous) => !previous)}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
+              aria-label={
+                isMobileMenuOpen
+                  ? "Close navigation menu"
+                  : "Open navigation menu"
+              }
               className={`
+            group relative grid size-11 place-items-center
+            overflow-hidden rounded-xl border
+            shadow-sm transition-all duration-300
+            active:scale-95 lg:hidden
+            ${
+              isScrolled
+                ? "border-primary/15 bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                : "border-green-400 border bg-white/10 text-green-600 backdrop-blur-md hover:bg-white shadow-2xl shadow-gray-400 hover:text-primary"
+            }
+          `}
+            >
+              <span
+                className={`
                 absolute transition-all duration-300
                 ${
                   isMobileMenuOpen
@@ -572,12 +669,12 @@ const Navbar = () => {
                     : "rotate-0 scale-100 opacity-100"
                 }
               `}
-            >
-              <Menu className="size-7 " />
-            </span>
+              >
+                <Menu className="size-7 " />
+              </span>
 
-            <span
-              className={`
+              <span
+                className={`
                 absolute transition-all duration-300
                 ${
                   isMobileMenuOpen
@@ -585,10 +682,11 @@ const Navbar = () => {
                     : "-rotate-90 scale-0 opacity-0"
                 }
               `}
-            >
-              <X className="size-7 " />
-            </span>
-          </button>
+              >
+                <X className="size-7 " />
+              </span>
+            </button>
+          </div>
         </nav>
 
         {/* Mobile navigation */}
@@ -635,21 +733,21 @@ const Navbar = () => {
                             : "0ms",
                         }}
                         className={({ isActive }) => `
-            group relative flex min-h-13
-            items-center justify-between
-            overflow-hidden rounded-xl px-4
-            font-bold transition-all duration-300
-            ${
-              isMobileMenuOpen
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-5 opacity-0"
-            }
-            ${
-              isActive
-                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
-            }
-          `}
+                        group relative flex min-h-13
+                        items-center justify-between
+                        overflow-hidden rounded-xl px-4
+                        font-bold transition-all duration-300
+                        ${
+                          isMobileMenuOpen
+                            ? "translate-x-0 opacity-100"
+                            : "-translate-x-5 opacity-0"
+                        }
+                        ${
+                          isActive
+                            ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                            : "text-neutral/75 hover:bg-primary/10 hover:pl-5 hover:text-primary"
+                        }
+                      `}
                       >
                         {({ isActive }) => (
                           <>
@@ -674,11 +772,11 @@ const Navbar = () => {
 
                             <ChevronDown
                               className={`
-                  size-4 -rotate-90
-                  transition-transform duration-300
-                  group-hover:translate-x-1
-                  ${isActive ? "text-secondary" : "text-primary/60"}
-                `}
+                              size-4 -rotate-90
+                              transition-transform duration-300
+                              group-hover:translate-x-1
+                              ${isActive ? "text-secondary" : "text-primary/60"}
+                            `}
                             />
 
                             {isActive && (
@@ -705,49 +803,49 @@ const Navbar = () => {
                           : "0ms",
                       }}
                       className={`
-          overflow-hidden rounded-xl
-          transition-all duration-300
-          ${
-            isMobileMenuOpen
-              ? "translate-x-0 opacity-100"
-              : "-translate-x-5 opacity-0"
-          }
-        `}
+                      overflow-hidden rounded-xl
+                      transition-all duration-300
+                      ${
+                        isMobileMenuOpen
+                          ? "translate-x-0 opacity-100"
+                          : "-translate-x-5 opacity-0"
+                      }
+                    `}
                     >
                       {/* Parent mobile button */}
                       <div
                         className={`
-            relative flex min-h-13 items-center
-            overflow-hidden rounded-xl
-            transition-all duration-300
-            ${
-              parentActive
-                ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
-                : "text-neutral/75 hover:bg-primary/10 hover:text-primary"
-            }
-          `}
+                        relative flex min-h-13 items-center
+                        overflow-hidden rounded-xl
+                        transition-all duration-300
+                        ${
+                          parentActive
+                            ? "bg-primary text-white shadow-[0_8px_20px_rgba(39,140,69,0.22)]"
+                            : "text-neutral/75 hover:bg-primary/10 hover:text-primary"
+                        }
+                      `}
                       >
                         {/* Parent navigation area */}
                         <NavLink
                           to={link.path}
                           onClick={closeMobileMenu}
                           className="
-              relative z-10 flex min-h-13
-              flex-1 items-center gap-3 px-4
-              font-bold
-            "
+                          relative z-10 flex min-h-13
+                          flex-1 items-center gap-3 px-4
+                          font-bold
+                        "
                         >
                           <span
                             className={`
-                grid size-7 place-items-center
-                rounded-lg text-xs font-black
-                transition-colors duration-300
-                ${
-                  parentActive
-                    ? "bg-white/15 text-white"
-                    : "bg-primary/10 text-primary"
-                }
-              `}
+                              grid size-7 place-items-center
+                              rounded-lg text-xs font-black
+                              transition-colors duration-300
+                              ${
+                                parentActive
+                                  ? "bg-white/15 text-white"
+                                  : "bg-primary/10 text-primary"
+                              }
+                            `}
                           >
                             {String(index + 1).padStart(2, "0")}
                           </span>
@@ -766,30 +864,30 @@ const Navbar = () => {
                           aria-label={`${link.name} submenu`}
                           aria-expanded={isSubmenuOpen}
                           className={`
-              relative z-10 mr-2 grid size-10
-              place-items-center rounded-lg
-              transition-all duration-300
-              ${
-                parentActive
-                  ? "bg-white/10 text-secondary hover:bg-white/20"
-                  : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
-              }
-            `}
+                          relative z-10 mr-2 grid size-10
+                          place-items-center rounded-lg
+                          transition-all duration-300
+                          ${
+                            parentActive
+                              ? "bg-white/10 text-secondary hover:bg-white/20"
+                              : "bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                          }
+                        `}
                         >
                           <ChevronDown
                             className={`
-                size-5 transition-transform duration-300
-                ${isSubmenuOpen ? "rotate-180" : "rotate-0"}
-              `}
+                            size-5 transition-transform duration-300
+                            ${isSubmenuOpen ? "rotate-180" : "rotate-0"}
+                          `}
                           />
                         </button>
 
                         {parentActive && (
                           <span
                             className="
-                absolute bottom-0 left-0 top-0
-                w-1 bg-secondary
-              "
+                              absolute bottom-0 left-0 top-0
+                              w-1 bg-secondary
+                            "
                           />
                         )}
                       </div>
@@ -797,21 +895,21 @@ const Navbar = () => {
                       {/* Mobile submenu */}
                       <div
                         className={`
-            grid transition-all duration-500
-            ${
-              isSubmenuOpen
-                ? "grid-rows-[1fr] opacity-100"
-                : "grid-rows-[0fr] opacity-0"
-            }
-          `}
+                          grid transition-all duration-500
+                          ${
+                            isSubmenuOpen
+                              ? "grid-rows-[1fr] opacity-100"
+                              : "grid-rows-[0fr] opacity-0"
+                          }
+                        `}
                       >
                         <div className="overflow-hidden">
                           <div
                             className="
-                ml-5 mt-2 space-y-1
-                border-l-2 border-primary/15
-                pb-2 pl-3
-              "
+                              ml-5 mt-2 space-y-1
+                              border-l-2 border-primary/15
+                              pb-2 pl-3
+                            "
                           >
                             {link.children.map((child) => (
                               <NavLink
@@ -819,17 +917,17 @@ const Navbar = () => {
                                 to={child.path}
                                 onClick={closeMobileMenu}
                                 className={({ isActive }) => `
-                    group/child relative flex min-h-11
-                    items-center justify-between
-                    overflow-hidden rounded-xl px-3
-                    text-sm font-bold
-                    transition-all duration-300
-                    ${
-                      isActive
-                        ? "bg-secondary/25 text-neutral shadow-sm"
-                        : "text-neutral/65 hover:bg-primary/10 hover:pl-4 hover:text-primary"
-                    }
-                  `}
+                                group/child relative flex min-h-11
+                                items-center justify-between
+                                overflow-hidden rounded-xl px-3
+                                text-sm font-bold
+                                transition-all duration-300
+                                ${
+                                  isActive
+                                    ? "bg-secondary/25 text-neutral shadow-sm"
+                                    : "text-neutral/65 hover:bg-primary/10 hover:pl-4 hover:text-primary"
+                                }
+                              `}
                               >
                                 {({ isActive }) => (
                                   <>
@@ -851,11 +949,11 @@ const Navbar = () => {
 
                                     <ArrowUpRight
                                       className={`
-                          size-4 transition-transform duration-300
-                          group-hover/child:translate-x-0.5
-                          group-hover/child:-translate-y-0.5
-                          ${isActive ? "text-accent" : "text-primary/50"}
-                        `}
+                                      size-4 transition-transform duration-300
+                                      group-hover/child:translate-x-0.5
+                                      group-hover/child:-translate-y-0.5
+                                      ${isActive ? "text-accent" : "text-primary/50"}
+                                    `}
                                     />
                                   </>
                                 )}
@@ -871,20 +969,22 @@ const Navbar = () => {
 
               {/* Mobile buttons */}
               <div className="mt-4 grid grid-cols-2 gap-3 border-t border-base-300 pt-4">
-                <Link
-                  to="/login"
-                  onClick={closeMobileMenu}
-                  className="
+                {!user && (
+                  <Link
+                    to="/login"
+                    onClick={closeMobileMenu}
+                    className="
                     flex min-h-12 items-center justify-center
                     gap-2 rounded-xl border border-primary/20
                     bg-white font-bold text-primary
                     transition-all duration-300
                     hover:bg-primary/10 active:scale-95
                   "
-                >
-                  <GraduationCap className="size-5" />
-                  Login
-                </Link>
+                  >
+                    <GraduationCap className="size-5" />
+                    Login
+                  </Link>
+                )}
 
                 <Link
                   to="/admission"
