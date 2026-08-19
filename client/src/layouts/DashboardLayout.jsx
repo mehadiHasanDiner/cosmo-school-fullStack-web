@@ -33,7 +33,7 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <div className="px-4">Zap Shift Dashboard</div>
+          <div className="px-4">Cosmo Dashboard</div>
           <p className="font-bold">Email: {user.email}</p>
         </nav>
         {/* Page content here */}
