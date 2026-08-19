@@ -1,0 +1,230 @@
+[
+    {
+        "classId": 10,
+        "className": "Prep One",
+        "sections": [
+            {
+                "sectionId": 101,
+                "sectionName": "Lily"
+            },
+            {
+                "sectionId": 102,
+                "sectionName": "Lotus"
+            }
+        ]
+    },
+    {
+        "classId": 11,
+        "className": "Prep Two",
+        "sections": [
+            {
+                "sectionId": 103,
+                "sectionName": "Tulip"
+            },
+            {
+                "sectionId": 104,
+                "sectionName": "Tube Rose"
+            },
+            {
+                "sectionId": 105,
+                "sectionName": "Orchid"
+            }
+        ]
+    },
+    {
+        "classId": 12,
+        "className": "One",
+        "sections": [
+            {
+                "sectionId": 106,
+                "sectionName": "Pink"
+            },
+            {
+                "sectionId": 107,
+                "sectionName": "Crimson"
+            },
+            {
+                "sectionId": 108,
+                "sectionName": "Amaranth"
+            }
+        ]
+    },
+    {
+        "classId": 13,
+        "className": "Two",
+        "sections": [
+            {
+                "sectionId": 109,
+                "sectionName": "Orange"
+            },
+            {
+                "sectionId": 110,
+                "sectionName": "Amber"
+            },
+            {
+                "sectionId": 111,
+                "sectionName": "Carmine"
+            }
+        ]
+    },
+    {
+        "classId": 14,
+        "className": "Three",
+        "sections": [
+            {
+                "sectionId": 112,
+                "sectionName": "Yellow-Boy"
+            },
+            {
+                "sectionId": 113,
+                "sectionName": "Aureolin-Girl"
+            },
+            {
+                "sectionId": 114,
+                "sectionName": "Aureolin"
+            },
+            {
+                "sectionId": 115,
+                "sectionName": "Yellow"
+            },
+            {
+                "sectionId": 116,
+                "sectionName": "Saffron-Boy"
+            }
+        ]
+    },
+    {
+        "classId": 15,
+        "className": "Four",
+        "sections": [
+            {
+                "sectionId": 117,
+                "sectionName": "Green-Boy"
+            },
+            {
+                "sectionId": 118,
+                "sectionName": "Lime-Girl"
+            },
+            {
+                "sectionId": 119,
+                "sectionName": "Green"
+            }
+        ]
+    },
+    {
+        "classId": 16,
+        "className": "Five",
+        "sections": [
+            {
+                "sectionId": 120,
+                "sectionName": "Aqua-Girl"
+            },
+            {
+                "sectionId": 121,
+                "sectionName": "Skyblue"
+            },
+            {
+                "sectionId": 122,
+                "sectionName": "Sky Blue-Boy"
+            }
+        ]
+    },
+    {
+        "classId": 17,
+        "className": "Six",
+        "sections": [
+            {
+                "sectionId": 123,
+                "sectionName": "Blue-Girl"
+            },
+            {
+                "sectionId": 124,
+                "sectionName": "Blue-Boy"
+            }
+        ]
+    },
+    {
+        "classId": 18,
+        "className": "Seven",
+        "sections": [
+            {
+                "sectionId": 125,
+                "sectionName": "Purple-Girl"
+            },
+            {
+                "sectionId": 126,
+                "sectionName": "Purple-Boy"
+            },
+            {
+                "sectionId": 127,
+                "sectionName": "Purple"
+            }
+        ]
+    },
+    {
+        "classId": 19,
+        "className": "Eight",
+        "sections": [
+            {
+                "sectionId": 128,
+                "sectionName": "Golden-Boys"
+            },
+            {
+                "sectionId": 129,
+                "sectionName": "Golden-Girls"
+            }
+        ]
+    },
+    {
+        "classId": 20,
+        "className": "Nine",
+        "sections": [
+            {
+                "sectionId": 130,
+                "sectionName": "White-Girls"
+            },
+            {
+                "sectionId": 131,
+                "sectionName": "White-Boys"
+            }
+        ]
+    },
+    {
+        "classId": 21,
+        "className": "Ten",
+        "sections": [
+            {
+                "sectionId": 132,
+                "sectionName": "White-Boys"
+            },
+            {
+                "sectionId": 133,
+                "sectionName": "White-Girls"
+            }
+        ]
+    },
+    {
+        "classId": 22,
+        "className": "SSC Batch",
+        "sections": [
+            {
+                "sectionId": 134,
+                "sectionName": "White-Boys"
+            },
+            {
+                "sectionId": 135,
+                "sectionName": "White-Girls"
+            }
+        ]
+    },
+    {
+        "classId": 23,
+        "className": "Pre-School",
+        "sections": [
+            {
+                "sectionId": 136,
+                "sectionName": "Blossom"
+            }
+        ]
+    }
+]
