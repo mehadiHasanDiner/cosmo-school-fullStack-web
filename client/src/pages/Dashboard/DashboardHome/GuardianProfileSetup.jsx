@@ -49,12 +49,12 @@ const GuardianProfileSetup = () => {
           <div>
             {/* ================= Guardian Information ================= */}
             <h3 className="text-xl font-semibold mb-2">Guardian Information</h3>
-            <fieldset className="fieldset ‍ space-y-1">
+            <fieldset className="fieldset ‍ ">
               {/* Guardian name */}
               <label>Guardian Name</label>
               <input
                 type="text"
-                className="input w-full"
+                className="input w-full mb-3"
                 placeholder="Guardian Name"
                 {...register("guardianName", { required: true })}
                 defaultValue={dbUser?.name}
@@ -68,7 +68,7 @@ const GuardianProfileSetup = () => {
               <label>Guardian Email</label>
               <input
                 type="text"
-                className="input w-full"
+                className="input w-full mb-3"
                 placeholder="Guardian Email"
                 {...register("guardianEmail", { required: true })}
                 defaultValue={dbUser?.email}
@@ -81,7 +81,7 @@ const GuardianProfileSetup = () => {
               )}
 
               {/* choose campus */}
-              <fieldset className="fieldset">
+              <fieldset className="fieldset mb-3">
                 <legend className="">Select Preferred Campus</legend>
                 <select
                   defaultValue="Select Campus"
@@ -102,7 +102,7 @@ const GuardianProfileSetup = () => {
               </fieldset>
 
               {/* guardian region */}
-              <fieldset className="fieldset">
+              <fieldset className="fieldset mb-3">
                 <legend className="">Guardian Gender</legend>
                 <select
                   {...register("guardianGender", { required: true })}
@@ -124,7 +124,7 @@ const GuardianProfileSetup = () => {
               </fieldset>
 
               {/* guardian profession */}
-              <fieldset className="fieldset">
+              <fieldset className="fieldset mb-3">
                 <legend className="">Guardian Profession</legend>
                 <select
                   {...register("guardianProfession", { required: true })}
@@ -154,7 +154,7 @@ const GuardianProfileSetup = () => {
               <label className="">Guardian Present Address</label>
               <input
                 type="text"
-                className="input w-full"
+                className="input w-full mb-3"
                 placeholder="Guardian present address"
                 {...register("guardianPresentAddress", { required: true })}
               />
@@ -169,11 +169,17 @@ const GuardianProfileSetup = () => {
                 type="text"
                 className="input w-full"
                 placeholder="Guardian Phone number"
-                {...register("guardianPhoneNo", { required: true })}
+                {...register("guardianPhoneNo", {
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "Only numbers are allowed",
+                  },
+                })}
               />
               {errors.guardianPhoneNo && (
                 <span className="text-red-500 text-sm">
-                  Guardian phone number is required
+                  {errors.guardianPhoneNo.message}
                 </span>
               )}
             </fieldset>
@@ -210,7 +216,7 @@ const GuardianProfileSetup = () => {
 
                   <input
                     type="text"
-                    className="input w-full"
+                    className="input w-full "
                     placeholder="Your Child Name"
                     {...register(`children.${index}.childName`, {
                       required: true,
@@ -223,7 +229,7 @@ const GuardianProfileSetup = () => {
                   )}
 
                   {/* Student ID */}
-                  <label className="mt-3">Your Child Student ID</label>
+                  <label className="">Your Child Student ID</label>
 
                   <input
                     type="text"
@@ -241,9 +247,7 @@ const GuardianProfileSetup = () => {
 
                   {/* Class */}
                   <fieldset className="fieldset">
-                    <legend className="fieldset-legend">
-                      Your Child's Class
-                    </legend>
+                    <legend className="">Your Child's Class</legend>
 
                     <select
                       {...register(`children.${index}.class`, {
