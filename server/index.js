@@ -36,6 +36,8 @@ async function run() {
     const studentsCollection = cosmoDB.collection("students");
     const guardianStudentsCollection = cosmoDB.collection("guardianStudents");
 
+    // all users related api
+
     app.post("/users", async (req, res) => {
       try {
         const user = req.body;
@@ -143,6 +145,65 @@ async function run() {
         res.status(500).send({
           success: false,
           message: "Internal server error while updating account type",
+        });
+      }
+    });
+
+    // guardian related apis
+    app.post("/guardians", async (req, res) => {
+      try {
+        const { guardianData } = req.body;
+        console.log(guardianData);
+
+        // MongoDB user ID ভুল হলে এখানেই request বন্ধ।
+        if (!ObjectId.isValid(guardianData?._id)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user Id",
+          });
+        }
+
+        const user = await usersCollection.findOne({
+          _id: new ObjectId(guardianData?._id),
+          email: guardianData?.guardianEmail,
+        });
+
+        if (!user) {
+          return res.status(400).send({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        const existingGuardian = await guardiansCollection.findOne({
+          userId: new ObjectId(guardianData?.userId),
+          email: guardianData?.guardianEmail,
+        });
+
+        if (existingGuardian) {
+          return res.status(409).send({
+            success: false,
+            message: "Guardian profile already exists",
+          });
+        }
+
+        const guardian = {
+          ...guardianData,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const result = await guardiansCollection.insertOne(guardian);
+        res.status(201).send({
+          success: true,
+          message: "Guardian profile created",
+          guardianId: result.insertedId,
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({
+          success: false,
+          message: "Internal server error",
         });
       }
     });

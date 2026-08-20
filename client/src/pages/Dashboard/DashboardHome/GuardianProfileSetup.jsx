@@ -31,6 +31,7 @@ const GuardianProfileSetup = () => {
     const guardianData = {
       ...data,
       guardianPhoneNo: `880${data.guardianPhoneNo}`,
+      userId: dbUser._id,
     };
     console.log(guardianData);
   };
