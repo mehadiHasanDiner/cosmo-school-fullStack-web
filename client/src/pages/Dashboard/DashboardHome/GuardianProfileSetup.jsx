@@ -18,7 +18,7 @@ const GuardianProfileSetup = () => {
       guardianPresentAddress: "",
       guardianPhoneNo: "",
       // initially one child
-      children: [{ childName: "", childStudentId: "", childCampus: "" }],
+      children: [{ childName: "", childStudentId: "", childClass: "" }],
     },
   });
 
@@ -28,11 +28,15 @@ const GuardianProfileSetup = () => {
   });
 
   const guardianFormSubmit = (data) => {
-    console.log(data);
+    const guardianData = {
+      ...data,
+      guardianPhoneNo: `880${data.guardianPhoneNo}`,
+    };
+    console.log(guardianData);
   };
 
   const handleAddChild = () => {
-    append({ childName: "", childStudentId: "", childCampus: "" });
+    append({ childName: "", childStudentId: "", childClass: "" });
   };
 
   return (
@@ -164,19 +168,31 @@ const GuardianProfileSetup = () => {
                 </span>
               )}
               {/* Guardian Phone no */}
-              <label className="">Guardian Phone No.</label>
-              <input
-                type="text"
-                className="input w-full"
-                placeholder="Guardian Phone number"
-                {...register("guardianPhoneNo", {
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: "Only numbers are allowed",
-                  },
-                })}
-              />
+              <label className="">
+                Guardian Phone No. (Preferred whatsapp no.)
+              </label>
+
+              <div className="join w-full ">
+                <span className="join-item bg-base-300 px-4 flex items-center font-semibold">
+                  +880
+                </span>
+
+                <input
+                  type="tel"
+                  className={`input join-item w-full ${
+                    errors.guardianPhoneNo ? "input-error" : ""
+                  }`}
+                  placeholder=" 1712345678 "
+                  maxLength={10}
+                  {...register("guardianPhoneNo", {
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /^1[3-9]\d{8}$/,
+                      message: "Enter a valid Bangladeshi mobile number",
+                    },
+                  })}
+                />
+              </div>
               {errors.guardianPhoneNo && (
                 <span className="text-red-500 text-sm">
                   {errors.guardianPhoneNo.message}
@@ -236,12 +252,16 @@ const GuardianProfileSetup = () => {
                     className="input w-full"
                     placeholder="Your Child Student ID"
                     {...register(`children.${index}.childStudentId`, {
-                      required: true,
+                      required: "Phone number is required",
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "Only numbers are allowed",
+                      },
                     })}
                   />
                   {errors.children?.[index]?.childStudentId && (
                     <span className="text-red-500 text-sm">
-                      Child student ID is required
+                      {errors.children[index].childStudentId.message}
                     </span>
                   )}
 
@@ -250,7 +270,7 @@ const GuardianProfileSetup = () => {
                     <legend className="">Your Child's Class</legend>
 
                     <select
-                      {...register(`children.${index}.class`, {
+                      {...register(`children.${index}.childClass`, {
                         required: true,
                       })}
                       className="select w-full"
@@ -273,7 +293,7 @@ const GuardianProfileSetup = () => {
                       <option value="Class Nine">Class Nine</option>
                       <option value="Class Ten">Class Ten</option>
                     </select>
-                    {errors.children?.[index]?.class && (
+                    {errors.children?.[index]?.childClass && (
                       <span className="text-red-500 text-sm">
                         Child class is required
                       </span>
