@@ -152,22 +152,33 @@ async function run() {
     // guardian related apis
     app.post("/guardians", async (req, res) => {
       try {
-        const { guardianData } = req.body;
-        console.log(guardianData);
+        const guardianData = req.body;
+
+        // -----------------------------
+        // 1. Check guardian data
+        // -----------------------------
+        if (!guardianData) {
+          return res.status(400).send({
+            success: false,
+            message: "Guardian data is required",
+          });
+        }
 
         // MongoDB user ID ভুল হলে এখানেই request বন্ধ।
-        if (!ObjectId.isValid(guardianData?._id)) {
+        // 2. Validate MongoDB ObjectId
+        if (!ObjectId.isValid(guardianData?.userId)) {
           return res.status(400).send({
             success: false,
             message: "Invalid user Id",
           });
         }
-
+        // 3. Check required fields
         const user = await usersCollection.findOne({
-          _id: new ObjectId(guardianData?._id),
+          _id: new ObjectId(guardianData?.userId),
           email: guardianData?.guardianEmail,
         });
 
+        // 4. Check user exists
         if (!user) {
           return res.status(400).send({
             success: false,
@@ -175,9 +186,10 @@ async function run() {
           });
         }
 
+        // 5. Check guardian already exists
         const existingGuardian = await guardiansCollection.findOne({
-          userId: new ObjectId(guardianData?.userId),
-          email: guardianData?.guardianEmail,
+          userId: guardianData?.userId,
+          guardianEmail: guardianData?.guardianEmail,
         });
 
         if (existingGuardian) {
@@ -186,14 +198,45 @@ async function run() {
             message: "Guardian profile already exists",
           });
         }
-
+        // 6. Create guardian document
         const guardian = {
-          ...guardianData,
+          userId: guardianData.userId,
+
+          guardianName: guardianData.guardianName,
+          guardianEmail: guardianData.guardianEmail,
+          guardianGender: guardianData.guardianGender,
+          guardianProfession: guardianData.guardianProfession,
+          guardianPhoneNo: guardianData.guardianPhoneNo,
+          guardianCampus: guardianData.guardianCampus,
+          guardianPresentAddress: guardianData.guardianPresentAddress,
+
+          children: guardianData.children || [],
           createdAt: new Date(),
           updatedAt: new Date(),
         };
 
         const result = await guardiansCollection.insertOne(guardian);
+
+        // 6. user collection update kochi
+        await usersCollection.updateOne(
+          {
+            _id: new ObjectId(guardianData?.userId),
+          },
+          {
+            $set: {
+              guardianProfileCompleted: true,
+
+              // =================================================
+              // এখন Guardian Profile শেষ।
+              // তাই পরবর্তী ধাপ হবে Student Link।
+              // =================================================
+              onboardingStep: "guardian-student-link",
+
+              updatedAt: new Date(),
+            },
+          },
+        );
+
         res.status(201).send({
           success: true,
           message: "Guardian profile created",

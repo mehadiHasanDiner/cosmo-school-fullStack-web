@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useDbUser from "../../../hooks/usedbUser";
 import { useFieldArray, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const GuardianProfileSetup = () => {
-  const { dbUser } = useDbUser();
+  const { dbUser, refetchDbUser } = useDbUser();
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,13 +32,40 @@ const GuardianProfileSetup = () => {
     name: "children",
   });
 
-  const guardianFormSubmit = (data) => {
-    const guardianData = {
-      ...data,
-      guardianPhoneNo: `880${data.guardianPhoneNo}`,
-      userId: dbUser._id,
-    };
-    console.log(guardianData);
+  const guardianFormSubmit = async (data) => {
+    try {
+      const guardianData = {
+        ...data,
+        guardianPhoneNo: `880${data.guardianPhoneNo}`,
+        userId: dbUser._id,
+      };
+      const res = await axiosSecure
+        .post("/guardians", guardianData)
+        .then((res) => {
+          console.log("after saving guardian profile", res.data);
+          if (res.data?.guardianId) {
+            refetchDbUser();
+            navigate("/dashboard/link-student");
+
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: `${res.data?.message}`,
+              showConfirmButton: false,
+              timer: 2500,
+              background: "#03373D",
+              color: "#fff",
+            });
+          }
+        });
+      console.log(res);
+      // if (result.data.success) {
+      //   await refetchDbUser();
+      //   navigate("/dashboard/link-student");
+      // }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAddChild = () => {
@@ -65,7 +97,7 @@ const GuardianProfileSetup = () => {
                 defaultValue={dbUser?.name}
               />
               {errors.guardianName && (
-                <span className="text-red-500 text-sm">
+                <span className="text-red-500 text-sm -mt-3 mb-3">
                   Guardian name is required
                 </span>
               )}
@@ -80,7 +112,7 @@ const GuardianProfileSetup = () => {
                 readOnly
               />
               {errors.guardianEmail && (
-                <span className="text-red-500 text-sm">
+                <span className="text-red-500 text-sm -mt-3 mb-3">
                   Guardian email is required
                 </span>
               )}
@@ -164,7 +196,7 @@ const GuardianProfileSetup = () => {
                 {...register("guardianPresentAddress", { required: true })}
               />
               {errors.guardianPresentAddress && (
-                <span className="text-red-500 text-sm">
+                <span className="text-red-500 text-sm -mt-3 mb-3">
                   Guardian present address is required
                 </span>
               )}
