@@ -10,6 +10,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import GuardianProfileSetup from "../pages/Dashboard/DashboardHome/GuardianProfileSetup";
+import StudentLinkForm from "../pages/Dashboard/DashboardHome/StudentLinkForm";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "complete-guardian-profile",
         Component: GuardianProfileSetup,
+      },
+      {
+        path: "link-student",
+        Component: StudentLinkForm,
       },
     ],
   },

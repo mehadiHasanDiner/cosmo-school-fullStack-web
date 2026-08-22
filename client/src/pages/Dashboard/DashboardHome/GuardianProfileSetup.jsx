@@ -79,19 +79,21 @@ const GuardianProfileSetup = () => {
       </h3>
 
       <form
-        className="max-w-5xl mx-auto bg-gray-200 p-8 rounded-lg  shadow-lg mt-4"
+        className="max-w-5xl mx-auto bg-gray-100 p-8 rounded-2xl  shadow-lg shadow-gray-400 mt-4"
         onSubmit={handleSubmit(guardianFormSubmit)}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
             {/* ================= Guardian Information ================= */}
-            <h3 className="text-xl font-semibold mb-2">Guardian Information</h3>
+            <h3 className="text-xl font-semibold mb-2 text-primary">
+              Guardian Information
+            </h3>
             <fieldset className="fieldset ‍ ">
               {/* Guardian name */}
               <label>Guardian Name</label>
               <input
                 type="text"
-                className="input w-full mb-3"
+                className="input w-full mb-3 focus:border-primary focus:outline-none"
                 placeholder="Guardian Name"
                 {...register("guardianName", { required: true })}
                 defaultValue={dbUser?.name}
@@ -105,7 +107,7 @@ const GuardianProfileSetup = () => {
               <label>Guardian Email</label>
               <input
                 type="text"
-                className="input w-full mb-3"
+                className="input w-full mb-3 focus:border-primary focus:outline-none"
                 placeholder="Guardian Email"
                 {...register("guardianEmail", { required: true })}
                 defaultValue={dbUser?.email}
@@ -123,7 +125,7 @@ const GuardianProfileSetup = () => {
                 <select
                   defaultValue="Select Campus"
                   {...register("guardianCampus", { required: true })}
-                  className="select"
+                  className="select select-primary"
                 >
                   <option value="" disabled>
                     Select Campus
@@ -144,7 +146,7 @@ const GuardianProfileSetup = () => {
                 <select
                   {...register("guardianGender", { required: true })}
                   defaultValue="Select Gender"
-                  className="select"
+                  className="select select-primary"
                 >
                   <option value="" disabled>
                     Select Gender
@@ -166,7 +168,7 @@ const GuardianProfileSetup = () => {
                 <select
                   {...register("guardianProfession", { required: true })}
                   defaultValue="Select a Profession"
-                  className="select"
+                  className="select select-primary"
                 >
                   <option value="" disabled>
                     Select a Profession
@@ -191,7 +193,7 @@ const GuardianProfileSetup = () => {
               <label className="">Guardian Present Address</label>
               <input
                 type="text"
-                className="input w-full mb-3"
+                className="input w-full mb-3 focus:border-primary focus:outline-none"
                 placeholder="Guardian present address"
                 {...register("guardianPresentAddress", { required: true })}
               />
@@ -206,13 +208,13 @@ const GuardianProfileSetup = () => {
               </label>
 
               <div className="join w-full ">
-                <span className="join-item bg-base-300 px-4 flex items-center font-semibold">
+                <span className="join-item bg-base-300 border-primary px-4 flex items-center font-semibold">
                   +880
                 </span>
 
                 <input
                   type="tel"
-                  className={`input join-item w-full ${
+                  className={`input join-item w-full focus:border-primary focus:outline-none ${
                     errors.guardianPhoneNo ? "input-error" : ""
                   }`}
                   placeholder=" 1712345678 "
@@ -236,7 +238,7 @@ const GuardianProfileSetup = () => {
 
           {/* ================= Children Information ================= */}
           <div>
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl font-semibold mb-2 text-primary">
               Add your child's information
             </h3>
 
@@ -265,7 +267,7 @@ const GuardianProfileSetup = () => {
 
                   <input
                     type="text"
-                    className="input w-full "
+                    className="input w-full focus:border-primary focus:outline-none"
                     placeholder="Your Child Name"
                     {...register(`children.${index}.childName`, {
                       required: true,
@@ -282,7 +284,7 @@ const GuardianProfileSetup = () => {
 
                   <input
                     type="text"
-                    className="input w-full"
+                    className="input w-full focus:border-primary focus:outline-none"
                     placeholder="Your Child Student ID"
                     {...register(`children.${index}.childStudentId`, {
                       required: "Phone number is required",
@@ -299,17 +301,17 @@ const GuardianProfileSetup = () => {
                   )}
 
                   {/* Class */}
-                  <fieldset className="fieldset">
+                  <fieldset className="fieldset ">
                     <legend className="">Your Child's Class</legend>
 
                     <select
                       {...register(`children.${index}.childClass`, {
                         required: true,
                       })}
-                      className="select w-full"
+                      className="select w-full select-primary focus:border-primary focus:outline-none"
                       defaultValue=""
                     >
-                      <option value="" disabled>
+                      <option className="" value="" disabled>
                         Select Class
                       </option>
                       <option value="Pre-School">Pre-School</option>

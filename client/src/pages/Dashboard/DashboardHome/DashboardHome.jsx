@@ -3,6 +3,7 @@ import useDbUser from "../../../hooks/useDbUser";
 import AccountTypeSetup from "./AccountTypeSetup";
 import GuardianDashboardHome from "./GuardianDashboardHome";
 import IncompleteProfile from "./IncompleteProfile";
+import VerificationPending from "./VerificationPending";
 
 const DashboardHome = () => {
   const { dbUser, isDbUserLoading, refetchDbUser } = useDbUser();
@@ -17,23 +18,39 @@ const DashboardHome = () => {
   }
 
   // Step 2
-  // Account type selected,
-  // but profile isn't complete ডাটাবেজে profileCompleted ফিল্ডটি আছে কি’না
-  if (!dbUser?.profileCompleted) {
+  // =====================================================
+  // Guardian Profile এখনো শেষ হয়নি
+  // =====================================================
+  if (dbUser?.onboardingStep === "guardian-profile") {
     return <IncompleteProfile user={dbUser} />;
   }
 
   // Step 3
-  // Guardian profile is complete
-  if (dbUser?.role === "guardian") {
-    return <GuardianDashboardHome user={dbUser} />;
+  // =====================================================
+  // Guardian Profile শেষ হয়েছে,
+  // কিন্তু Student Link এখনো হয়নি
+  // =====================================================
+  if (dbUser?.onboardingStep === "guardian-student-link") {
+    return <IncompleteProfile user={dbUser} />;
   }
 
-  return (
-    <div>
-      <p>Dashboard Home</p>
-    </div>
-  );
+  // step 4
+  // =====================================================
+  // Student link হয়েছে এবং Admin review করছে
+  // =====================================================
+  if (dbUser?.onboardingStep === "guardian-verification") {
+    return <VerificationPending />;
+  }
+
+  // step 5
+  // =====================================================
+  // সবকিছু শেষ
+  // =====================================================
+  if (dbUser?.onboardingStep === "completed") {
+    return <GuardianDashboardHome />;
+  }
+
+  return <IncompleteProfile user={dbUser} />;
 };
 
 export default DashboardHome;
