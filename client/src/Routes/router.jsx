@@ -9,8 +9,8 @@ import Admission from "../pages/Admission/Admission";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
-import GuardianProfileSetup from "../pages/Dashboard/DashboardHome/GuardianProfileSetup";
-import StudentLinkForm from "../pages/Dashboard/DashboardHome/StudentLinkForm";
+import GuardianProfileSetup from "../pages/Dashboard/Guardian/GuardianProfileSetup";
+import StudentLinkForm from "../pages/Dashboard/DashboardSetup/StudentLinkForm";
 
 export const router = createBrowserRouter([
   {

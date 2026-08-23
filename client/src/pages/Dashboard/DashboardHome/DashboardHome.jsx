@@ -1,55 +1,96 @@
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import useDbUser from "../../../hooks/useDbUser";
-import AccountTypeSetup from "./AccountTypeSetup";
+import AccountTypeSetup from "../DashboardSetup/AccountTypeSetup";
 import GuardianDashboardHome from "./GuardianDashboardHome";
-import IncompleteProfile from "./IncompleteProfile";
-import VerificationPending from "./VerificationPending";
+import TeacherDashboardHome from "./TeacherDashboardHome";
+import GuardianTeacherDashboardHome from "./GuardianTeacherDashboardHome";
+import IncompleteProfile from "../DashboardSetup/IncompleteProfile";
+import VerificationPending from "../DashboardSetup/VerificationPending";
 
 const DashboardHome = () => {
   const { dbUser, isDbUserLoading, refetchDbUser } = useDbUser();
 
+  // =====================================================
+  // MongoDB থেকে user data load হওয়ার সময়
+  // =====================================================
   if (isDbUserLoading) {
     return <LoadingSpinner />;
   }
-  // Step 1
-  // এখনও account type select করেনি
-  if (!dbUser?.accountType) {
+
+  // =====================================================
+  // Safety check:
+  // কোনো কারণে dbUser না পাওয়া গেলে
+  // component-এর নিচের logic যেন error না দেয়।
+  // =====================================================
+  if (!dbUser) {
+    return <div className="p-6 text-center">User information not found.</div>;
+  }
+
+  // =====================================================
+  // STEP 1:
+  // User এখনো Guardian / Teacher / Both
+  // কোন account type select করেনি।
+  // =====================================================
+  if (!dbUser.accountType) {
     return <AccountTypeSetup dbUser={dbUser} refetchDbUser={refetchDbUser} />;
   }
 
-  // Step 2
   // =====================================================
-  // Guardian Profile এখনো শেষ হয়নি
+  // SETUP STEPS
+  //
+  // এই stepগুলোতে user-এর account setup এখনও incomplete।
+  // কোন form/page-এ যেতে হবে সেটা IncompleteProfile
+  // onboardingStep দেখে ঠিক করবে।
   // =====================================================
-  if (dbUser?.onboardingStep === "guardian-profile") {
+  const incompleteSteps = [
+    "guardian-profile",
+    "guardian-student-link",
+    "teacher-profile",
+  ];
+
+  if (incompleteSteps.includes(dbUser.onboardingStep)) {
     return <IncompleteProfile user={dbUser} />;
   }
 
-  // Step 3
   // =====================================================
-  // Guardian Profile শেষ হয়েছে,
-  // কিন্তু Student Link এখনো হয়নি
+  // VERIFICATION STEPS
+  //
+  // Guardian, Teacher এবং Guardian+Teacher—
+  // তিন ধরনের Admin verification এখানে handle হবে।
   // =====================================================
-  if (dbUser?.onboardingStep === "guardian-student-link") {
-    return <IncompleteProfile user={dbUser} />;
+  const verificationSteps = [
+    "guardian-verification",
+    "teacher-verification",
+    "guardian-teacher-verification",
+  ];
+
+  if (verificationSteps.includes(dbUser.onboardingStep)) {
+    return <VerificationPending user={dbUser} />;
   }
 
-  // step 4
   // =====================================================
-  // Student link হয়েছে এবং Admin review করছে
+  // সব onboarding এবং verification complete।
+  // এখন accountType অনুযায়ী dashboard দেখাবো।
   // =====================================================
-  if (dbUser?.onboardingStep === "guardian-verification") {
-    return <VerificationPending />;
+  if (dbUser.onboardingStep === "completed") {
+    if (dbUser.accountType === "guardian") {
+      return <GuardianDashboardHome user={dbUser} />;
+    }
+
+    if (dbUser.accountType === "teacher") {
+      return <TeacherDashboardHome user={dbUser} />;
+    }
+
+    if (dbUser.accountType === "guardian_teacher") {
+      return <GuardianTeacherDashboardHome user={dbUser} />;
+    }
   }
 
-  // step 5
   // =====================================================
-  // সবকিছু শেষ
+  // Fallback:
+  // database-এ unexpected onboardingStep থাকলে
+  // setup screen দেখাবে।
   // =====================================================
-  if (dbUser?.onboardingStep === "completed") {
-    return <GuardianDashboardHome />;
-  }
-
   return <IncompleteProfile user={dbUser} />;
 };
 
