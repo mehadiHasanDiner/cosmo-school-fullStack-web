@@ -479,6 +479,71 @@ async function run() {
       }
     });
 
+    // all admin's apis
+    app.get("/admin/dashboard/stats", async (req, res) => {
+      try {
+        /*
+      ================================================
+      Student count
+      শুধু active student count করছি।
+      ================================================
+    */
+        const students = await studentsCollection.countDocuments({
+          status: "active",
+        });
+
+        /*
+      ================================================
+      Verified Guardian count
+
+      Guardian এবং Guardian+Teacher—
+      দুই ধরনের account-এর মধ্যেই Guardian role থাকতে পারে।
+
+      তাই roles array ব্যবহার করছি।
+      ================================================
+    */
+        const guardians = await usersCollection.countDocuments({
+          roles: "guardian",
+          verificationStatus: "approved",
+        });
+        /*
+      ================================================
+      Verified Teacher count
+      ================================================
+    */
+        const teachers = await usersCollection.countDocuments({
+          roles: "teacher",
+          verificationStatus: "approved",
+        });
+        console.log(teachers);
+        /*
+      ================================================
+      কতগুলো account এখন Admin approval-এর অপেক্ষায় আছে
+      ================================================
+    */
+        const pendingVerifications = await usersCollection.countDocuments({
+          verificationStatus: "pending",
+        });
+        return res.send({
+          success: true,
+
+          stats: {
+            students,
+            guardians,
+            teachers,
+            pendingVerifications,
+          },
+        });
+      } catch (error) {
+        console.error("Admin dashboard stats error:", error);
+
+        return res.status(500).send({
+          success: false,
+          message: "Failed to load admin dashboard statistics",
+        });
+      }
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB! Cosmo School Database is running...!!",

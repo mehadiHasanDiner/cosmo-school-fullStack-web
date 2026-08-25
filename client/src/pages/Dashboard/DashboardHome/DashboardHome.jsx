@@ -6,6 +6,7 @@ import TeacherDashboardHome from "./TeacherDashboardHome";
 import GuardianTeacherDashboardHome from "./GuardianTeacherDashboardHome";
 import IncompleteProfile from "../DashboardSetup/IncompleteProfile";
 import VerificationPending from "../DashboardSetup/VerificationPending";
+import AdminDashboard from "./AdminDashboard";
 
 const DashboardHome = () => {
   const { dbUser, isDbUserLoading, refetchDbUser } = useDbUser();
@@ -24,6 +25,16 @@ const DashboardHome = () => {
   // =====================================================
   if (!dbUser) {
     return <div className="p-6 text-center">User information not found.</div>;
+  }
+
+  // =====================================================
+  // ADMIN
+  //
+  // এটা normal user onboarding-এর আগে check করবো।
+  // Admin-এর Guardian/Teacher onboarding প্রয়োজন নেই।
+  // =====================================================
+  if (dbUser.role === "admin") {
+    return <AdminDashboard user={dbUser} />;
   }
 
   // =====================================================
@@ -82,6 +93,9 @@ const DashboardHome = () => {
     }
 
     if (dbUser.accountType === "guardian_teacher") {
+      return <GuardianTeacherDashboardHome user={dbUser} />;
+    }
+    if (dbUser.accountType === "admin") {
       return <GuardianTeacherDashboardHome user={dbUser} />;
     }
   }
