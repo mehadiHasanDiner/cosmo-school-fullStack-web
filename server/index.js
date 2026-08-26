@@ -188,7 +188,7 @@ async function run() {
 
         // 5. Check guardian already exists
         const existingGuardian = await guardiansCollection.findOne({
-          userId: guardianData?.userId,
+          userId: new ObjectId(guardianData?.userId),
           guardianEmail: guardianData?.guardianEmail,
         });
 
@@ -200,8 +200,7 @@ async function run() {
         }
         // 6. Create guardian document
         const guardian = {
-          userId: guardianData.userId,
-
+          userId: new ObjectId(guardianData?.userId),
           guardianName: guardianData.guardianName,
           guardianEmail: guardianData.guardianEmail,
           guardianGender: guardianData.guardianGender,
@@ -320,7 +319,8 @@ async function run() {
     app.post("/guardian/student/link", async (req, res) => {
       try {
         const { userId, studentMongoId, relationship } = req.body;
-        console.log(userId);
+
+        console.log("post guardian-student link", userId);
 
         const allowedRelationships = [
           "father",
@@ -372,9 +372,9 @@ async function run() {
       guardians collection-এর userId match করবে।
     */
         const guardian = await guardiansCollection.findOne({
-          userId,
+          userId: new ObjectId(userId),
         });
-        console.log("guardian", guardian);
+        console.log("guardian data", guardian);
 
         if (!guardian) {
           return res.status(400).send({
@@ -456,6 +456,9 @@ async function run() {
           {
             $set: {
               onboardingStep: "guardian-verification",
+              // Admin এখন profile review করবে
+              verificationStatus: "pending",
+              verificationSubmittedAt: new Date(),
 
               updatedAt: new Date(),
             },
@@ -480,6 +483,19 @@ async function run() {
     });
 
     // all admin's apis
+
+    app.get("/admin/users", async (req, res) => {
+      // const query = {};
+      // query.$or = {
+      //   verificationStatus: "pending",
+      // };
+      const cursor = usersCollection
+        .find({ verificationStatus: "pending" })
+        .sort({ verificationSubmittedAt: -1 });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.get("/admin/dashboard/stats", async (req, res) => {
       try {
         /*
@@ -515,7 +531,7 @@ async function run() {
           roles: "teacher",
           verificationStatus: "approved",
         });
-        console.log(teachers);
+        console.log("Teacher role", teachers.roles);
         /*
       ================================================
       কতগুলো account এখন Admin approval-এর অপেক্ষায় আছে
@@ -540,6 +556,345 @@ async function run() {
         return res.status(500).send({
           success: false,
           message: "Failed to load admin dashboard statistics",
+        });
+      }
+    });
+
+    app.get("/admin/users/:userId/details", async (req, res) => {
+      try {
+        const { userId } = req.params;
+
+        // =====================================================
+        // URL থেকে পাওয়া userId valid MongoDB ObjectId কি না
+        // সেটা প্রথমে check করছি
+        // =====================================================
+        if (!ObjectId.isValid(userId)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user ID",
+          });
+        }
+
+        const userObjectId = new ObjectId(userId);
+
+        // =====================================================
+        // ১. users collection থেকে মূল user account আনছি
+        // =====================================================
+        const user = await usersCollection.findOne({
+          _id: userObjectId,
+        });
+
+        if (!user) {
+          return res.status(404).send({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        // =====================================================
+        // ২. guardians collection থেকে guardian profile আনছি
+        // =====================================================
+        const guardian = await guardiansCollection.findOne({
+          userId: userObjectId,
+        });
+
+        let linkedStudents = [];
+
+        // =====================================================
+        // Guardian profile থাকলে guardianStudents collection
+        // থেকে linked relationship বের করবো
+        // =====================================================
+        if (guardian) {
+          const relations = await guardianStudentsCollection
+            .find({
+              guardianId: guardian._id,
+            })
+            .toArray();
+
+          // ===================================================
+          // প্রতিটি relation-এর studentId দিয়ে
+          // students collection থেকে student information আনছি
+          // ===================================================
+          for (const relation of relations) {
+            const student = await studentsCollection.findOne({
+              _id: relation.studentId,
+            });
+
+            if (student) {
+              linkedStudents.push({
+                relationId: relation._id,
+                relationship: relation.relationship,
+                verificationStatus: relation.verificationStatus,
+
+                student: {
+                  _id: student._id,
+                  studentId: student.studentId,
+                  name: student.name,
+                  className: student.className,
+                  section: student.section,
+                  roll: student.roll,
+                  photoURL: student.photoURL || "",
+                  status: student.status,
+                },
+              });
+            }
+          }
+        }
+
+        return res.send({
+          success: true,
+
+          data: {
+            user,
+            guardian,
+            linkedStudents,
+          },
+        });
+      } catch (error) {
+        console.error("Admin user details error:", error);
+
+        return res.status(500).send({
+          success: false,
+          message: "Failed to load user details",
+        });
+      }
+    });
+
+    // approve user as guardian, teacher or admin
+    app.patch("/admin/users/:userId/accept", async (req, res) => {
+      try {
+        const { userId } = req.params;
+
+        if (!ObjectId.isValid(userId)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user ID",
+          });
+        }
+
+        const userObjectId = new ObjectId(userId);
+
+        const user = await usersCollection.findOne({
+          _id: userObjectId,
+        });
+
+        if (!user) {
+          return res.status(404).send({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        // =====================================================
+        // শুধু pending verification user-ই approve করা যাবে
+        // =====================================================
+        if (user.verificationStatus !== "pending") {
+          return res.status(400).send({
+            success: false,
+            message: "This user is not pending verification",
+          });
+        }
+
+        let finalRole = "user";
+        let finalRoles = [];
+
+        // =====================================================
+        // Account type অনুযায়ী final role set করছি
+        // =====================================================
+
+        if (user.accountType === "guardian") {
+          finalRole = "guardian";
+          finalRoles = ["guardian"];
+        }
+
+        if (user.accountType === "teacher") {
+          finalRole = "teacher";
+          finalRoles = ["teacher"];
+        }
+
+        if (user.accountType === "guardian_teacher") {
+          finalRole = "guardian_teacher";
+          finalRoles = ["guardian", "teacher"];
+        }
+
+        // =====================================================
+        // Invalid account type হলে approval বন্ধ
+        // =====================================================
+        if (finalRole === "user") {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid account type",
+          });
+        }
+
+        // =====================================================
+        // users collection update করছি
+        // =====================================================
+        await usersCollection.updateOne(
+          {
+            _id: userObjectId,
+          },
+          {
+            $set: {
+              role: finalRole,
+              roles: finalRoles,
+
+              profileCompleted: true,
+
+              verificationStatus: "approved",
+
+              onboardingStep: "completed",
+
+              verifiedAt: new Date(),
+
+              updatedAt: new Date(),
+            },
+
+            // =================================================
+            // আগে reject হয়ে থাকলে rejection info remove করছি
+            // =================================================
+            $unset: {
+              rejectionReason: "",
+              rejectedAt: "",
+            },
+          },
+        );
+
+        // =====================================================
+        // Guardian হলে linked student relation-গুলোকেও
+        // approved করছি
+        // =====================================================
+        if (
+          user.accountType === "guardian" ||
+          user.accountType === "guardian_teacher"
+        ) {
+          const guardian = await guardiansCollection.findOne({
+            userId: userObjectId,
+          });
+
+          if (guardian) {
+            await guardianStudentsCollection.updateMany(
+              {
+                guardianId: guardian._id,
+              },
+              {
+                $set: {
+                  verificationStatus: "approved",
+                  verifiedAt: new Date(),
+                  updatedAt: new Date(),
+                },
+              },
+            );
+          }
+        }
+
+        return res.send({
+          success: true,
+          message: "User approved successfully",
+        });
+      } catch (error) {
+        console.error("Approve user error:", error);
+
+        return res.status(500).send({
+          success: false,
+          message: "Failed to approve user",
+        });
+      }
+    });
+
+    // reject user from any role
+    app.patch("/admin/users/:userId/reject", async (req, res) => {
+      try {
+        const { userId } = req.params;
+
+        const { reason } = req.body;
+
+        if (!ObjectId.isValid(userId)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user ID",
+          });
+        }
+
+        // =====================================================
+        // Reject করার কারণ না দিলে request বন্ধ
+        // =====================================================
+        if (!reason?.trim()) {
+          return res.status(400).send({
+            success: false,
+            message: "Rejection reason is required",
+          });
+        }
+
+        const userObjectId = new ObjectId(userId);
+
+        const user = await usersCollection.findOne({
+          _id: userObjectId,
+        });
+
+        if (!user) {
+          return res.status(404).send({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        if (user.verificationStatus !== "pending") {
+          return res.status(400).send({
+            success: false,
+            message: "This user is not pending verification",
+          });
+        }
+
+        // =====================================================
+        // Rejected হলে user-কে কোন onboarding step-এ
+        // ফিরিয়ে দেব সেটা account type অনুযায়ী ঠিক করছি
+        // =====================================================
+        let nextStep = "";
+
+        if (user.accountType === "guardian") {
+          nextStep = "guardian-student-link";
+        }
+
+        if (user.accountType === "teacher") {
+          nextStep = "teacher-profile";
+        }
+
+        if (user.accountType === "guardian_teacher") {
+          nextStep = "guardian-student-link";
+        }
+
+        await usersCollection.updateOne(
+          {
+            _id: userObjectId,
+          },
+          {
+            $set: {
+              verificationStatus: "rejected",
+
+              rejectionReason: reason.trim(),
+
+              profileCompleted: false,
+
+              onboardingStep: nextStep,
+
+              rejectedAt: new Date(),
+
+              updatedAt: new Date(),
+            },
+          },
+        );
+
+        return res.send({
+          success: true,
+          message: "User verification rejected",
+        });
+      } catch (error) {
+        console.error("Reject user error:", error);
+
+        return res.status(500).send({
+          success: false,
+          message: "Failed to reject user",
         });
       }
     });

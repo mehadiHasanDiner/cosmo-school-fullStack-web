@@ -27,7 +27,7 @@ const GuardianDashboardHome = ({ user }) => {
   ];
 
   return (
-    <section className="min-h-screen bg-base-200/40 px-4 py-8 sm:px-6 lg:px-8">
+    <section className="min-h-screen bg-base-200/40 px-4 py-8 sm:px-6 lg:px-8 body-font">
       <div className="mx-auto max-w-7xl">
         {/* Welcome */}
         <div className="relative overflow-hidden rounded-3xl border border-primary/15 bg-linear-to-br from-primary via-[#2d9e52] to-[#1d753c] p-6 text-white shadow-[0_20px_60px_rgba(39,140,69,0.22)] sm:p-8">
@@ -38,7 +38,7 @@ const GuardianDashboardHome = ({ user }) => {
               Guardian Dashboard
             </p>
 
-            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+            <h1 className="mt-2 text-3xl font-bold sm:text-4xl heading-font">
               Welcome back, {user?.name || "Guardian"} 👋
             </h1>
 

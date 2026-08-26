@@ -11,6 +11,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import GuardianProfileSetup from "../pages/Dashboard/Guardian/GuardianProfileSetup";
 import StudentLinkForm from "../pages/Dashboard/DashboardSetup/StudentLinkForm";
+import AdminVerification from "../pages/Dashboard/Admin/AdminVerification";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: "link-student",
         Component: StudentLinkForm,
+      },
+      {
+        path: "admin/verifications",
+        Component: AdminVerification,
       },
     ],
   },
