@@ -3,10 +3,14 @@ import Button from "../../components/common/Button";
 import SocialLogin from "./SocialLogin";
 import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { FaEyeSlash, FaRegEye } from "react-icons/fa";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -21,6 +25,11 @@ const Login = () => {
         console.log(error.message);
       });
     });
+  };
+
+  //prev এটার কাজ হলো আগের state-এর উল্টো value করা।
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -46,18 +55,35 @@ const Login = () => {
 
             {/* password */}
             <label className="label">Password</label>
-            <input
-              type="password"
-              className="input"
-              placeholder="Password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be more than 6 character",
-                },
-              })}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="input "
+                placeholder="Password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be more than 6 character",
+                  },
+                })}
+              />
+              {showPassword ? (
+                <span
+                  onClick={handleShowPassword}
+                  className="absolute right-3 top-3 text-black/60 cursor-pointer"
+                >
+                  <FaRegEye size={18} />
+                </span>
+              ) : (
+                <span
+                  onClick={handleShowPassword}
+                  className="absolute right-3 top-3 text-black/60 cursor-pointer"
+                >
+                  <FaEyeSlash size={18} />
+                </span>
+              )}
+            </div>
             {errors.password && (
               <p className="text-red-600">{errors.password.message}</p>
             )}

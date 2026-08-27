@@ -33,7 +33,7 @@ const SocialLogin = () => {
 
       axiosSecure.post("/users", userData).then((res) => {
         console.log("User created:", res.data);
-        navigate(location?.state || "/");
+        navigate(location?.state || "/dashboard");
       });
     } catch (err) {
       console.log(err?.message);

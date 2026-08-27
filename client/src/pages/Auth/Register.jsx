@@ -4,10 +4,13 @@ import SocialLogin from "./SocialLogin";
 import { useForm, useWatch } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import { FaEyeSlash, FaRegEye } from "react-icons/fa";
 
 const Register = () => {
   const [error, setError] = useState("");
   const { registerUser } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,12 +31,23 @@ const Register = () => {
     registerUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-        navigate(location.state || "/");
+        navigate(location.state || "/dashboard");
       })
       .catch((error) => {
         setError(error);
       });
   };
+
+  //prev এটার কাজ হলো আগের state-এর উল্টো value করা।
+  const handleShowPassword = (type) => {
+    if (type === "password") {
+      setShowPassword((prev) => !prev);
+    }
+    if (type === "confirmPassword") {
+      setShowConfirmPassword((prev) => !prev);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen flex-col  body-font mt-20">
       <div className="bg-green-200 px-8 py-5 rounded-2xl shadow-2xl">
@@ -69,34 +83,68 @@ const Register = () => {
 
             {/* password */}
             <label className="label">Password</label>
-            <input
-              type="password"
-              className="input"
-              placeholder="Password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be more than 6 character",
-                },
-              })}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="input "
+                placeholder="Password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be more than 6 character",
+                  },
+                })}
+              />
+              {showPassword ? (
+                <span
+                  onClick={() => handleShowPassword("password")}
+                  className="absolute right-3 top-3 text-green-800/80 cursor-pointer"
+                >
+                  <FaRegEye size={18} />
+                </span>
+              ) : (
+                <span
+                  onClick={() => handleShowPassword("password")}
+                  className="absolute right-3 top-3 text-green-800/80 cursor-pointer"
+                >
+                  <FaEyeSlash size={18} />
+                </span>
+              )}
+            </div>
             {errors.password && (
               <p className="text-red-600">{errors.password.message}</p>
             )}
 
-            {/* password */}
+            {/* confirm password */}
             <label className="label">Confirm Password</label>
-            <input
-              type="password"
-              className="input"
-              placeholder="Confirm Password"
-              {...register("confirmPassword", {
-                required: "Confirm Password is required",
-                validate: (value) =>
-                  value === password || "Password didn't match",
-              })}
-            />
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                className="input"
+                placeholder="Confirm Password"
+                {...register("confirmPassword", {
+                  required: "Confirm Password is required",
+                  validate: (value) =>
+                    value === password || "Password didn't match",
+                })}
+              />
+              {showConfirmPassword ? (
+                <span
+                  onClick={() => handleShowPassword("confirmPassword")}
+                  className="absolute right-3 top-3 text-green-800/80 cursor-pointer"
+                >
+                  <FaRegEye size={18} />
+                </span>
+              ) : (
+                <span
+                  onClick={() => handleShowPassword("confirmPassword")}
+                  className="absolute right-3 top-3 text-green-800/80 cursor-pointer"
+                >
+                  <FaEyeSlash size={18} />
+                </span>
+              )}
+            </div>
             {errors.confirmPassword && (
               <p className="text-red-600">{errors.confirmPassword.message}</p>
             )}
