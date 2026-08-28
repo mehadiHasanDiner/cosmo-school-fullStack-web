@@ -11,6 +11,7 @@ const Register = () => {
   const { registerUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [Image, setImage] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,14 +29,24 @@ const Register = () => {
 
   const handleSignUp = (data) => {
     setError("");
-    registerUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
-        navigate(location.state || "/dashboard");
-      })
-      .catch((error) => {
-        setError(error);
-      });
+    const profileImage = data.photo[0];
+
+    console.log("image before", profileImage);
+
+    const formData = new FormData();
+    formData.append("image", profileImage);
+
+    console.log("image after", profileImage);
+    // registerUser(data.email, data.password)
+    //   .then((result) => {
+    //     // 1. store the image in form data and get the photo url
+
+    //     console.log(result.user);
+    //     navigate(location.state || "/dashboard");
+    //   })
+    //   .catch((error) => {
+    //     setError(error);
+    //   });
   };
 
   //prev এটার কাজ হলো আগের state-এর উল্টো value করা।
@@ -79,6 +90,18 @@ const Register = () => {
             />
             {errors.email && (
               <p className="text-red-600">{errors.email.message}</p>
+            )}
+
+            {/* photo */}
+            <label className="label">Photo</label>
+            <input
+              type="file"
+              className="file-input"
+              placeholder="Your Photo"
+              {...register("photo", { required: true })}
+            />
+            {errors.photo?.type === "required" && (
+              <p className="text-red-600">Photo is required</p>
             )}
 
             {/* password */}
