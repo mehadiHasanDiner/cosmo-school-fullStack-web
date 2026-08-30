@@ -27,16 +27,23 @@ const Register = () => {
     name: "password",
   });
 
-  const handleSignUp = (data) => {
+  const handleSignUp = async (data) => {
     setError("");
     const profileImage = data.photo[0];
 
-    console.log("image before", profileImage);
-
     const formData = new FormData();
     formData.append("image", profileImage);
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    const imgData = await response.json();
 
-    console.log("image after", profileImage);
+    return imgData.secure_url;
+
     // registerUser(data.email, data.password)
     //   .then((result) => {
     //     // 1. store the image in form data and get the photo url
@@ -48,6 +55,8 @@ const Register = () => {
     //     setError(error);
     //   });
   };
+
+  // const imageURL = await uploadImage(image);
 
   //prev এটার কাজ হলো আগের state-এর উল্টো value করা।
   const handleShowPassword = (type) => {
