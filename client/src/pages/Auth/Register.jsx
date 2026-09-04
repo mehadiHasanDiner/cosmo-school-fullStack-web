@@ -5,14 +5,16 @@ import { useForm, useWatch } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
+import uploadImage from "../../hooks/uploadImage";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [error, setError] = useState("");
-  const { registerUser } = useAuth();
+  const { registerUser, updateUserProfile } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [Image, setImage] = useState(null);
-
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -29,31 +31,55 @@ const Register = () => {
 
   const handleSignUp = async (data) => {
     setError("");
+    // 1. Get selected image
     const profileImage = data.photo[0];
+    // 2. Upload image to cloudinary and get the image URL
+    const imgData = await uploadImage(profileImage);
 
-    const formData = new FormData();
-    formData.append("image", profileImage);
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
-    const imgData = await response.json();
+    await registerUser(data.email, data.password)
+      .then((result) => {
+        // 3. Get Cloudinary image URL
+        const imageURL = imgData.secure_url;
+        const imagePublicId = imgData.public_id;
 
-    return imgData.secure_url;
+        // 4. Add the image URL to the MongoDB user document along with other user data
+        const userData = {
+          email: data.email,
+          displayName: data.name,
+          photoURL: imageURL,
+          photoPublicId: imagePublicId,
+        };
 
-    // registerUser(data.email, data.password)
-    //   .then((result) => {
-    //     // 1. store the image in form data and get the photo url
+        // 5. Save user data to MongoDB
+        axiosSecure.post("/users", userData).then((res) => {
+          if (res.data.insertedId) {
+            console.log("User created:", res.data);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "User created successfully",
+              showConfirmButton: false,
+              timer: 2500,
+              background: "#03373D",
+              color: "#fff",
+            });
+          }
+        });
+        console.log("result", result);
+        // 6. Update user profile in Firebase
+        const userProfile = {
+          displayName: data.name,
+          photoURL: imageURL,
+        };
 
-    //     console.log(result.user);
-    //     navigate(location.state || "/dashboard");
-    //   })
-    //   .catch((error) => {
-    //     setError(error);
-    //   });
+        updateUserProfile(userProfile).then(() => {
+          console.log("User profile updated successfully");
+          navigate(location?.state || "/dashboard");
+        });
+      })
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   // const imageURL = await uploadImage(image);

@@ -107,7 +107,7 @@ const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
           </p>
 
           <h1 className="mt-2 text-3xl font-black text-neutral sm:text-4xl">
-            Hi, {dbUser?.name}
+            Hi, {dbUser?.displayName}
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-red-600/70">

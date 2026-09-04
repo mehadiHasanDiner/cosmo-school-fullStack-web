@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,12 +20,24 @@ const Login = () => {
   const { signInUser } = useAuth();
 
   const handleSignIn = (data) => {
-    signInUser(data.email, data.password).then((result) => {
-      console.log(result.user);
-      navigate("/").catch((error) => {
+    signInUser(data.email, data.password)
+      .then((result) => {
+        if (result.user) {
+          navigate(location?.state || "/dashboard");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "User logged in successfully",
+            showConfirmButton: false,
+            timer: 2500,
+            background: "#03373D",
+            color: "#fff",
+          });
+        }
+      })
+      .catch((error) => {
         console.log(error.message);
       });
-    });
   };
 
   //prev এটার কাজ হলো আগের state-এর উল্টো value করা।
