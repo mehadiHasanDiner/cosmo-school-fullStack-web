@@ -33,6 +33,7 @@ async function run() {
     const cosmoDB = client.db("cosmoSchoolDB");
     const usersCollection = cosmoDB.collection("users");
     const guardiansCollection = cosmoDB.collection("guardians");
+    const teachersCollection = cosmoDB.collection("teachers");
     const studentsCollection = cosmoDB.collection("students");
     const guardianStudentsCollection = cosmoDB.collection("guardianStudents");
 
@@ -476,6 +477,107 @@ async function run() {
         console.error("Student link error:", error);
 
         return res.status(500).send({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+    });
+
+    // teachers related apis
+    app.post("/teachers", async (req, res) => {
+      try {
+        const teacherData = req.body;
+
+        // -----------------------------
+        // 1. Check teacher data
+        // -----------------------------
+        if (!teacherData) {
+          return res.status(400).send({
+            success: false,
+            message: "Teacher data is required",
+          });
+        }
+
+        // MongoDB user ID ভুল হলে এখানেই request বন্ধ।
+        // 2. Validate MongoDB ObjectId
+        if (!ObjectId.isValid(teacherData?.userId)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid user Id",
+          });
+        }
+        // 3. Check required fields
+        const user = await usersCollection.findOne({
+          _id: new ObjectId(teacherData?.userId),
+          email: teacherData?.teacherEmail,
+        });
+
+        // 4. Check user exists
+        if (!user) {
+          return res.status(400).send({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        // 5. Check teacher already exists
+        const existingTeacher = await teachersCollection.findOne({
+          userId: new ObjectId(teacherData?.userId),
+          teacherEmail: teacherData?.teacherEmail,
+        });
+
+        if (existingTeacher) {
+          return res.status(409).send({
+            success: false,
+            message: "Teacher profile already exists",
+          });
+        }
+        // 6. Create teacher document
+        const teacher = {
+          userId: new ObjectId(teacherData?.userId),
+          teacherName: teacherData.teacherName,
+          teacherEmail: teacherData.teacherEmail,
+          teacherGender: teacherData.teacherGender,
+          teacherProfession: teacherData.teacherProfession,
+          teacherPhoneNo: teacherData.teacherPhoneNo,
+          guardianCampus: teacherData.guardianCampus,
+          guardianPresentAddress: teacherData.guardianPresentAddress,
+
+          children: teacherData.children || [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const result = await teachersCollection.insertOne(teacher);
+
+        // 6. user collection update kochi
+        await usersCollection.updateOne(
+          {
+            _id: new ObjectId(teacherData?.userId),
+          },
+          {
+            $set: {
+              teacherProfileCompleted: true,
+
+              // =================================================
+              // এখন Teacher Profile শেষ।
+              // তাই পরবর্তী ধাপ হবে Student Link।
+              // =================================================
+              onboardingStep: "teacher-student-link",
+
+              updatedAt: new Date(),
+            },
+          },
+        );
+
+        res.status(201).send({
+          success: true,
+          message: "Teacher profile created",
+          teacherId: result.insertedId,
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({
           success: false,
           message: "Internal server error",
         });
