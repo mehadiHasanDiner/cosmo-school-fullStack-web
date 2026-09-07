@@ -560,11 +560,11 @@ async function run() {
               teacherProfileCompleted: true,
 
               // =================================================
-              // এখন Teacher Profile শেষ।
-              // তাই পরবর্তী ধাপ হবে Student Link।
+              // এখন Teacher Profile post শেষ।
+              // তাই পরবর্তী ধাপ হবে teacher-verification by admin।
               // =================================================
-              onboardingStep: "teacher-student-link",
-
+              onboardingStep: "teacher-verification",
+              verificationStatus: "pending",
               updatedAt: new Date(),
             },
           },
