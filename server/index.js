@@ -537,15 +537,19 @@ async function run() {
           userId: new ObjectId(teacherData?.userId),
           teacherName: teacherData.teacherName,
           teacherEmail: teacherData.teacherEmail,
+          teacherPhotoURL: teacherData.teacherPhotoURL || "",
           teacherGender: teacherData.teacherGender,
-          teacherProfession: teacherData.teacherProfession,
           teacherPhoneNo: teacherData.teacherPhoneNo,
-          guardianCampus: teacherData.guardianCampus,
-          guardianPresentAddress: teacherData.guardianPresentAddress,
+          teacherDateOfBirth: teacherData.teacherDateOfBirth,
+          teacherNID: teacherData.teacherNID,
+          teacherBloodGroup: teacherData.teacherBloodGroup,
+          teacherPresentAddress: teacherData.teacherPresentAddress,
+          teacherCampus: teacherData.teacherCampus,
+          teacherSection: teacherData.teacherSection,
+          teacherSubject: teacherData.teacherSubject,
+          teacherJoiningDate: teacherData.teacherJoiningDate,
 
-          children: teacherData.children || [],
           createdAt: new Date(),
-          updatedAt: new Date(),
         };
 
         const result = await teachersCollection.insertOne(teacher);
@@ -558,13 +562,18 @@ async function run() {
           {
             $set: {
               teacherProfileCompleted: true,
-
               // =================================================
               // এখন Teacher Profile post শেষ।
               // তাই পরবর্তী ধাপ হবে teacher-verification by admin।
               // =================================================
+              teacherPhoneNo: teacherData.teacherPhoneNo,
+              teacherSubmittedCampus: teacherData.teacherCampus,
+              teacherSubmittedSection: teacherData.teacherSection,
+              teacherSubmittedSubject: teacherData.teacherSubject,
+              teacherJoiningDate: teacherData.teacherJoiningDate,
               onboardingStep: "teacher-verification",
               verificationStatus: "pending",
+              verificationSubmittedAt: new Date(),
               updatedAt: new Date(),
             },
           },

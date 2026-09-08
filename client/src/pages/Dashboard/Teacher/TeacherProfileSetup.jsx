@@ -35,27 +35,43 @@ const TeacherProfileSetup = () => {
         ...data,
         teacherPhoneNo: `880${data.teacherPhoneNo}`,
         userId: dbUser._id,
-        teacherPhoto: dbUser?.photoURL || "",
+        teacherPhotoURL: dbUser?.photoURL || "",
       };
 
-      const res = await axiosSecure
-        .post("/teachers", teacherProfileData)
-        .then((res) => {
-          if (res.data.teacherId) {
-            refetchDbUser();
-            navigate("/dashboard");
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: `${res.data?.message}`,
-              showConfirmButton: false,
-              timer: 2500,
-              background: "#03373D",
-              color: "#fff",
-            });
-          }
-        });
-      console.log("after saving guardian profile", res);
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed)
+          // Save the teacher profile data to the database
+          axiosSecure.post("/teachers", teacherProfileData).then((res) => {
+            if (res.data.teacherId) {
+              refetchDbUser();
+              navigate("/dashboard");
+
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            }
+          });
+      });
+
+      // const res = await axiosSecure
+      //   .post("/teachers", teacherProfileData)
+      //   .then((res) => {
+      //     if (res.data.teacherId) {
+      //       refetchDbUser();
+      //       navigate("/dashboard");
+      //     }
+      //   });
+      // console.log("after saving guardian profile", res);
     } catch (error) {
       console.error("Error submitting teacher profile:", error);
     }

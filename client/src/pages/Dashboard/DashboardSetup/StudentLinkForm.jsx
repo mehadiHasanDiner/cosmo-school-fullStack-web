@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import useDbUser from "../../../hooks/useDbUser";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const StudentLinkForm = () => {
   const [studentId, setStudentId] = useState("");
@@ -57,6 +58,15 @@ const StudentLinkForm = () => {
       );
 
       if (res.data.success) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `${res.data?.message}`,
+          showConfirmButton: false,
+          timer: 2500,
+          background: "#03373D",
+          color: "#fff",
+        });
         navigate("/dashboard");
 
         // সফল link-এর পরে form reset

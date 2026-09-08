@@ -48,16 +48,18 @@ const GuardianProfileSetup = () => {
         userId: dbUser._id,
       };
 
-      const res = await axiosSecure
-        .post("/guardians", guardianData)
-        .then((res) => {
-          console.log("after saving guardian profile", res.data);
-
-          if (res.data?.guardianId) {
-            refetchDbUser();
-
-            navigate("/dashboard/link-student");
-
+      Swal.fire({
+        title: "Please check again before submission",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Save it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.post("/guardians", guardianData).then((res) => {
+            console.log("after saving guardian profile", res.data);
             Swal.fire({
               position: "center",
               icon: "success",
@@ -67,10 +69,13 @@ const GuardianProfileSetup = () => {
               background: "#03373D",
               color: "#fff",
             });
-          }
-        });
+            refetchDbUser();
+            navigate("/dashboard/link-student");
+          });
+        }
+      });
 
-      console.log(res);
+      const res = console.log(res);
 
       // if (result.data.success) {
       //   await refetchDbUser();
@@ -234,7 +239,7 @@ const GuardianProfileSetup = () => {
                 {...register("guardianName", {
                   required: true,
                 })}
-                defaultValue={dbUser?.name}
+                defaultValue={dbUser?.displayName}
               />
 
               {errors.guardianName && (

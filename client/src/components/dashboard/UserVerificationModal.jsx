@@ -6,13 +6,19 @@ import {
   FiX,
   FiUser,
   FiMail,
+  FiMapPin,
   FiPhone,
   FiBookOpen,
+  FiCalendar,
   FiUsers,
+  FiHome,
 } from "react-icons/fi";
 
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import LoadingSpinner from "../common/LoadingSpinner";
+import InfoRow from "./InfoRow";
+import InformationSection from "./InformationSection";
+import Swal from "sweetalert2";
 
 const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
   const axiosSecure = useAxiosSecure();
@@ -44,6 +50,15 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
 
       if (res.data.success) {
         await onSuccess();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `${res.data?.message}`,
+          showConfirmButton: false,
+          timer: 2500,
+          background: "#03373D",
+          color: "#fff",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -139,16 +154,48 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
           ==================================================== */}
 
           <InformationSection title="Account Information" icon={FiUser}>
-            <InfoRow label="Name" value={user.name} />
-
-            <InfoRow label="Email" value={user.email} icon={FiMail} />
-
             <InfoRow
               label="Account Type"
               value={user.accountType?.replace("_", " & ")}
             />
 
             <InfoRow label="Status" value={user.verificationStatus} />
+
+            {user.accountType === "teacher" && (
+              <>
+                <InfoRow label="Teacher's Name" value={user.displayName} />
+                <InfoRow
+                  label="Teacher's Email"
+                  value={user.email}
+                  icon={FiMail}
+                />
+                <InfoRow
+                  label="Teacher's Joining Date"
+                  value={user.teacherJoiningDate}
+                  icon={FiCalendar}
+                />
+                <InfoRow
+                  label="Teacher's Phone No."
+                  value={user.teacherPhoneNo}
+                  icon={FiPhone}
+                />
+                <InfoRow
+                  label="Teacher's Campus"
+                  value={user.teacherSubmittedCampus}
+                  icon={FiMapPin}
+                />
+                <InfoRow
+                  label="Teacher's Section"
+                  value={user.teacherSubmittedSection}
+                  icon={FiHome}
+                />
+                <InfoRow
+                  label="Teacher's Subject"
+                  value={user.teacherSubmittedSubject}
+                  icon={FiBookOpen}
+                />
+              </>
+            )}
           </InformationSection>
 
           {/* ===================================================
@@ -393,44 +440,6 @@ const ModalWrapper = ({ children, onClose }) => {
       >
         {children}
       </div>
-    </div>
-  );
-};
-
-// =====================================================
-// Reusable Information Section
-// =====================================================
-
-const InformationSection = ({ title, icon: Icon, children }) => {
-  return (
-    <section className="rounded-2xl border border-base-300 p-5">
-      <div className="mb-5 flex items-center gap-3">
-        <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
-          <Icon />
-        </div>
-
-        <h3 className="text-lg font-black text-neutral">{title}</h3>
-      </div>
-
-      <div className="space-y-3">{children}</div>
-    </section>
-  );
-};
-
-// =====================================================
-// Reusable Information Row
-// =====================================================
-
-const InfoRow = ({ label, value, icon: Icon }) => {
-  return (
-    <div className="flex flex-wrap items-start justify-between gap-3 border-b border-base-200 pb-2 last:border-0">
-      <span className="text-sm text-base-content/80">{label}</span>
-
-      <span className="flex items-center gap-2 text-sm font-bold capitalize text-neutral">
-        {Icon && <Icon />}
-
-        {value || "—"}
-      </span>
     </div>
   );
 };

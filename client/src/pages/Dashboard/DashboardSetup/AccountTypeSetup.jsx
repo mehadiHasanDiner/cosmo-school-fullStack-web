@@ -95,7 +95,7 @@ const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
               src={dbUser.photoURL}
               alt={dbUser.name}
               className="
-                mx-auto size-20 rounded-full
+                mx-auto size-40 rounded-full
                 border-4 border-white object-cover
                 shadow-[0_12px_35px_rgba(0,0,0,0.15)]
               "

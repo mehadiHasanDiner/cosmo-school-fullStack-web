@@ -94,7 +94,7 @@ const AdminVerification = () => {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h2 className="text-lg font-black text-neutral">
-                        {user.name}
+                        {user.displayName || user.name}
                       </h2>
 
                       <p className="mt-1 flex items-center gap-2 text-sm text-base-content/55">
