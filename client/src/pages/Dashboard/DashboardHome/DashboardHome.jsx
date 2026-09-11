@@ -7,6 +7,7 @@ import GuardianTeacherDashboardHome from "./GuardianTeacherDashboardHome";
 import IncompleteProfile from "../DashboardSetup/IncompleteProfile";
 import VerificationPending from "../DashboardSetup/VerificationPending";
 import AdminDashboard from "./AdminDashboard";
+import RoleBasedDashboard from "../DashboardSetup/RoleBasedDashboard";
 
 const DashboardHome = () => {
   const { dbUser, isDbUserLoading, refetchDbUser } = useDbUser();
@@ -81,23 +82,10 @@ const DashboardHome = () => {
 
   // =====================================================
   // সব onboarding এবং verification complete।
-  // এখন accountType অনুযায়ী dashboard দেখাবো।
+  // এখন role অনুযায়ী dashboard দেখাবো।
   // =====================================================
   if (dbUser.onboardingStep === "completed") {
-    if (dbUser.accountType === "guardian") {
-      return <GuardianDashboardHome user={dbUser} />;
-    }
-
-    if (dbUser.accountType === "teacher") {
-      return <TeacherDashboardHome user={dbUser} />;
-    }
-
-    if (dbUser.accountType === "guardian_teacher") {
-      return <GuardianTeacherDashboardHome user={dbUser} />;
-    }
-    if (dbUser.accountType === "admin") {
-      return <GuardianTeacherDashboardHome user={dbUser} />;
-    }
+    return <RoleBasedDashboard user={dbUser} />;
   }
 
   // =====================================================

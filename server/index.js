@@ -422,9 +422,7 @@ async function run() {
 
         const guardianStudentRelation = {
           guardianId: guardian._id,
-
           studentId: student._id,
-
           relationship,
 
           /*
@@ -442,6 +440,14 @@ async function run() {
           guardianStudentRelation,
         );
 
+        // =====================================================
+        // Student link হওয়ার পরে next step
+        // =====================================================
+
+        let nextStep = "";
+
+        // শুধু Guardian
+
         /*
       Guardian অন্তত একটি child link করেছে।
       এখন user-এর onboarding state update করছি।
@@ -449,29 +455,64 @@ async function run() {
       কিন্তু Admin verification পরে করবেন বলে
       এখন role = guardian final না করাই safer।
     */
+        if (user.accountType === "guardian") {
+          nextStep = "guardian-verification";
+        }
+
+        // Guardian + Teacher
+        if (user.accountType === "guardian_teacher") {
+          nextStep = "teacher-profile";
+        }
+
+        if (!nextStep) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid account type for student linking",
+          });
+        }
+
+        // =====================================================
+        // User update object
+        // =====================================================
+
+        const updateData = {
+          onboardingStep: nextStep,
+          updatedAt: new Date(),
+        };
+
+        // =====================================================
+        // শুধুমাত্র Guardian হলে এখন Admin verification শুরু হবে
+        // =====================================================
+
+        if (user.accountType === "guardian") {
+          updateData.verificationStatus = "pending";
+          updateData.verificationSubmittedAt = new Date();
+        }
 
         await usersCollection.updateOne(
           {
             _id: new ObjectId(userId),
           },
           {
-            $set: {
-              onboardingStep: "guardian-verification",
-              // Admin এখন profile review করবে
-              verificationStatus: "pending",
-              verificationSubmittedAt: new Date(),
-
-              updatedAt: new Date(),
-            },
+            $set: updateData,
           },
         );
+
+        // =====================================================
+        // Frontend-এ nextStep পাঠাচ্ছি
+        // =====================================================
 
         return res.status(201).send({
           success: true,
 
-          message: "Student linked successfully and waiting for verification",
+          message:
+            user.accountType === "guardian"
+              ? "Student linked successfully and waiting for verification"
+              : "Student linked successfully. Please complete your teacher profile.",
 
           relationId: result.insertedId,
+
+          nextStep,
         });
       } catch (error) {
         console.error("Student link error:", error);

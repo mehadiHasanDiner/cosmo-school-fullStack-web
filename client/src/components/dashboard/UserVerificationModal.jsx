@@ -161,7 +161,8 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
 
             <InfoRow label="Status" value={user.verificationStatus} />
 
-            {user.accountType === "teacher" && (
+            {user.accountType === "teacher" ||
+            user.accountType === "guardian_teacher" ? (
               <>
                 <InfoRow label="Teacher's Name" value={user.displayName} />
                 <InfoRow
@@ -194,6 +195,10 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
                   value={user.teacherSubmittedSubject}
                   icon={FiBookOpen}
                 />
+              </>
+            ) : (
+              <>
+                <InfoRow label="Full Name" value={user.displayName} />
               </>
             )}
           </InformationSection>

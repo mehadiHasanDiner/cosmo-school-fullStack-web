@@ -39,13 +39,13 @@ const TeacherProfileSetup = () => {
       };
 
       Swal.fire({
-        title: "Are you sure?",
+        title: "Please check again before submission",
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, save it!",
       }).then((result) => {
         if (result.isConfirmed)
           // Save the teacher profile data to the database

@@ -12,7 +12,7 @@ const StudentLinkForm = () => {
   const [linking, setLinking] = useState(false);
   const [error, setError] = useState("");
 
-  const { dbUser } = useDbUser();
+  const { dbUser, refetchDbUser } = useDbUser();
   const navigate = useNavigate();
 
   const handleVerifyStudent = async () => {
@@ -58,6 +58,7 @@ const StudentLinkForm = () => {
       );
 
       if (res.data.success) {
+        await refetchDbUser();
         Swal.fire({
           position: "center",
           icon: "success",
@@ -67,7 +68,15 @@ const StudentLinkForm = () => {
           background: "#03373D",
           color: "#fff",
         });
-        navigate("/dashboard");
+        // Guardian হলে Admin verification page
+        if (res.data.nextStep === "guardian-verification") {
+          navigate("/dashboard");
+        }
+
+        // Guardian + Teacher হলে Teacher Profile page
+        if (res.data.nextStep === "teacher-profile") {
+          navigate("/dashboard/complete-teacher-profile");
+        }
 
         // সফল link-এর পরে form reset
         setStudentId("");
