@@ -1,9 +1,6 @@
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import useDbUser from "../../../hooks/useDbUser";
 import AccountTypeSetup from "../DashboardSetup/AccountTypeSetup";
-import GuardianDashboardHome from "./GuardianDashboardHome";
-import TeacherDashboardHome from "./TeacherDashboardHome";
-import GuardianTeacherDashboardHome from "./GuardianTeacherDashboardHome";
 import IncompleteProfile from "../DashboardSetup/IncompleteProfile";
 import VerificationPending from "../DashboardSetup/VerificationPending";
 import AdminDashboard from "./AdminDashboard";
@@ -57,7 +54,7 @@ const DashboardHome = () => {
   const incompleteSteps = [
     "guardian-profile",
     "guardian-student-link",
-    "teacher-profile",
+    "employee-profile",
   ];
 
   if (incompleteSteps.includes(dbUser.onboardingStep)) {
@@ -67,13 +64,13 @@ const DashboardHome = () => {
   // =====================================================
   // VERIFICATION STEPS
   //
-  // Guardian, Teacher এবং Guardian+Teacher—
+  // Guardian, Employee এবং Guardian+Employee—
   // তিন ধরনের Admin verification এখানে handle হবে।
   // =====================================================
   const verificationSteps = [
     "guardian-verification",
-    "teacher-verification",
-    "guardian-teacher-verification",
+    "employee-verification",
+    "guardian-employee-verification",
   ];
 
   if (verificationSteps.includes(dbUser.onboardingStep)) {

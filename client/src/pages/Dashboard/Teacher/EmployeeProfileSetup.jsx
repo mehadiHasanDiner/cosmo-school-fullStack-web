@@ -4,7 +4,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-const TeacherProfileSetup = () => {
+const EmployeeProfileSetup = () => {
   const { dbUser, refetchDbUser } = useDbUser();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
@@ -14,28 +14,29 @@ const TeacherProfileSetup = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      teacherName: dbUser?.displayName,
-      teacherEmail: dbUser?.email,
-      teacherGender: "",
-      teacherPhoneNo: "",
-      teacherDateOfBirth: "",
-      teacherNID: "",
-      teacherBloodGroup: "",
-      teacherPresentAddress: "",
-      teacherCampus: "",
-      teacherSection: "",
-      teacherSubject: "",
-      teacherJoiningDate: "",
+      employeeName: dbUser?.displayName,
+      employeeEmail: dbUser?.email,
+      employeeGender: "",
+      employeePhoneNo: "",
+      employeeDateOfBirth: "",
+      employeeNID: "",
+      employeeBloodGroup: "",
+      employeePresentAddress: "",
+      employeeCampus: "",
+      employeeSection: "",
+      employeeSubject: "",
+      employeeJoiningDate: "",
+      employeeDesignation: "",
     },
   });
 
-  const teacherFormSubmit = async (data) => {
+  const employeeFormSubmit = async (data) => {
     try {
-      const teacherProfileData = {
+      const employeeProfileData = {
         ...data,
-        teacherPhoneNo: `880${data.teacherPhoneNo}`,
+        employeePhoneNo: `880${data.employeePhoneNo}`,
         userId: dbUser._id,
-        teacherPhotoURL: dbUser?.photoURL || "",
+        employeePhotoURL: dbUser?.photoURL || "",
       };
 
       Swal.fire({
@@ -48,9 +49,9 @@ const TeacherProfileSetup = () => {
         confirmButtonText: "Yes, save it!",
       }).then((result) => {
         if (result.isConfirmed)
-          // Save the teacher profile data to the database
-          axiosSecure.post("/teachers", teacherProfileData).then((res) => {
-            if (res.data.teacherId) {
+          // Save the employee profile data to the database
+          axiosSecure.post("/employees", employeeProfileData).then((res) => {
+            if (res.data.employeeId) {
               refetchDbUser();
               navigate("/dashboard");
 
@@ -102,7 +103,7 @@ const TeacherProfileSetup = () => {
             tracking-[0.18em] text-primary
           "
         >
-          Teacher Account Setup
+          Employee Account Setup
         </span>
 
         <h3
@@ -113,7 +114,7 @@ const TeacherProfileSetup = () => {
             sm:text-4xl
           "
         >
-          Teacher Profile Setup
+          Employee Profile Setup
         </h3>
 
         <p
@@ -124,8 +125,8 @@ const TeacherProfileSetup = () => {
             sm:text-base
           "
         >
-          Complete your teacher information and add your school details to
-          continue your Cosmo School account setup.
+          Complete your information and add your school details to continue your
+          Cosmo School account setup.
         </p>
 
         {/* Cosmo small divider */}
@@ -150,11 +151,11 @@ const TeacherProfileSetup = () => {
           sm:p-7
           lg:p-9
         "
-        onSubmit={handleSubmit(teacherFormSubmit)}
+        onSubmit={handleSubmit(employeeFormSubmit)}
       >
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
           {/* =====================================================
-              Teacher Information
+              Employee Information
           ====================================================== */}
           <div
             className="
@@ -185,7 +186,7 @@ const TeacherProfileSetup = () => {
                   sm:text-2xl
                 "
               >
-                Teacher Information
+                Employee Information
               </h3>
 
               <p className="mt-2 text-sm leading-6 text-base-content/50">
@@ -194,9 +195,9 @@ const TeacherProfileSetup = () => {
             </div>
 
             <fieldset className="fieldset space-y-1">
-              {/* Teacher name */}
+              {/* Employee name */}
               <label className="mb-1 text-sm font-bold text-neutral">
-                Teacher Name
+                Employee Name
               </label>
 
               <input
@@ -218,14 +219,14 @@ const TeacherProfileSetup = () => {
                   focus:ring-4
                   focus:ring-primary/10
                 "
-                placeholder="Teacher Name"
-                {...register("teacherName", {
+                placeholder="Employee Name"
+                {...register("employeeName", {
                   required: true,
                 })}
                 defaultValue={dbUser?.displayName}
               />
 
-              {errors.teacherName && (
+              {errors.employeeName && (
                 <span
                   className="
                     -mt-2 mb-3
@@ -233,13 +234,13 @@ const TeacherProfileSetup = () => {
                     text-error
                   "
                 >
-                  Teacher name is required
+                  Employee name is required
                 </span>
               )}
 
-              {/* Teacher Email */}
+              {/* Employee Email */}
               <label className="mb-1 text-sm font-bold text-neutral">
-                Teacher Email
+                Employee Email
               </label>
 
               <input
@@ -257,15 +258,15 @@ const TeacherProfileSetup = () => {
                   focus:border-base-300
                   focus:outline-none
                 "
-                placeholder="Teacher Email"
-                {...register("teacherEmail", {
+                placeholder="Employee Email"
+                {...register("employeeEmail", {
                   required: true,
                 })}
                 defaultValue={dbUser?.email}
                 readOnly
               />
 
-              {errors.teacherEmail && (
+              {errors.employeeEmail && (
                 <span
                   className="
                     -mt-2 mb-3
@@ -273,18 +274,18 @@ const TeacherProfileSetup = () => {
                     text-error
                   "
                 >
-                  Teacher email is required
+                  Employee email is required
                 </span>
               )}
 
-              {/* teacher gender */}
+              {/* employee gender */}
               <fieldset className="fieldset mb-3">
                 <legend className="mb-1 text-sm font-bold text-neutral">
-                  Teacher Gender
+                  Employee Gender
                 </legend>
 
                 <select
-                  {...register("teacherGender", {
+                  {...register("employeeGender", {
                     required: true,
                   })}
                   defaultValue=""
@@ -314,16 +315,16 @@ const TeacherProfileSetup = () => {
                   <option>Other</option>
                 </select>
 
-                {errors.teacherGender && (
+                {errors.employeeGender && (
                   <span className="mt-1 text-sm font-semibold text-error">
-                    Teacher gender is required
+                    Employee gender is required
                   </span>
                 )}
               </fieldset>
 
-              {/* Teacher Phone no */}
+              {/* Employee Phone no */}
               <label className="mb-1 text-sm font-bold text-neutral">
-                Teacher Phone No.{" "}
+                Employee Phone No.{" "}
                 <span className="font-medium text-base-content/45">
                   (Preferred WhatsApp no.)
                 </span>
@@ -366,11 +367,11 @@ const TeacherProfileSetup = () => {
                     px-4
                     text-neutral
                     focus:outline-none
-                    ${errors.teacherPhoneNo ? "input-error" : ""}
+                    ${errors.employeePhoneNo ? "input-error" : ""}
                   `}
                   placeholder="1712345678"
                   maxLength={10}
-                  {...register("teacherPhoneNo", {
+                  {...register("employeePhoneNo", {
                     required: "Phone number is required",
 
                     pattern: {
@@ -381,15 +382,15 @@ const TeacherProfileSetup = () => {
                 />
               </div>
 
-              {errors.teacherPhoneNo && (
+              {errors.employeePhoneNo && (
                 <span className="mt-1 text-sm font-semibold text-error">
-                  {errors.teacherPhoneNo.message}
+                  {errors.employeePhoneNo.message}
                 </span>
               )}
 
-              {/* Teacher Date of Birth */}
+              {/* Employee Date of Birth */}
               <label className="mb-1 mt-2 text-sm font-bold text-neutral">
-                Teacher Date of Birth
+                Employee Date of Birth
               </label>
 
               <input
@@ -411,20 +412,20 @@ const TeacherProfileSetup = () => {
                   focus:ring-4
                   focus:ring-primary/10
                 "
-                {...register("teacherDateOfBirth", {
+                {...register("employeeDateOfBirth", {
                   required: "Date of birth is required",
                 })}
               />
 
-              {errors.teacherDateOfBirth && (
+              {errors.employeeDateOfBirth && (
                 <span className="mt-1 text-sm font-semibold text-error">
-                  {errors.teacherDateOfBirth.message}
+                  {errors.employeeDateOfBirth.message}
                 </span>
               )}
 
-              {/* Teacher NID */}
+              {/* Employee NID */}
               <label className="mb-1 mt-2 text-sm font-bold text-neutral">
-                Teacher NID
+                Employee NID
               </label>
 
               <input
@@ -504,16 +505,16 @@ const TeacherProfileSetup = () => {
                   <option value="O-">O-</option>
                 </select>
 
-                {errors.teacherBloodGroup && (
+                {errors.employeeBloodGroup && (
                   <span className="mt-1 text-sm font-semibold text-error">
-                    Teacher blood group is required
+                    Employee blood group is required
                   </span>
                 )}
               </fieldset>
 
-              {/* Teacher present address */}
+              {/* Employee present address */}
               <label className="my-1 text-sm font-bold text-neutral">
-                Teacher Present Address
+                Employee Present Address
               </label>
 
               <input
@@ -535,13 +536,13 @@ const TeacherProfileSetup = () => {
                   focus:ring-4
                   focus:ring-primary/10
                 "
-                placeholder="Teacher present address"
-                {...register("teacherPresentAddress", {
+                placeholder="Employee present address"
+                {...register("employeePresentAddress", {
                   required: true,
                 })}
               />
 
-              {errors.teacherPresentAddress && (
+              {errors.employeePresentAddress && (
                 <span
                   className="
                     -mt-2 mb-3
@@ -549,7 +550,7 @@ const TeacherProfileSetup = () => {
                     text-error
                   "
                 >
-                  Teacher present address is required
+                  Employee present address is required
                 </span>
               )}
             </fieldset>
@@ -601,7 +602,7 @@ const TeacherProfileSetup = () => {
 
               <select
                 defaultValue=""
-                {...register("teacherCampus", {
+                {...register("employeeCampus", {
                   required: true,
                 })}
                 className="
@@ -629,14 +630,14 @@ const TeacherProfileSetup = () => {
                 <option>Banasree</option>
               </select>
 
-              {errors.teacherCampus && (
+              {errors.employeeCampus && (
                 <span className="mt-1 text-sm font-semibold text-error">
-                  Teacher campus is required
+                  Employee campus is required
                 </span>
               )}
             </fieldset>
 
-            {/* teacher section */}
+            {/* employee section */}
             <fieldset className="fieldset space-y-1">
               <fieldset className="fieldset mb-3">
                 <legend className="mb-1 text-sm font-bold text-neutral">
@@ -644,7 +645,7 @@ const TeacherProfileSetup = () => {
                 </legend>
 
                 <select
-                  {...register("teacherSection", {
+                  {...register("employeeSection", {
                     required: true,
                   })}
                   defaultValue=""
@@ -669,21 +670,22 @@ const TeacherProfileSetup = () => {
                     Select Your section
                   </option>
 
+                  <option>Administration</option>
                   <option>Pre-School </option>
                   <option>Junior (Prep-I to Class-II)</option>
                   <option>Middle (Class-III to Class-V)</option>
                   <option>Senior (Class-VI to Class-X)</option>
                 </select>
 
-                {errors.teacherSection && (
+                {errors.employeeSection && (
                   <span className="mt-1 text-sm font-semibold text-error">
-                    Teacher section is required
+                    Employee section is required
                   </span>
                 )}
               </fieldset>
             </fieldset>
 
-            {/* teacher subject */}
+            {/* employee   subject */}
             <fieldset className="fieldset space-y-1">
               <fieldset className="fieldset mb-3">
                 <legend className="mb-1 text-sm font-bold text-neutral">
@@ -691,7 +693,7 @@ const TeacherProfileSetup = () => {
                 </legend>
 
                 <select
-                  {...register("teacherSubject", {
+                  {...register("employeeSubject", {
                     required: true,
                   })}
                   defaultValue=""
@@ -716,6 +718,7 @@ const TeacherProfileSetup = () => {
                     Select Your Subject
                   </option>
 
+                  <option>None</option>
                   <option>Bangla</option>
                   <option>English</option>
                   <option>Math</option>
@@ -730,17 +733,16 @@ const TeacherProfileSetup = () => {
                   <option>Arts</option>
                   <option>Music</option>
                   <option>Physical Education</option>
-                  <option>Others</option>
                 </select>
 
-                {errors.teacherSubject && (
+                {errors.employeeSubject && (
                   <span className="mt-1 text-sm font-semibold text-error">
-                    Teacher subject is required
+                    Employee subject is required
                   </span>
                 )}
               </fieldset>
 
-              {/* Teacher Joining Date */}
+              {/* Employee Joining Date */}
               <label className="mb-1 mt-1 text-sm font-bold text-neutral">
                 Your Joining Date
               </label>
@@ -764,16 +766,64 @@ const TeacherProfileSetup = () => {
                   focus:ring-4
                   focus:ring-primary/10
                 "
-                {...register("teacherJoiningDate", {
+                {...register("employeeJoiningDate", {
                   required: "Joining date is required",
                 })}
               />
 
-              {errors.teacherJoiningDate && (
+              {errors.employeeJoiningDate && (
                 <span className="mt-1 text-sm font-semibold text-error">
-                  {errors.teacherJoiningDate.message}
+                  {errors.employeeJoiningDate.message}
                 </span>
               )}
+            </fieldset>
+
+            {/* employee section */}
+            <fieldset className="fieldset space-y-1">
+              <fieldset className="fieldset mb-3">
+                <legend className="mb-1 text-sm font-bold text-neutral">
+                  Your Role or Designation
+                </legend>
+
+                <select
+                  {...register("employeeRole", {
+                    required: true,
+                  })}
+                  defaultValue=""
+                  className="
+                    select select-bordered
+                    h-13 w-full
+                    rounded-xl
+                    border-base-300
+                    bg-base-100
+                    px-4
+                    text-neutral
+                    shadow-sm
+                    transition-all duration-300
+                    hover:border-primary/40
+                    focus:border-primary
+                    focus:outline-none
+                    focus:ring-4
+                    focus:ring-primary/10
+                  "
+                >
+                  <option value="" disabled>
+                    Choose Your Role
+                  </option>
+
+                  <option value="teacher">Teacher</option>
+                  <option value="teacher">Responsible Teacher </option>
+                  <option value="admin">Principal</option>
+                  <option value="admin">Vice Principal</option>
+                  <option value="admin">Admin</option>
+                </select>
+
+                {errors.employeeRole && (
+                  <span className="mt-1 text-sm font-semibold text-error">
+                    Employee role is required
+                  </span>
+                )}
+              </fieldset>
             </fieldset>
           </div>
         </div>
@@ -828,4 +878,4 @@ const TeacherProfileSetup = () => {
   );
 };
 
-export default TeacherProfileSetup;
+export default EmployeeProfileSetup;

@@ -12,7 +12,7 @@ import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import GuardianProfileSetup from "../pages/Dashboard/Guardian/GuardianProfileSetup";
 import StudentLinkForm from "../pages/Dashboard/DashboardSetup/StudentLinkForm";
 import AdminVerification from "../pages/Dashboard/Admin/AdminVerification";
-import TeacherProfileSetup from "../pages/Dashboard/Teacher/TeacherProfileSetup";
+import EmployeeProfileSetup from "../pages/Dashboard/Teacher/EmployeeProfileSetup";
 
 export const router = createBrowserRouter([
   {
@@ -65,8 +65,8 @@ export const router = createBrowserRouter([
         Component: GuardianProfileSetup,
       },
       {
-        path: "complete-teacher-profile",
-        Component: TeacherProfileSetup,
+        path: "complete-employee-profile",
+        Component: EmployeeProfileSetup,
       },
       {
         path: "link-student",

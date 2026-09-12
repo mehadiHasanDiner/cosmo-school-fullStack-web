@@ -1,11 +1,12 @@
 import { useState } from "react";
 import GuardianDashboardHome from "../DashboardHome/GuardianDashboardHome";
 import TeacherDashboardHome from "../DashboardHome/TeacherDashboardHome";
-import AdminDashboardHome from "../DashboardHome/AdminDashboardHome";
 import { FiRefreshCw } from "react-icons/fi";
+import AdminDashboard from "../DashboardHome/AdminDashboard";
 
 const RoleBasedDashboard = ({ user }) => {
   const availableRoles = user?.roles || [];
+  console.log(availableRoles);
 
   // প্রথম available role default হিসেবে নিচ্ছি
   const [activeRole, setActiveRole] = useState(availableRoles[0] || null);
@@ -80,7 +81,8 @@ const RoleBasedDashboard = ({ user }) => {
         <TeacherDashboardHome user={user} embedded />
       )}
 
-      {activeRole === "admin" && <AdminDashboardHome user={user} embedded />}
+      {/* Admin Dashboard এটা এখন কাজ করছে না। TO DO: Fix Admin Dashboard later */}
+      {activeRole === "admin" && <AdminDashboard user={user} embedded />}
     </div>
   );
 };

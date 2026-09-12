@@ -33,7 +33,7 @@ async function run() {
     const cosmoDB = client.db("cosmoSchoolDB");
     const usersCollection = cosmoDB.collection("users");
     const guardiansCollection = cosmoDB.collection("guardians");
-    const teachersCollection = cosmoDB.collection("teachers");
+    const employeesCollection = cosmoDB.collection("employees");
     const studentsCollection = cosmoDB.collection("students");
     const guardianStudentsCollection = cosmoDB.collection("guardianStudents");
 
@@ -107,12 +107,16 @@ async function run() {
           roles = ["guardian"];
           onboardingStep = "guardian-profile";
         }
-        if (accountType === "teacher") {
-          roles = ["teacher"];
-          onboardingStep = "teacher-profile";
+        if (accountType === "teacher_admin") {
+          roles = ["employee"];
+          onboardingStep = "employee-profile";
         }
         if (accountType === "guardian_teacher") {
           roles = ["guardian", "teacher"];
+          onboardingStep = "guardian-profile";
+        }
+        if (accountType === "guardian_admin") {
+          roles = ["guardian", "admin"];
           onboardingStep = "guardian-profile";
         }
 
@@ -461,7 +465,7 @@ async function run() {
 
         // Guardian + Teacher
         if (user.accountType === "guardian_teacher") {
-          nextStep = "teacher-profile";
+          nextStep = "employee-profile";
         }
 
         if (!nextStep) {
@@ -524,24 +528,24 @@ async function run() {
       }
     });
 
-    // teachers related apis
-    app.post("/teachers", async (req, res) => {
+    // employee related apis
+    app.post("/employees", async (req, res) => {
       try {
-        const teacherData = req.body;
+        const employeeData = req.body;
 
         // -----------------------------
-        // 1. Check teacher data
+        // 1. Check employee data
         // -----------------------------
-        if (!teacherData) {
+        if (!employeeData) {
           return res.status(400).send({
             success: false,
-            message: "Teacher data is required",
+            message: "Employee data is required",
           });
         }
 
         // MongoDB user ID ভুল হলে এখানেই request বন্ধ।
         // 2. Validate MongoDB ObjectId
-        if (!ObjectId.isValid(teacherData?.userId)) {
+        if (!ObjectId.isValid(employeeData?.userId)) {
           return res.status(400).send({
             success: false,
             message: "Invalid user Id",
@@ -549,8 +553,8 @@ async function run() {
         }
         // 3. Check required fields
         const user = await usersCollection.findOne({
-          _id: new ObjectId(teacherData?.userId),
-          email: teacherData?.teacherEmail,
+          _id: new ObjectId(employeeData?.userId),
+          email: employeeData?.employeeEmail,
         });
 
         // 4. Check user exists
@@ -561,58 +565,60 @@ async function run() {
           });
         }
 
-        // 5. Check teacher already exists
-        const existingTeacher = await teachersCollection.findOne({
-          userId: new ObjectId(teacherData?.userId),
-          teacherEmail: teacherData?.teacherEmail,
+        // 5. Check employee already exists
+        const existingEmployee = await employeesCollection.findOne({
+          userId: new ObjectId(employeeData?.userId),
+          employeeEmail: employeeData?.employeeEmail,
         });
 
-        if (existingTeacher) {
+        if (existingEmployee) {
           return res.status(409).send({
             success: false,
-            message: "Teacher profile already exists",
+            message: "Employee profile already exists",
           });
         }
-        // 6. Create teacher document
-        const teacher = {
-          userId: new ObjectId(teacherData?.userId),
-          teacherName: teacherData.teacherName,
-          teacherEmail: teacherData.teacherEmail,
-          teacherPhotoURL: teacherData.teacherPhotoURL || "",
-          teacherGender: teacherData.teacherGender,
-          teacherPhoneNo: teacherData.teacherPhoneNo,
-          teacherDateOfBirth: teacherData.teacherDateOfBirth,
-          teacherNID: teacherData.teacherNID,
-          teacherBloodGroup: teacherData.teacherBloodGroup,
-          teacherPresentAddress: teacherData.teacherPresentAddress,
-          teacherCampus: teacherData.teacherCampus,
-          teacherSection: teacherData.teacherSection,
-          teacherSubject: teacherData.teacherSubject,
-          teacherJoiningDate: teacherData.teacherJoiningDate,
+        // 6. Create employee document
+        const employee = {
+          userId: new ObjectId(employeeData?.userId),
+          employeeName: employeeData.employeeName,
+          employeeEmail: employeeData.employeeEmail,
+          employeePhotoURL: employeeData.employeePhotoURL || "",
+          employeeGender: employeeData.employeeGender,
+          employeePhoneNo: employeeData.employeePhoneNo,
+          employeeDateOfBirth: employeeData.employeeDateOfBirth,
+          employeeNID: employeeData.employeeNID,
+          employeeBloodGroup: employeeData.employeeBloodGroup,
+          employeePresentAddress: employeeData.employeePresentAddress,
+          employeeCampus: employeeData.employeeCampus,
+          employeeSection: employeeData.employeeSection,
+          employeeSubject: employeeData.employeeSubject,
+          employeeJoiningDate: employeeData.employeeJoiningDate,
+          employeeRole: employeeData.employeeRole,
 
           createdAt: new Date(),
         };
 
-        const result = await teachersCollection.insertOne(teacher);
+        const result = await employeesCollection.insertOne(employee);
 
         // 6. user collection update kochi
         await usersCollection.updateOne(
           {
-            _id: new ObjectId(teacherData?.userId),
+            _id: new ObjectId(employeeData?.userId),
           },
           {
             $set: {
-              teacherProfileCompleted: true,
+              employeeProfileCompleted: true,
               // =================================================
-              // এখন Teacher Profile post শেষ।
-              // তাই পরবর্তী ধাপ হবে teacher-verification by admin।
+              // এখন Employee Profile post শেষ।
+              // তাই পরবর্তী ধাপ হবে employee-verification by admin।
               // =================================================
-              teacherPhoneNo: teacherData.teacherPhoneNo,
-              teacherSubmittedCampus: teacherData.teacherCampus,
-              teacherSubmittedSection: teacherData.teacherSection,
-              teacherSubmittedSubject: teacherData.teacherSubject,
-              teacherJoiningDate: teacherData.teacherJoiningDate,
-              onboardingStep: "teacher-verification",
+              employeePhoneNo: employeeData.employeePhoneNo,
+              employeeSubmittedCampus: employeeData.employeeCampus,
+              employeeSubmittedSection: employeeData.employeeSection,
+              employeeSubmittedSubject: employeeData.employeeSubject,
+              employeeJoiningDate: employeeData.employeeJoiningDate,
+              roles: [employeeData.employeeRole],
+              onboardingStep: "employee-verification",
               verificationStatus: "pending",
               verificationSubmittedAt: new Date(),
               updatedAt: new Date(),
@@ -622,8 +628,8 @@ async function run() {
 
         res.status(201).send({
           success: true,
-          message: "Teacher profile created",
-          teacherId: result.insertedId,
+          message: "Employee profile created",
+          employeeId: result.insertedId,
         });
       } catch (error) {
         console.error(error);
@@ -829,6 +835,7 @@ async function run() {
         const user = await usersCollection.findOne({
           _id: userObjectId,
         });
+        const availableRoles = user?.roles || [];
 
         if (!user) {
           return res.status(404).send({
@@ -859,14 +866,19 @@ async function run() {
           finalRoles = ["guardian"];
         }
 
-        if (user.accountType === "teacher") {
-          finalRole = "teacher";
-          finalRoles = ["teacher"];
+        if (user.accountType === "teacher_admin") {
+          finalRole = availableRoles.includes("admin") ? "admin" : "teacher";
+          finalRoles = [availableRoles.includes("admin") ? "admin" : "teacher"];
         }
 
         if (user.accountType === "guardian_teacher") {
           finalRole = "guardian_teacher";
           finalRoles = ["guardian", "teacher"];
+        }
+
+        if (user.accountType === "guardian_admin") {
+          finalRole = "guardian_admin";
+          finalRoles = ["guardian", "admin"];
         }
 
         // =====================================================
@@ -918,7 +930,8 @@ async function run() {
         // =====================================================
         if (
           user.accountType === "guardian" ||
-          user.accountType === "guardian_teacher"
+          user.accountType === "guardian_teacher" ||
+          user.accountType === "guardian_admin"
         ) {
           const guardian = await guardiansCollection.findOne({
             userId: userObjectId,
@@ -1008,11 +1021,15 @@ async function run() {
           nextStep = "guardian-student-link";
         }
 
-        if (user.accountType === "teacher") {
-          nextStep = "teacher-profile";
+        if (user.accountType === "teacher_admin") {
+          nextStep = "employee-profile";
         }
 
         if (user.accountType === "guardian_teacher") {
+          nextStep = "guardian-student-link";
+        }
+
+        if (user.accountType === "guardian_admin") {
           nextStep = "guardian-student-link";
         }
 

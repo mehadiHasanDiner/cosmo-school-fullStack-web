@@ -46,22 +46,22 @@ const IncompleteProfile = ({ user }) => {
       ];
     }
 
-    if (user?.accountType === "teacher") {
+    if (user?.accountType === "teacher_admin") {
       return [
         {
           id: "account-type",
           title: "Account Type",
-          description: "Teacher account selected",
+          description: "Employee account selected",
           icon: FiUser,
         },
         {
-          id: "teacher-profile",
-          title: "Teacher Profile",
-          description: "Complete your teacher information",
+          id: "employee-profile",
+          title: "Employee Profile",
+          description: "Complete your employee information",
           icon: FiUsers,
         },
         {
-          id: "teacher-verification",
+          id: "employee-verification",
           title: "Admin Verification",
           description: "School administration will review your profile",
           icon: FiShield,
@@ -74,7 +74,7 @@ const IncompleteProfile = ({ user }) => {
         {
           id: "account-type",
           title: "Account Type",
-          description: "Guardian & Teacher account selected",
+          description: "Guardian & Employee account selected",
           icon: FiUser,
         },
         {
@@ -90,13 +90,48 @@ const IncompleteProfile = ({ user }) => {
           icon: FiBookOpen,
         },
         {
-          id: "teacher-profile",
-          title: "Teacher Profile",
-          description: "Complete your teacher information",
+          id: "employee-profile",
+          title: "Employee Profile",
+          description: "Complete your employee information",
           icon: FiUsers,
         },
         {
-          id: "guardian-teacher-verification",
+          id: "guardian-employee-verification",
+          title: "Admin Verification",
+          description: "School administration will review both profiles",
+          icon: FiShield,
+        },
+      ];
+    }
+
+    if (user?.accountType === "guardian_admin") {
+      return [
+        {
+          id: "account-type",
+          title: "Account Type",
+          description: "Guardian & Employee account selected",
+          icon: FiUser,
+        },
+        {
+          id: "guardian-profile",
+          title: "Guardian Profile",
+          description: "Complete your guardian information",
+          icon: FiUsers,
+        },
+        {
+          id: "guardian-student-link",
+          title: "Link Your Child",
+          description: "Link your child using Student ID",
+          icon: FiBookOpen,
+        },
+        {
+          id: "employee-profile",
+          title: "Employee Profile",
+          description: "Complete your employee information",
+          icon: FiUsers,
+        },
+        {
+          id: "guardian-employee-verification",
           title: "Admin Verification",
           description: "School administration will review both profiles",
           icon: FiShield,
@@ -140,14 +175,14 @@ const IncompleteProfile = ({ user }) => {
       return "/dashboard/link-student";
     }
 
-    if (user?.onboardingStep === "teacher-profile") {
-      return "/dashboard/complete-teacher-profile";
+    if (user?.onboardingStep === "employee-profile") {
+      return "/dashboard/complete-employee-profile";
     }
 
     if (
       user?.onboardingStep === "guardian-verification" ||
-      user?.onboardingStep === "teacher-verification" ||
-      user?.onboardingStep === "guardian-teacher-verification"
+      user?.onboardingStep === "employee-verification" ||
+      user?.onboardingStep === "guardian-employee-verification"
     ) {
       return "/dashboard/verification-pending";
     }
@@ -167,14 +202,14 @@ const IncompleteProfile = ({ user }) => {
       return "Continue Student Linking";
     }
 
-    if (user?.onboardingStep === "teacher-profile") {
-      return "Complete Teacher Profile";
+    if (user?.onboardingStep === "employee-profile") {
+      return "Complete Employee Profile";
     }
 
     if (
       user?.onboardingStep === "guardian-verification" ||
-      user?.onboardingStep === "teacher-verification" ||
-      user?.onboardingStep === "guardian-teacher-verification"
+      user?.onboardingStep === "employee-verification" ||
+      user?.onboardingStep === "guardian-employee-verification"
     ) {
       return "View Verification Status";
     }

@@ -15,17 +15,24 @@ const accountTypes = [
     icon: FaUserFriends,
   },
   {
-    id: "teacher",
-    title: "Teacher",
-    description: "I am currently working as a teacher at Cosmo School.",
-    icon: FaChalkboardTeacher,
-  },
-  {
     id: "guardian_teacher",
     title: "Guardian & Teacher",
     description:
       "I am a teacher of Cosmo School and also a guardian of a student.",
     icon: MdFamilyRestroom,
+  },
+  {
+    id: "guardian_admin",
+    title: "Guardian & Admin",
+    description:
+      "I am an admin of Cosmo School and also a guardian of a student.",
+    icon: MdFamilyRestroom,
+  },
+  {
+    id: "teacher_admin",
+    title: "Admin or Teacher",
+    description: "I am currently working as an employee at Cosmo School.",
+    icon: FaChalkboardTeacher,
   },
 ];
 
@@ -65,11 +72,15 @@ const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
           navigate("/dashboard/complete-guardian-profile");
         }
 
-        if (selectedType === "teacher") {
-          navigate("/dashboard/complete-teacher-profile");
+        if (selectedType === "teacher_admin") {
+          navigate("/dashboard/complete-employee-profile");
         }
 
         if (selectedType === "guardian_teacher") {
+          navigate("/dashboard/complete-guardian-profile");
+        }
+
+        if (selectedType === "guardian_admin") {
           navigate("/dashboard/complete-guardian-profile");
         }
       }
@@ -132,7 +143,7 @@ const AccountTypeSetup = ({ dbUser, refetchDbUser }) => {
         </div>
 
         {/* Cards */}
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {accountTypes.map((item) => {
             const Icon = item.icon;
             const isSelected = selectedType === item.id;

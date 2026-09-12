@@ -73,9 +73,9 @@ const StudentLinkForm = () => {
           navigate("/dashboard");
         }
 
-        // Guardian + Teacher হলে Teacher Profile page
-        if (res.data.nextStep === "teacher-profile") {
-          navigate("/dashboard/complete-teacher-profile");
+        // Guardian + Employee হলে Employee Profile page
+        if (res.data.nextStep === "employee-profile") {
+          navigate("/dashboard/complete-employee-profile");
         }
 
         // সফল link-এর পরে form reset
