@@ -90,7 +90,12 @@ async function run() {
         const query = { _id: new ObjectId(id) };
         const { accountType } = req.body;
 
-        const allowedAccountTypes = ["guardian", "teacher", "guardian_teacher"];
+        const allowedAccountTypes = [
+          "guardian",
+          "teacher_admin",
+          "guardian_teacher",
+          "guardian_admin",
+        ];
 
         // Guardian/Teacher/Both ছাড়া অন্য কিছু এলে request বন্ধ।
         if (!allowedAccountTypes.includes(accountType)) {
