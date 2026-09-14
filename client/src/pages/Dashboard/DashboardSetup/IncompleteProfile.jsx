@@ -13,7 +13,7 @@ const IncompleteProfile = ({ user }) => {
   // =====================================================
   // accountType অনুযায়ী onboarding-এর সব step তৈরি করছি।
   //
-  // Guardian, Teacher এবং Guardian+Teacher-এর
+  // Guardian, employee, Guardian+Teacher এবং Guardian+Admin -এর
   // step সংখ্যা আলাদা হবে।
   // =====================================================
   const getSteps = () => {

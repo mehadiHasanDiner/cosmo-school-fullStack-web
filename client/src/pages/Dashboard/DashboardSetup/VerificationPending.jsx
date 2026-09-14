@@ -16,12 +16,16 @@ const VerificationPending = ({ user }) => {
       return "Guardian";
     }
 
-    if (user?.accountType === "teacher") {
-      return "Teacher";
+    if (user?.accountType === "teacher_admin") {
+      return "Employee";
     }
 
     if (user?.accountType === "guardian_teacher") {
       return "Guardian & Teacher";
+    }
+
+    if (user?.accountType === "guardian_admin") {
+      return "Guardian & Admin";
     }
 
     return "User";

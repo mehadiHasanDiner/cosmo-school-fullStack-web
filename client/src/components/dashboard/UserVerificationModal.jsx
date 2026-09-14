@@ -161,10 +161,10 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
 
             <InfoRow label="Status" value={user.verificationStatus} />
 
-            {user.accountType === "teacher" ||
+            {user.accountType === "teacher_admin" ||
             user.accountType === "guardian_teacher" ? (
               <>
-                <InfoRow label="Teacher's Name" value={user.displayName} />
+                <InfoRow label="Teacher's Name" value={user.name} />
                 <InfoRow
                   label="Teacher's Email"
                   value={user.email}
@@ -172,33 +172,33 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
                 />
                 <InfoRow
                   label="Teacher's Joining Date"
-                  value={user.teacherJoiningDate}
+                  value={user.employeeJoiningDate}
                   icon={FiCalendar}
                 />
                 <InfoRow
                   label="Teacher's Phone No."
-                  value={user.teacherPhoneNo}
+                  value={user.employeePhoneNo}
                   icon={FiPhone}
                 />
                 <InfoRow
                   label="Teacher's Campus"
-                  value={user.teacherSubmittedCampus}
+                  value={user.employeeSubmittedCampus}
                   icon={FiMapPin}
                 />
                 <InfoRow
                   label="Teacher's Section"
-                  value={user.teacherSubmittedSection}
+                  value={user.employeeSubmittedSection}
                   icon={FiHome}
                 />
                 <InfoRow
                   label="Teacher's Subject"
-                  value={user.teacherSubmittedSubject}
+                  value={user.employeeSubmittedSubject}
                   icon={FiBookOpen}
                 />
               </>
             ) : (
               <>
-                <InfoRow label="Full Name" value={user.displayName} />
+                <InfoRow label="Full Name" value={user?.name} />
               </>
             )}
           </InformationSection>

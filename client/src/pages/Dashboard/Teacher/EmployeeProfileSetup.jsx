@@ -56,8 +56,8 @@ const EmployeeProfileSetup = () => {
               navigate("/dashboard");
 
               Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
+                title: "Saved!",
+                text: "Your file has been saved.",
                 icon: "success",
               });
             }
@@ -223,7 +223,7 @@ const EmployeeProfileSetup = () => {
                 {...register("employeeName", {
                   required: true,
                 })}
-                defaultValue={dbUser?.displayName}
+                defaultValue={dbUser?.name}
               />
 
               {errors.employeeName && (
@@ -447,9 +447,9 @@ const EmployeeProfileSetup = () => {
                       focus:ring-4
                       focus:ring-primary/10
                     "
-                placeholder="Teacher NID"
-                {...register("teacherNID", {
-                  required: "Teacher NID is required",
+                placeholder="Employee NID"
+                {...register("employeeNID", {
+                  required: "Employee NID is required",
                   pattern: {
                     value: /^[0-9]+$/,
                     message: "Only numbers are allowed",
@@ -457,20 +457,20 @@ const EmployeeProfileSetup = () => {
                 })}
               />
 
-              {errors.teacherNID && (
+              {errors.employeeNID && (
                 <span className="mb-2 text-sm font-semibold text-error">
-                  {errors.teacherNID.message}
+                  {errors.employeeNID.message}
                 </span>
               )}
 
-              {/* teacher blood group */}
+              {/* employee blood group */}
               <fieldset className="fieldset mb-3">
                 <legend className="mb-1 text-sm font-bold text-neutral">
-                  Teacher Blood Group
+                  Employee Blood Group
                 </legend>
 
                 <select
-                  {...register("teacherBloodGroup", {
+                  {...register("employeeBloodGroup", {
                     required: true,
                   })}
                   defaultValue=""

@@ -3,8 +3,8 @@ import useDbUser from "../../../hooks/useDbUser";
 import AccountTypeSetup from "../DashboardSetup/AccountTypeSetup";
 import IncompleteProfile from "../DashboardSetup/IncompleteProfile";
 import VerificationPending from "../DashboardSetup/VerificationPending";
-import AdminDashboard from "./AdminDashboard";
 import RoleBasedDashboard from "../DashboardSetup/RoleBasedDashboard";
+// import AdminDashboard from "./AdminDashboard";
 
 const DashboardHome = () => {
   const { dbUser, isDbUserLoading, refetchDbUser } = useDbUser();
@@ -31,9 +31,9 @@ const DashboardHome = () => {
   // এটা normal user onboarding-এর আগে check করবো।
   // Admin-এর Guardian/Teacher onboarding প্রয়োজন নেই।
   // =====================================================
-  if (dbUser.role === "admin") {
-    return <AdminDashboard user={dbUser} />;
-  }
+  // if (dbUser.role === "admin") {
+  //   return <AdminDashboard user={dbUser} />;
+  // }
 
   // =====================================================
   // STEP 1:

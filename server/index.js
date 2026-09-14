@@ -473,6 +473,11 @@ async function run() {
           nextStep = "employee-profile";
         }
 
+        // Guardian + admin
+        if (user.accountType === "guardian_admin") {
+          nextStep = "employee-profile";
+        }
+
         if (!nextStep) {
           return res.status(400).send({
             success: false,
