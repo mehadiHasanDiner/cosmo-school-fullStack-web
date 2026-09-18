@@ -25,8 +25,9 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
   const [rejectMode, setRejectMode] = useState(false);
   const [reason, setReason] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  const [employeeRole, setEmployeeRole] = useState("");
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["verification-user", userId],
 
     queryFn: async () => {
@@ -43,25 +44,58 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
   // =====================================================
 
   const handleAccept = async () => {
+    // Details API থেকে employee profile নিচ্ছি।
+    // Employee না থাকলে value হবে undefined/null।
+    const { user, guardian, employee, linkedStudents } = data;
+    const { employee } = data?.employee;
+
+    // Employee profile আছে কি না boolean-এ convert করছি
+    const needsEmployeeRole = !!employee;
+
+    console.log("Needs Employee Role:", needsEmployeeRole);
+    console.log("Selected Employee Role:", employeeRole);
+    // Employee profile থাকলেই শুধু employeeRole required
+
+    // Guardian-only user হলে employee থাকবে না,
+    // তাই এই validation তার ক্ষেত্রে run করবে না
+    if (needsEmployeeRole && !employeeRole) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Employee's Role Required",
+        text: "Please select the employee's role before accepting.",
+      });
+    }
     try {
       setActionLoading(true);
 
-      const res = await axiosSecure.patch(`/admin/users/${userId}/accept`);
+      const res = await axiosSecure.patch(`/admin/users/${userId}/accept`, {
+        // Admin যে employee role select করেছে
+        // সেটা backend-এ পাঠাচ্ছি
+        employeeRole,
+      });
 
       if (res.data.success) {
         await onSuccess();
         Swal.fire({
           position: "center",
           icon: "success",
-          title: `${res.data?.message}`,
+          title: `${res.data?.message} ${res.data?.employeeRole ? ` as ${res.data.employeeRole}` : ""}`,
           showConfirmButton: false,
           timer: 2500,
           background: "#03373D",
           color: "#fff",
         });
+        await refetch();
       }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Approval Failed",
+        text:
+          error.response?.data?.message ||
+          "Failed to accept the user. Please try again.",
+      });
     } finally {
       setActionLoading(false);
     }
@@ -73,7 +107,11 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
 
   const handleReject = async () => {
     if (!reason.trim()) {
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "Reason Required",
+        text: "Please provide a reason for rejecting the user.",
+      });
     }
     console.log(reason);
 
@@ -89,9 +127,17 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
 
       if (res.data.success) {
         await onSuccess();
+        await refetch();
       }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Rejection Failed",
+        text:
+          error.response?.data?.message ||
+          "Failed to reject the user. Please try again.",
+      });
     } finally {
       setActionLoading(false);
     }
@@ -164,34 +210,54 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
             {user.accountType === "teacher_admin" ||
             user.accountType === "guardian_teacher" ? (
               <>
-                <InfoRow label="Teacher's Name" value={user.name} />
+                <InfoRow label="Employee's Role" value={employeeRole} />
+                <select
+                  value={employeeRole}
+                  onChange={(e) => setEmployeeRole(e.target.value)}
+                  className="select select-bordered w-full focus:border-primary focus:outline-none"
+                >
+                  <option value="">Select Employee's Role</option>
+                  <option value="Teacher">Teacher</option>
+                  <option value="Academic Facilitator">
+                    Academic Facilitator
+                  </option>
+                  <option value="Senior Teacher">Senior Teacher</option>
+                  <option value="Assistant Teacher">Assistant Teacher</option>
+                  <option value="Executive">Executive</option>
+                  <option value="Senior Executive">Senior Executive</option>
+                  <option value="Librarian">Librarian</option>
+                  <option value="Principal">Principal</option>
+                  <option value="Vice Principal">Vice Principal</option>
+                </select>
+
+                <InfoRow label="Employee's Name" value={user.name} />
                 <InfoRow
-                  label="Teacher's Email"
+                  label="Employee's Email"
                   value={user.email}
                   icon={FiMail}
                 />
                 <InfoRow
-                  label="Teacher's Joining Date"
+                  label="Employee's Joining Date"
                   value={user.employeeJoiningDate}
                   icon={FiCalendar}
                 />
                 <InfoRow
-                  label="Teacher's Phone No."
+                  label="Employee's Phone No."
                   value={user.employeePhoneNo}
                   icon={FiPhone}
                 />
                 <InfoRow
-                  label="Teacher's Campus"
+                  label="Employee's Campus"
                   value={user.employeeSubmittedCampus}
                   icon={FiMapPin}
                 />
                 <InfoRow
-                  label="Teacher's Section"
+                  label="Employee's Section"
                   value={user.employeeSubmittedSection}
                   icon={FiHome}
                 />
                 <InfoRow
-                  label="Teacher's Subject"
+                  label="Employee's Subject"
                   value={user.employeeSubmittedSubject}
                   icon={FiBookOpen}
                 />

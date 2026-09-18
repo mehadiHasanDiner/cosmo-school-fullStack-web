@@ -833,6 +833,9 @@ async function run() {
       try {
         const { userId } = req.params;
 
+        // Frontend থেকে selected employee role নিচ্ছি
+        const { employeeRole } = req.body;
+
         if (!ObjectId.isValid(userId)) {
           return res.status(400).send({
             success: false,
@@ -845,14 +848,16 @@ async function run() {
         const user = await usersCollection.findOne({
           _id: userObjectId,
         });
-        const availableRoles = user?.roles || [];
 
+        // আগে user আছে কি না check করতে হবে
         if (!user) {
           return res.status(404).send({
             success: false,
             message: "User not found",
           });
         }
+
+        const availableRoles = user?.roles || [];
 
         // =====================================================
         // শুধু pending verification user-ই approve করা যাবে
@@ -864,6 +869,41 @@ async function run() {
           });
         }
 
+        // Employee profile আছে কি না খুঁজছি
+        const employeeProfile = await employeesCollection.findOne({
+          userId: userObjectId,
+        });
+
+        // Employee profile থাকলে employeeRole required
+        if (employeeProfile && !employeeRole) {
+          return res.status(400).send({
+            success: false,
+            message: "Employee role is required",
+          });
+        }
+
+        // Frontend থেকে arbitrary role পাঠিয়ে যেন
+        // database update করা না যায়, তাই whitelist করছি
+        const allowedEmployeeRoles = [
+          "Teacher",
+          "Academic Facilitator",
+          "Senior Teacher",
+          "Assistant Teacher",
+          "Executive",
+          "Senior Executive",
+          "Librarian",
+          "Principal",
+          "Vice Principal",
+        ];
+
+        if (employeeRole && !allowedEmployeeRoles.includes(employeeRole)) {
+          return res.status(400).send({
+            success: false,
+            message: "Invalid employee role",
+          });
+        }
+
+        // Website account role তৈরি করছি
         let finalRole = "user";
         let finalRoles = [];
 
@@ -934,6 +974,22 @@ async function run() {
           },
         );
 
+        // Employee profile থাকলে তার employeeRole
+        // Admin-এর selected value দিয়ে update করছি
+        if (employeeProfile) {
+          await employeesCollection.updateOne(
+            {
+              userId: userObjectId,
+            },
+            {
+              $set: {
+                employeeRole: employeeRole,
+                updatedAt: new Date(),
+              },
+            },
+          );
+        }
+
         // =====================================================
         // Guardian হলে linked student relation-গুলোকেও
         // approved করছি
@@ -965,7 +1021,10 @@ async function run() {
 
         return res.send({
           success: true,
+
           message: "User approved successfully",
+          //Frontend চাইলে updated role দেখাতে পারবে
+          employeeRole: employeeProfile ? employeeRole : null,
         });
       } catch (error) {
         console.error("Approve user error:", error);
