@@ -628,6 +628,7 @@ async function run() {
               employeeSubmittedSubject: employeeData.employeeSubject,
               employeeJoiningDate: employeeData.employeeJoiningDate,
               roles: [employeeData.employeeRole],
+              employeeSubmittedRole: employeeData.employeeRole,
               onboardingStep: "employee-verification",
               verificationStatus: "pending",
               verificationSubmittedAt: new Date(),

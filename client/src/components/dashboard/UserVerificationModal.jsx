@@ -46,19 +46,20 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
   const handleAccept = async () => {
     // Details API থেকে employee profile নিচ্ছি।
     // Employee না থাকলে value হবে undefined/null।
-    const { user, guardian, employee, linkedStudents } = data;
-    const { employee } = data?.employee;
+    const userProfile = data?.user;
+    console.log(userProfile);
 
-    // Employee profile আছে কি না boolean-এ convert করছি
-    const needsEmployeeRole = !!employee;
+    // accountType যদি "guardian" না হয়, তাহলে employee profile থাকা উচিত।
+    if (userProfile?.accountType !== "guardian") {
+      console.log("This user is not a guardian");
+    }
 
-    console.log("Needs Employee Role:", needsEmployeeRole);
     console.log("Selected Employee Role:", employeeRole);
     // Employee profile থাকলেই শুধু employeeRole required
 
     // Guardian-only user হলে employee থাকবে না,
     // তাই এই validation তার ক্ষেত্রে run করবে না
-    if (needsEmployeeRole && !employeeRole) {
+    if (userProfile?.accountType !== "guardian") {
       return Swal.fire({
         icon: "warning",
         title: "Employee's Role Required",
