@@ -312,6 +312,14 @@ const IncompleteProfile = ({ user }) => {
             You can leave anytime. Your progress will be saved and you can
             continue from where you stopped.
           </p>
+          {user?.rejectionReason && (
+            <p className="mt-2 text-sm text-red-600/55">
+              <span className="font-semibold">
+                Your account has been rejected. <br /> Rejection Reason:
+              </span>{" "}
+              {user?.rejectionReason}
+            </p>
+          )}
 
           <div className="mt-8 space-y-1">
             {steps.map((step, index) => {

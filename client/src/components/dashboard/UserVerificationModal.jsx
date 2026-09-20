@@ -12,6 +12,7 @@ import {
   FiCalendar,
   FiUsers,
   FiHome,
+  FiBriefcase,
 } from "react-icons/fi";
 
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -44,22 +45,20 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
   // =====================================================
 
   const handleAccept = async () => {
-    // Details API থেকে employee profile নিচ্ছি।
-    // Employee না থাকলে value হবে undefined/null।
+    // Details API থেকে user profile নিচ্ছি
     const userProfile = data?.user;
-    console.log(userProfile);
 
-    // accountType যদি "guardian" না হয়, তাহলে employee profile থাকা উচিত।
-    if (userProfile?.accountType !== "guardian") {
-      console.log("This user is not a guardian");
-    }
-
+    console.log("User Profile:", userProfile);
     console.log("Selected Employee Role:", employeeRole);
-    // Employee profile থাকলেই শুধু employeeRole required
 
-    // Guardian-only user হলে employee থাকবে না,
-    // তাই এই validation তার ক্ষেত্রে run করবে না
-    if (userProfile?.accountType !== "guardian") {
+    // Guardian-only user ছাড়া অন্য সব user-এর জন্য
+    // employeeRole select করা বাধ্যতামূলক।
+    // Guardian + !employeeRole  → সমস্যা নেই
+    // Teacher + !employeeRole   → Warning
+    // Admin + !employeeRole     → Warning
+    // অন্য employee + !role     → Warning
+
+    if (userProfile?.accountType !== "guardian" && !employeeRole) {
       return Swal.fire({
         icon: "warning",
         title: "Employee's Role Required",
@@ -69,11 +68,27 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
     try {
       setActionLoading(true);
 
-      const res = await axiosSecure.patch(`/admin/users/${userId}/accept`, {
-        // Admin যে employee role select করেছে
-        // সেটা backend-এ পাঠাচ্ছি
-        employeeRole,
-      });
+      // Request data তৈরি করছি
+      // Guardian হলে: {}
+      // Guardian ছাড়া অন্য user হলে:
+      // { employeeRole: "teacher" }
+
+      let requestData;
+      if (userProfile?.accountType === "guardian") {
+        // Guardian হলে কোনো employee role পাঠাব না
+        requestData = {};
+      } else {
+        // Guardian ছাড়া অন্য user হলে selected role পাঠাব
+        requestData = {
+          employeeRole: employeeRole,
+        };
+      }
+      console.log("Backend-এ যাবে:", requestData);
+
+      const res = await axiosSecure.patch(
+        `/admin/users/${userId}/accept`,
+        requestData,
+      );
 
       if (res.data.success) {
         await onSuccess();
@@ -209,7 +224,8 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
             <InfoRow label="Status" value={user.verificationStatus} />
 
             {user.accountType === "teacher_admin" ||
-            user.accountType === "guardian_teacher" ? (
+            user.accountType === "guardian_teacher" ||
+            user.accountType === "guardian_admin" ? (
               <>
                 <InfoRow label="Employee's Role" value={employeeRole} />
                 <select
@@ -261,6 +277,11 @@ const UserVerificationModal = ({ userId, onClose, onSuccess }) => {
                   label="Employee's Subject"
                   value={user.employeeSubmittedSubject}
                   icon={FiBookOpen}
+                />
+                <InfoRow
+                  label="Employee's Role"
+                  value={user.employeeSubmittedRole}
+                  icon={FiBriefcase}
                 />
               </>
             ) : (
