@@ -6,6 +6,7 @@ import logoImg from "./../assets/logo.png";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -34,7 +35,7 @@ const DashboardLayout = () => {
             </svg>
           </label>
           <div className="px-4">Cosmo Dashboard</div>
-          <p className="font-bold">Email: {user.email}</p>
+          <p className="font-bold">Email: {user.role}</p>
         </nav>
         {/* Page content here */}
         <div className="p-4">
