@@ -5,6 +5,7 @@ import AdminDashboard from "../DashboardHome/AdminDashboard";
 import { useOutletContext } from "react-router";
 
 const RoleBasedDashboard = ({ user }) => {
+  // DashboardLayout থেকে একই activeRole state পাচ্ছি
   const { availableRoles, activeRole, setActiveRole } = useOutletContext();
   console.log(user);
 
