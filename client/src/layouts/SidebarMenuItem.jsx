@@ -14,6 +14,7 @@ const SidebarMenuItem = ({ menu }) => {
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
+          data-tip={menu.title}
           className="
             flex w-full items-center justify-between
             rounded-xl px-4 py-3
@@ -21,12 +22,12 @@ const SidebarMenuItem = ({ menu }) => {
             transition
             hover:bg-primary/10
             hover:text-primary
+            is-drawer-close:tooltip is-drawer-close:tooltip-right
           "
         >
-          <span className="flex items-center gap-3">
+          <span className="flex items-center gap-3 ">
             {Icon && <Icon className="text-lg" />}
-
-            {menu.title}
+            <span className=" is-drawer-close:hidden">{menu.title}</span>
           </span>
 
           <FiChevronDown
@@ -77,12 +78,14 @@ const SidebarMenuItem = ({ menu }) => {
     <NavLink
       to={menu.path}
       end={menu.path === "/dashboard"}
+      data-tip={menu.title}
       className={({ isActive }) =>
         `
           flex items-center gap-3
           rounded-xl px-4 py-3
           font-medium
           transition
+          is-drawer-close:tooltip is-drawer-close:tooltip-right
 
           ${
             isActive
@@ -93,8 +96,7 @@ const SidebarMenuItem = ({ menu }) => {
       }
     >
       {Icon && <Icon className="text-lg" />}
-
-      {menu.title}
+      <span className="is-drawer-close:hidden">{menu.title}</span>
     </NavLink>
   );
 };
