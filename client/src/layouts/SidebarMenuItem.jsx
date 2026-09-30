@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { NavLink } from "react-router";
 
-const SidebarMenuItem = ({ menu }) => {
+const SidebarMenuItem = ({ menu, isDrawerOpen }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const Icon = menu.icon;
 
@@ -10,48 +10,110 @@ const SidebarMenuItem = ({ menu }) => {
   // তাহলে এটি dropdown/submenu
   if (menu.children) {
     return (
-      <div>
+      <div className="w-full">
         <button
           type="button"
-          onClick={() => setMenuOpen(!menuOpen)}
+          // Sidebar collapsed থাকলে submenu খুলব না।
+          // Expanded থাকলেই dropdown কাজ করবে।
+          onClick={() => {
+            if (!isDrawerOpen) return;
+            setMenuOpen((prev) => !prev);
+          }}
           data-tip={menu.title}
-          className="
-            flex w-full items-center justify-between
-            rounded-xl px-4 py-3
-            text-left font-medium
-            transition
+          className={`
+            flex w-full
+            items-center
+            rounded-xl
+            px-3 py-3
+
+            font-medium
+            transition-all
+            duration-200
+
             hover:bg-primary/10
             hover:text-primary
-            is-drawer-close:tooltip is-drawer-close:tooltip-right
-          "
+
+            ${
+              !isDrawerOpen
+                ? "tooltip tooltip-right justify-center"
+                : "justify-between"
+            }
+          `}
         >
-          <span className="flex items-center gap-3 ">
-            {Icon && <Icon className="text-lg" />}
-            <span className=" is-drawer-close:hidden">{menu.title}</span>
+          {/* =========================================
+              LEFT SIDE
+              Icon + Menu Name
+          ========================================= */}
+
+          <span
+            className={`
+              flex items-center
+              ${isDrawerOpen ? "gap-3" : "justify-center"}
+            `}
+          >
+            {Icon && <Icon className="shrink-0 text-lg" />}
+
+            {/* Menu Name */}
+
+            {isDrawerOpen && (
+              <span
+                className={`
+                  whitespace-nowrap
+                  overflow-hidden
+                  transition-all
+                  duration-300
+
+                  ${isDrawerOpen ? "max-w-40 opacity-100" : "max-w-0 opacity-0"}
+                `}
+              >
+                {menu.title}
+              </span>
+            )}
           </span>
 
-          <FiChevronDown
-            className={`
-              transition-transform duration-300
-              ${menuOpen ? "rotate-180" : ""}
-            `}
-          />
+          {isDrawerOpen && (
+            <FiChevronDown
+              className={`transition-all duration-300
+                ${isDrawerOpen ? "visible opacity-100" : "invisible w-0 opacity-0"}
+                ${menuOpen ? "rotate-180" : "rotate-0"}
+              `}
+            />
+          )}
         </button>
 
         {/* Submenu */}
 
-        {menuOpen && (
-          <div className="ml-6 mt-1 space-y-1 border-l border-primary/20 pl-3">
+        {/* ==========================================
+            SUBMENU
+
+            Sidebar open + menu open
+            দুটো true হলেই submenu দেখাবে
+        ========================================== */}
+
+        {isDrawerOpen && menuOpen && (
+          <div
+            className="
+              ml-6 mt-1
+              space-y-1
+              border-l
+              border-primary/20
+              pl-3
+            "
+          >
             {menu.children.map((child) => (
               <NavLink
                 key={child.path}
                 to={child.path}
                 className={({ isActive }) =>
                   `
-                    block rounded-lg
+                    block
+                    whitespace-nowrap
+                    rounded-lg
                     px-4 py-2
+
                     text-sm
-                    transition
+                    transition-all
+                    duration-200
 
                     ${
                       isActive
@@ -81,11 +143,16 @@ const SidebarMenuItem = ({ menu }) => {
       data-tip={menu.title}
       className={({ isActive }) =>
         `
-          flex items-center gap-3
-          rounded-xl px-4 py-3
+          flex items-center
+          rounded-xl
+          px-3 py-3
+
           font-medium
-          transition
-          is-drawer-close:tooltip is-drawer-close:tooltip-right
+
+          transition-all
+          duration-200
+
+          ${!isDrawerOpen ? "tooltip tooltip-right justify-center" : "gap-3"}
 
           ${
             isActive
@@ -95,8 +162,10 @@ const SidebarMenuItem = ({ menu }) => {
         `
       }
     >
-      {Icon && <Icon className="text-lg" />}
-      <span className="is-drawer-close:hidden">{menu.title}</span>
+      {Icon && <Icon className="shrink-0 text-lg" />}
+      {/* Name only when sidebar open */}
+
+      {isDrawerOpen && <span className="whitespace-nowrap">{menu.title}</span>}
     </NavLink>
   );
 };

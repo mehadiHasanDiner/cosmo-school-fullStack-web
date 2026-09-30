@@ -1,96 +1,152 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link, Outlet } from "react-router";
 import DashboardMenuContent from "./DashboardMenuContent";
 import logoImg from "./../assets/logo.png";
-import { RiMenuFold4Fill } from "react-icons/ri";
+import { RiMenuFold4Fill, RiMenuUnfold4Fill } from "react-icons/ri";
 
 const DashboardLayoutContent = ({ dbUser }) => {
-  // Loading শেষ হওয়ার পর এই component render হবে
-  // তাই dbUser.roles এখানে already পাওয়া যাবে
-
-  // DaisyUI drawer checkbox-কে reference করছি
-  const drawerRef = useRef(null);
   const availableRoles = dbUser?.roles || [];
 
-  // User-এর প্রথম role default role
   const [activeRole, setActiveRole] = useState(availableRoles[0]);
 
-  // Button Click → Open / Close
+  // Sidebar বর্তমানে open/expanded কি না
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Button click করে permanently open করা হয়েছে কি না
+  const [isPinnedOpen, setIsPinnedOpen] = useState(false);
+
+  // =====================================================
+  // Menu button click
+  // =====================================================
   const toggleDrawer = () => {
-    if (!drawerRef.current) return;
-    drawerRef.current.checked = !drawerRef.current.checked;
+    const nextState = !isPinnedOpen;
+
+    setIsPinnedOpen(nextState);
+    setIsDrawerOpen(nextState);
   };
 
-  // Mouse sidebar-এর উপর গেলে Open
+  // =====================================================
+  // Sidebar hover করলে temporary open
+  // =====================================================
   const handleMouseEnter = () => {
-    if (!drawerRef.current) return;
-
-    drawerRef.current.checked = true;
+    if (!isPinnedOpen) {
+      setIsDrawerOpen(true);
+    }
   };
 
-  // Mouse sidebar থেকে চলে গেলে → Close
+  // =====================================================
+  // Mouse বের হলে temporary sidebar close
+  // কিন্তু pinned হলে open থাকবে
+  // =====================================================
   const handleMouseLeave = () => {
-    if (!drawerRef.current) return;
-
-    drawerRef.current.checked = false;
+    if (!isPinnedOpen) {
+      setIsDrawerOpen(false);
+    }
   };
 
   return (
-    <div className="drawer lg:drawer-open">
-      <input ref={drawerRef} type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-        {/* Navbar */}
-        <nav className=" navbar w-full bg-base-300">
-          <button
-            type="button"
-            onClick={toggleDrawer}
-            aria-label="Toggle sidebar"
-            className="btn btn-square btn-ghost"
-          >
-            {/* Sidebar toggle icon */}
-            <RiMenuFold4Fill size={20} />
-          </button>
-          <div className="">
-            <span>
-              <Link to="/">
-                <img className="w-1/2" src={logoImg} alt="" />
-              </Link>
-            </span>
-          </div>
-        </nav>
-        {/* Page content here */}
+    <div className="min-h-screen bg-base-100">
+      {/* =================================================
+          TOP NAVBAR
+      ================================================= */}
+      <nav
+        className="
+          fixed left-0 right-0 top-0 z-40
+          flex h-15 items-center
+          border-b border-base-300
+          bg-base-300
+        "
+      >
+        {/* ===============================================
+            MENU BUTTON
+
+            Sidebar-এর প্রথম 56px জায়গায় থাকবে
+        =============================================== */}
+        <button
+          type="button"
+          onClick={toggleDrawer}
+          aria-label={isPinnedOpen ? "Close sidebar" : "Open sidebar"}
+          className="
+            flex h-15 w-14 shrink-0
+            items-center justify-center
+            text-neutral
+            transition-all duration-300
+            hover:bg-primary/10
+            hover:text-primary
+          "
+        >
+          {isPinnedOpen ? (
+            <RiMenuUnfold4Fill size={21} />
+          ) : (
+            <RiMenuFold4Fill size={21} />
+          )}
+        </button>
+
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img className="h-9 w-auto" src={logoImg} alt="Cosmo School" />
+        </Link>
+      </nav>
+
+      {/* =================================================
+          SIDEBAR
+      ================================================= */}
+      <aside
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className={`
+          fixed bottom-0 left-0 top-15 z-50
+
+          overflow-x-hidden
+          overflow-y-auto
+
+          border-r border-base-300
+          bg-base-200
+
+          transition-[width]
+          duration-300
+          ease-in-out
+
+          ${isDrawerOpen ? "w-64" : "w-14"}
+        `}
+      >
+        <ul className="menu w-full p-2">
+          <DashboardMenuContent
+            dbUser={dbUser}
+            availableRoles={availableRoles}
+            activeRole={activeRole}
+            setActiveRole={setActiveRole}
+            isDrawerOpen={isDrawerOpen}
+          />
+        </ul>
+      </aside>
+
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
+      <main
+        className={`
+          min-h-screen
+          pt-15
+
+          transition-[margin]
+          duration-300
+          ease-in-out
+
+          ${isPinnedOpen ? "ml-64" : "ml-14"}
+        `}
+      >
         <div className="p-4">
           <Outlet
-            context={{ dbUser, availableRoles, activeRole, setActiveRole }}
-          ></Outlet>
+            context={{
+              dbUser,
+              availableRoles,
+              activeRole,
+              setActiveRole,
+            }}
+          />
         </div>
-      </div>
-
-      <div className="drawer-side is-drawer-close:overflow-visible">
-        <div
-          className="drawer-overlay"
-          onClick={() => {
-            if (drawerRef.current) {
-              drawerRef.current.checked = false;
-            }
-          }}
-        ></div>
-        <div
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          className="mt-15 flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64"
-        >
-          {/* Sidebar content here */}
-          <ul className="menu w-full grow">
-            <DashboardMenuContent
-              dbUser={dbUser}
-              availableRoles={availableRoles}
-              activeRole={activeRole}
-              setActiveRole={setActiveRole}
-            />
-          </ul>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
