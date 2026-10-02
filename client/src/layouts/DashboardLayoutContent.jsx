@@ -44,8 +44,12 @@ const DashboardLayoutContent = ({ dbUser }) => {
     }
   };
 
+  const roleName = activeRole
+    ? activeRole.charAt(0).toUpperCase() + activeRole.slice(1).toLowerCase()
+    : "User";
+
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="min-h-screen bg-base-100 body-font">
       {/* =================================================
           TOP NAVBAR
       ================================================= */}
@@ -59,7 +63,6 @@ const DashboardLayoutContent = ({ dbUser }) => {
       >
         {/* ===============================================
             MENU BUTTON
-
             Sidebar-এর প্রথম 56px জায়গায় থাকবে
         =============================================== */}
         <button
@@ -112,10 +115,7 @@ const DashboardLayoutContent = ({ dbUser }) => {
       >
         <ul className="menu w-full p-2">
           <DashboardMenuContent
-            dbUser={dbUser}
-            availableRoles={availableRoles}
             activeRole={activeRole}
-            setActiveRole={setActiveRole}
             isDrawerOpen={isDrawerOpen}
           />
         </ul>
