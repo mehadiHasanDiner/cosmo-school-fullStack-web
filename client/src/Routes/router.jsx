@@ -13,6 +13,7 @@ import GuardianProfileSetup from "../pages/Dashboard/Guardian/GuardianProfileSet
 import StudentLinkForm from "../pages/Dashboard/DashboardSetup/StudentLinkForm";
 import AdminVerification from "../pages/Dashboard/Admin/AdminVerification";
 import EmployeeProfileSetup from "../pages/Dashboard/Teacher/EmployeeProfileSetup";
+import OnboardingRoute from "./OnboardingRoute";
 
 export const router = createBrowserRouter([
   {
@@ -62,15 +63,48 @@ export const router = createBrowserRouter([
       },
       {
         path: "complete-guardian-profile",
-        Component: GuardianProfileSetup,
+        element: (
+          <OnboardingRoute
+            allowedSteps={["guardian-profile"]}
+            allowedAccountTypes={[
+              "guardian",
+              "guardian_teacher",
+              "guardian_admin",
+            ]}
+          >
+            <GuardianProfileSetup />
+          </OnboardingRoute>
+        ),
       },
       {
         path: "complete-employee-profile",
-        Component: EmployeeProfileSetup,
+        element: (
+          <OnboardingRoute
+            allowedSteps={["employee-profile"]}
+            allowedAccountTypes={[
+              "teacher_admin",
+              "guardian_teacher",
+              "guardian_admin",
+            ]}
+          >
+            <EmployeeProfileSetup />
+          </OnboardingRoute>
+        ),
       },
       {
         path: "link-student",
-        Component: StudentLinkForm,
+        element: (
+          <OnboardingRoute
+            allowedSteps={["student-link"]}
+            allowedAccountTypes={[
+              "guardian",
+              "guardian_teacher",
+              "guardian_admin",
+            ]}
+          >
+            <StudentLinkForm />
+          </OnboardingRoute>
+        ),
       },
       {
         path: "admin/verifications",
