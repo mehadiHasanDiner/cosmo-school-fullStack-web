@@ -1,16 +1,31 @@
-# React + Vite
+# CosmoSchools.org
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[Live Link](https://cosmoschools.netlify.app)
 
-Currently, two official plugins are available:
+## For Testing (Admin):
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Email: test123@email.com
+- Password: 123456
 
-## React Compiler
+## Resources & Technology I Used
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Json web token (JWT) -> [For security reasons](https://jwt.io/)
+TnaStack Query -> [For making fetch more easier ](https://https://tanstack.com/query/latest)
+Axios, Axios Interceptor -> [for give header in every api call and for security](https://axios-http.com/docs/intro)
+Payment system -> [stripe js](https://docs.stripe.com/payments/elements)
+Every page title -> [react helmets](https://www.npmjs.com/package/react-helmet-async)
+Firebase Authentication System -> [Firebase Authentication System](https://firebase.google.com/)
+Form validation and submission -> [React hook form](https://react-hook-form.com/)
 
-## Expanding the ESLint configuration
+## For Styling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Banner Animation -> [Swiper js](https://swiperjs.com/)
+Contact us Animation -> [Lottie File](https://lottiefiles.com/)
+Alert Animation -> [Sweet alert js](https://sweetalert2.github.io/)
+Alert Animation -> [React hot Tost](https://react-hot-toast.com/)
+
+Icon -> [React Icon](https://react-icons.github.io/react-icons/)
+
+## React Router Dom v6.4
+
+Documentation Link -> [Link](https://reactrouter.com/en/main/start/overview)
