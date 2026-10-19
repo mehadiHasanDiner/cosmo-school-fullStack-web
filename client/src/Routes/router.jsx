@@ -14,6 +14,7 @@ import StudentLinkForm from "../pages/Dashboard/DashboardSetup/StudentLinkForm";
 import AdminVerification from "../pages/Dashboard/Admin/AdminVerification";
 import EmployeeProfileSetup from "../pages/Dashboard/Teacher/EmployeeProfileSetup";
 import OnboardingRoute from "./OnboardingRoute";
+import RoleRoute from "./RoleRoute";
 
 export const router = createBrowserRouter([
   {
@@ -95,7 +96,7 @@ export const router = createBrowserRouter([
         path: "link-student",
         element: (
           <OnboardingRoute
-            allowedSteps={["student-link"]}
+            allowedSteps={["guardian-student-link"]}
             allowedAccountTypes={[
               "guardian",
               "guardian_teacher",
@@ -108,7 +109,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "admin/verifications",
-        Component: AdminVerification,
+        element: (
+          <RoleRoute allowedRoles={["admin"]}>
+            <AdminVerification />
+          </RoleRoute>
+        ),
       },
     ],
   },
