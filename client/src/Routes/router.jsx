@@ -15,6 +15,8 @@ import AdminVerification from "../pages/Dashboard/Admin/AdminVerification";
 import EmployeeProfileSetup from "../pages/Dashboard/Teacher/EmployeeProfileSetup";
 import OnboardingRoute from "./OnboardingRoute";
 import RoleRoute from "./RoleRoute";
+import ClubsPage from "../pages/Clubs/ClubsPage";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +35,12 @@ export const router = createBrowserRouter([
             <Admission />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "club",
+        Component: ClubsPage,
+        loader: () => fetch("/clubsData.json").then((res) => res.json()),
+        hydrateFallbackElement: <LoadingSpinner />,
       },
     ],
   },

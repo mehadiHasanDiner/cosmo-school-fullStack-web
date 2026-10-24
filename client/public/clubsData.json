@@ -1,0 +1,90 @@
+[
+    {
+        "id": 1,
+        "name": "Information Technology",
+        "description": "Explore coding, robotics, and digital innovation",
+        "days": "Wed & Sat",
+        "time": "3:30 PM - 5:00 PM",
+        "location": "Computer Lab",
+        "instructor": "Mr. Ahmed Hassan",
+        "image": "/clubs/it.png",
+        "gradient": "from-[#2783FF] to-[#00B5D8]"
+    },
+    {
+        "id": 2,
+        "name": "General Knowledge",
+        "description": "Expand horizons through quizzes and debates",
+        "days": "Mon & Thu",
+        "time": "3:30 PM - 4:30 PM",
+        "location": "Library",
+        "instructor": "Ms. Fatima Rahman",
+        "image": "/clubs/gk.png",
+        "gradient": "from-[#00C58E] to-[#00B6A7]"
+    },
+    {
+        "id": 3,
+        "name": "Drama",
+        "description": "Express yourself through theater and performing arts",
+        "days": "Tue & Fri",
+        "time": "4:00 PM - 5:30 PM",
+        "location": "Auditorium",
+        "instructor": "Mr. Kamal Ahmed",
+        "image": "/clubs/drama.png",
+        "gradient": "from-[#FF2948] to-[#F52C92]"
+    },
+    {
+        "id": 4,
+        "name": "Art",
+        "description": "Unleash creativity through painting and visual arts",
+        "days": "Mon & Wed",
+        "time": "3:30 PM - 5:00 PM",
+        "location": "Art Room",
+        "instructor": "Ms. Nadia Islam",
+        "image": "/clubs/art.png",
+        "gradient": "from-[#B13AFF] to-[#ED30AD]"
+    },
+    {
+        "id": 5,
+        "name": "Music",
+        "description": "Discover the joy of music and instruments",
+        "days": "Thu & Sat",
+        "time": "3:30 PM - 5:00 PM",
+        "location": "Music Room",
+        "instructor": "Mr. Rafiq Mahmud",
+        "image": "/clubs/music.png",
+        "gradient": "from-[#FF6500] to-[#FF304A]"
+    },
+    {
+        "id": 6,
+        "name": "Karate",
+        "description": "Build discipline and strength through martial arts",
+        "days": "Tue, Thu & Sat",
+        "time": "4:00 PM - 5:30 PM",
+        "location": "Sports Complex",
+        "instructor": "Sensei Rahman Ali",
+        "image": "/clubs/karate.png",
+        "gradient": "from-[#364153] to-[#111827]"
+    },
+    {
+        "id": 7,
+        "name": "English Language",
+        "description": "Master communication through literature",
+        "days": "Mon & Fri",
+        "time": "3:30 PM - 4:30 PM",
+        "location": "Language Lab",
+        "instructor": "Ms. Sarah Khan",
+        "image": "/clubs/english.png",
+        "gradient": "from-[#6556FF] to-[#A93CFF]"
+    },
+    {
+        "id": 8,
+        "name": "Science",
+        "description": "Discover wonders through experiments and innovation",
+        "days": "Wed & Sat",
+        "time": "3:30 PM - 5:00 PM",
+        "location": "Science Lab",
+        "instructor": "Dr. Mahmud Hasan",
+        "image": "/clubs/science.png",
+        "gradient": "from-[#00CB65] to-[#00B887]"
+    }
+]
