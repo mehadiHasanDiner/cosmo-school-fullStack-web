@@ -17,6 +17,8 @@ import OnboardingRoute from "./OnboardingRoute";
 import RoleRoute from "./RoleRoute";
 import ClubsPage from "../pages/Clubs/ClubsPage";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import GalleryPage from "../pages/Gallery/GalleryPage";
+import CareerPage from "../pages/Career/CareerPage";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
         Component: ClubsPage,
         loader: () => fetch("/clubsData.json").then((res) => res.json()),
         hydrateFallbackElement: <LoadingSpinner />,
+      },
+      {
+        path: "gallery",
+        Component: GalleryPage,
+      },
+      {
+        path: "career",
+        Component: CareerPage,
       },
     ],
   },

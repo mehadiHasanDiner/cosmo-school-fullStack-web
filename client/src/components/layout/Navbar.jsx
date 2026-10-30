@@ -134,7 +134,7 @@ const Navbar = () => {
           className={`
             mx-auto flex items-center justify-between
             px-4 transition-all duration-500
-            sm:px-6 lg:px-8
+            sm:px-6 lg:px-2
             ${isScrolled ? "h-16" : "h-20 lg:h-24"}
           `}
           aria-label="Primary navigation"
