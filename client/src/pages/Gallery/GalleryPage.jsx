@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiEye, FiImage, FiRefreshCw } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import GalleryLightbox from "./GalleryLightbox";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 // ================================================
 // CATEGORY DATA
@@ -26,6 +26,8 @@ const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentIndex, setCurrentIndex] = useState(null);
 
+  const axiosSecure = useAxiosSecure();
+
   // ================================================
   // LOAD IMAGES FROM MONGODB API
   // ================================================
@@ -40,7 +42,7 @@ const GalleryPage = () => {
     queryKey: ["gallery-images", activeCategory],
 
     queryFn: async () => {
-      const res = await axios.get("/gallery/images", {
+      const res = await axiosSecure.get("/gallery/images", {
         params: {
           category: activeCategory,
         },

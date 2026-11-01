@@ -124,10 +124,10 @@ const GalleryLightbox = ({
             className="flex w-full max-w-5xl flex-col items-center"
           >
             <img
-              src={currentImage.image}
+              src={currentImage.imageUrl}
               alt={currentImage.title}
               className="
-                max-h-[65vh] w-auto max-w-full
+                max-h-[75vh] w-auto max-w-full
                 rounded-xl object-contain
                 shadow-2xl
               "
