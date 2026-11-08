@@ -19,6 +19,8 @@ import ClubsPage from "../pages/Clubs/ClubsPage";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import GalleryPage from "../pages/Gallery/GalleryPage";
 import CareerPage from "../pages/Career/CareerPage";
+import AllUsers from "../pages/Dashboard/Admin/AllUsers";
+import RejectedUser from "../pages/Dashboard/Admin/RejectedUser";
 
 export const router = createBrowserRouter([
   {
@@ -126,10 +128,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "admin/verifications",
+        path: "admin/admin-verification",
         element: (
           <RoleRoute allowedRoles={["admin"]}>
             <AdminVerification />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/users",
+        element: (
+          <RoleRoute allowedRoles={["admin"]}>
+            <AllUsers />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/rejected-users",
+        element: (
+          <RoleRoute allowedRoles={["admin"]}>
+            <RejectedUser />
           </RoleRoute>
         ),
       },

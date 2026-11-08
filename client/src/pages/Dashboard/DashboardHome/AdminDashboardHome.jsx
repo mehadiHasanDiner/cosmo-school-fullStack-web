@@ -164,7 +164,7 @@ const AdminDashboardHome = ({ user, stats }) => {
               </div>
 
               <Link
-                to="/dashboard/admin/verifications"
+                to="/dashboard/admin/admin-verification"
                 className="
                   btn btn-sm rounded-xl
                   border-primary/20 bg-primary/10
@@ -241,7 +241,7 @@ const AdminDashboardHome = ({ user, stats }) => {
               <QuickLink
                 icon={FiUserCheck}
                 title="Verify Users"
-                path="/dashboard/admin/verifications"
+                path="/dashboard/admin/admin-verification"
               />
 
               <QuickLink

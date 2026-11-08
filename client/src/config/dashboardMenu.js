@@ -29,16 +29,17 @@ export const adminMenus = [
 
     children: [
       {
-        title: "Pending Approvals",
-        path: "/dashboard/pending-users",
+        title: "All Users",
+        path: "/dashboard/admin/users",
       },
       {
-        title: "All Users",
-        path: "/dashboard/users",
+        title: "User Verification",
+        path: "/dashboard/admin/admin-verification",
       },
+
       {
         title: "Rejected Users",
-        path: "/dashboard/rejected-users",
+        path: "/dashboard/admin/rejected-users",
       },
     ],
   },
