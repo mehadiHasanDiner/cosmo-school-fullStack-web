@@ -21,6 +21,8 @@ import GalleryPage from "../pages/Gallery/GalleryPage";
 import CareerPage from "../pages/Career/CareerPage";
 import AllUsers from "../pages/Dashboard/Admin/AllUsers";
 import RejectedUser from "../pages/Dashboard/Admin/RejectedUser";
+import CreateStudentIdCard from "../pages/Dashboard/Admin/CreateStudentIdCard";
+import CreateEmployeeIdCard from "../pages/Dashboard/Admin/CreateEmployeeIdCard";
 
 export const router = createBrowserRouter([
   {
@@ -148,6 +150,22 @@ export const router = createBrowserRouter([
         element: (
           <RoleRoute allowedRoles={["admin"]}>
             <RejectedUser />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/students-id-card",
+        element: (
+          <RoleRoute allowedRoles={["admin"]}>
+            <CreateStudentIdCard />
+          </RoleRoute>
+        ),
+      },
+      {
+        path: "admin/employees-id-card",
+        element: (
+          <RoleRoute allowedRoles={["admin"]}>
+            <CreateEmployeeIdCard />
           </RoleRoute>
         ),
       },

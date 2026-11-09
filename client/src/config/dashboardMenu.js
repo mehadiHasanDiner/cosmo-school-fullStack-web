@@ -11,6 +11,7 @@ import {
   FiSettings,
   FiUser,
 } from "react-icons/fi";
+import { FaRegIdCard } from "react-icons/fa";
 
 // =====================================================
 // ADMIN MENU
@@ -51,19 +52,19 @@ export const adminMenus = [
     children: [
       {
         title: "All Employees",
-        path: "/dashboard/employees",
+        path: "/dashboard/admin/employees-list",
       },
       {
         title: "Teachers",
-        path: "/dashboard/teachers",
+        path: "/dashboard/admin/teachers",
       },
       {
         title: "Administrators",
-        path: "/dashboard/administrators",
+        path: "/dashboard/admin/administrators",
       },
       {
         title: "Librarians",
-        path: "/dashboard/librarians",
+        path: "/dashboard/admin/librarians",
       },
     ],
   },
@@ -75,15 +76,15 @@ export const adminMenus = [
     children: [
       {
         title: "All Students",
-        path: "/dashboard/students",
+        path: "/dashboard/admin/students",
       },
       {
         title: "Add Student",
-        path: "/dashboard/add-student",
+        path: "/dashboard/admin/add-student",
       },
       {
         title: "Student Enrollment",
-        path: "/dashboard/student-enrollment",
+        path: "/dashboard/admin/student-enrollment",
       },
     ],
   },
@@ -95,54 +96,68 @@ export const adminMenus = [
     children: [
       {
         title: "Academic Years",
-        path: "/dashboard/academic-years",
+        path: "/dashboard/admin/academic-years",
       },
       {
         title: "Classes",
-        path: "/dashboard/classes",
+        path: "/dashboard/admin/classes",
       },
       {
         title: "Sections",
-        path: "/dashboard/sections",
+        path: "/dashboard/admin/sections",
       },
       {
         title: "Subjects",
-        path: "/dashboard/subjects",
+        path: "/dashboard/admin/subjects",
       },
       {
         title: "Teacher Assignment",
-        path: "/dashboard/teacher-assignment",
+        path: "/dashboard/admin/teacher-assignment",
       },
     ],
   },
+  {
+    title: "Create Id Cards",
+    icon: FaRegIdCard,
 
+    children: [
+      {
+        title: "Employee Id Card",
+        path: "/dashboard/admin/employees-id-card",
+      },
+      {
+        title: "Students Id Card",
+        path: "/dashboard/admin/students-id-card",
+      },
+    ],
+  },
   {
     title: "Routine",
-    path: "/dashboard/routine",
+    path: "/dashboard/admin/routine",
     icon: FiCalendar,
   },
 
   {
     title: "Attendance",
-    path: "/dashboard/attendance",
+    path: "/dashboard/admin/attendance",
     icon: FiClipboard,
   },
 
   {
     title: "Examination",
-    path: "/dashboard/examination",
+    path: "/dashboard/admin/examination",
     icon: FiFileText,
   },
 
   {
     title: "Fees & Payments",
-    path: "/dashboard/fees",
+    path: "/dashboard/admin/fees",
     icon: FiDollarSign,
   },
 
   {
     title: "Notice",
-    path: "/dashboard/notices",
+    path: "/dashboard/admin/notices",
     icon: FiBell,
   },
 
